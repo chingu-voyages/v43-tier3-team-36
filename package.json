@@ -1,5 +1,5 @@
 {
-  "name": "v43-tier3-team-36",
+  "name": "root",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -11,10 +11,13 @@
     "dev:backend": "lerna run dev --scope backend",
     "dev:frontend": "lerna run dev --scope frontend",
     "postinstall": "husky install",
+    "lint": "lerna run lint --parallel",
     "start": "lerna run start --parallel",
     "start:backend": "lerna run start --scope backend",
     "start:frontend": "lerna run start --scope frontend",
-    "test": "lerna run test --parallel"
+    "test": "lerna run test --parallel",
+    "test:backend": "lerna run test --scope backend",
+    "test:frontend": "lerna run test --scope frontend"
   },
   "commitlint": {
     "extends": [
