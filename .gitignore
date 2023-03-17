@@ -1,7 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-node_modules
+/node_modules
+
+# testing
+/coverage
 
 # misc
 .DS_Store
@@ -17,10 +20,24 @@ node_modules
 !.yarn/versions
 
 # debug
-logs
+/logs
 *.log
 yarn-debug.log*
 yarn-error.log*
 
-# Optional eslint cache
+# cache
 .eslintcache
+
+# builds
+/build
+*.tsbuildinfo
+
+# env files
+.env
+.env*.local
+
+# next.js
+next-env.d.ts
+.vercel
+.next/
+out/
