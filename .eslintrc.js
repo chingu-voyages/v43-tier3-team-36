@@ -1,32 +1,67 @@
 module.exports = {
   root: true,
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-  },
-  extends: ['airbnb', 'airbnb-typescript', 'prettier'],
-  overrides: [],
+  extends: ['airbnb-typescript/base', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: './packages/*/tsconfig.json',
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint'],
-  rules: {
-    // disabled type-aware linting due to performance considerations
-    '@typescript-eslint/dot-notation': 'off',
-    'dot-notation': 'error',
-    // disabled type-aware linting due to performance considerations
-    '@typescript-eslint/no-implied-eval': 'off',
-    'no-implied-eval': 'error',
-    // disabled type-aware linting due to performance considerations
-    '@typescript-eslint/no-throw-literal': 'off',
-    'no-throw-literal': 'error',
-    // disabled type-aware linting due to performance considerations
-    '@typescript-eslint/return-await': 'off',
-    'no-return-await': 'error',
-    // disabled for compatibility with mongoDB objects including "_id"
-    'no-underscore-dangle': 'off',
-  },
+  plugins: [],
+  rules: {},
+  overrides: [
+    {
+      files: './packages/frontend/**',
+      env: {
+        browser: true,
+        es6: true,
+      },
+      extends: ['airbnb', 'airbnb/hooks'],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      settings: {
+        'import/resolver': {
+          node: {
+            extensions: ['.mjs', '.js', '.json', '.ts', '.tsx', '.d.ts'],
+          },
+        },
+      },
+      plugins: ['react'],
+      rules: {
+        // Ignore js,ts,tsx required file extention imports
+        'import/extensions': [
+          'error',
+          'ignorePackages',
+          {
+            js: 'never',
+            ts: 'never',
+            tsx: 'never',
+          },
+        ],
+        // prefer named arrow-function components
+        'react/function-component-definition': [
+          'error',
+          { namedComponents: 'arrow-function' },
+        ],
+        // airbnb is using .jsx
+        'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
+        // enforces premature optimization
+        'react/jsx-no-bind': 'off',
+        // use ES6+ deconstructed inner props instead of defaultProps
+        'react/require-default-props': 'off',
+      },
+    },
+    {
+      env: {
+        node: true,
+      },
+      files: './packages/backend/*',
+      extends: ['airbnb/base'],
+      rules: {},
+    },
+  ],
 };
