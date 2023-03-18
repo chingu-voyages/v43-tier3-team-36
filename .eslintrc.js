@@ -55,6 +55,14 @@ module.exports = {
         'react/require-default-props': 'off',
       },
     },
+    // use testing library linting rules for appropriate test files
+    {
+      files: [
+        './packages/frontend/**/__tests__/**/*.([jt]s|tsx)',
+        './packages/frontend/**/?(*.)+(spec|test).([jt]s|tsx)',
+      ],
+      extends: ['plugin:testing-library/react'],
+    },
     {
       env: {
         node: true,
