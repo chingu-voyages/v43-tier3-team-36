@@ -1,10 +1,8 @@
 module.exports = {
   root: true,
-  extends: ['airbnb-typescript/base', 'prettier'],
+  extends: ['prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: './packages/*/tsconfig.json',
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
@@ -12,13 +10,15 @@ module.exports = {
   rules: {},
   overrides: [
     {
-      files: './packages/frontend/**',
+      files: './packages/frontend/src/**',
       env: {
         browser: true,
         es6: true,
       },
-      extends: ['airbnb', 'airbnb/hooks'],
+      extends: ['airbnb', 'airbnb-typescript/base', 'airbnb/hooks'],
       parserOptions: {
+        tsconfigRootDir: __dirname,
+        project: './packages/*/tsconfig.json',
         ecmaFeatures: {
           jsx: true,
         },
@@ -60,7 +60,7 @@ module.exports = {
         node: true,
       },
       files: './packages/backend/*',
-      extends: ['airbnb/base'],
+      extends: ['airbnb/base', 'airbnb-typescript/base'],
       rules: {},
     },
   ],
