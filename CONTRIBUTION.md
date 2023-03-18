@@ -8,6 +8,32 @@ Folder and file naming should follow the Google JS stlye guide
 
 https://google.github.io/styleguide/jsguide.html#file-name
 
+### React Components
+
+The naming of React components should be in **CamelCase** and follow this convention -
+
+`(Page | Context) ComponentName (Type)`
+
+_where parenthesis '()' is used are considered optional to include_
+
+_For example_
+
+SearchFilterableListComponent
+
+(Context|ComponentName|Type)
+
+_or_
+
+ComicCollection
+
+(ComponentName)
+
+**Terms:**
+
+- **Page/Context:** where is this component supposed to used
+- **ComponentName:** what is the responability of this component
+- **Type:** how does this component identify itself as either view (default), component (HoC), connect, or form (i.e. input, button, etc.)
+
 ## Variable naming
 
 Variable naming should also follow the Google JS stlye guide
@@ -16,7 +42,9 @@ https://google.github.io/styleguide/jsguide.html#naming-rules-by-identifier-type
 
 ## Commit message
 
-Please always make sure your commit messages are always succinct and describle well, the work being committed.
+Ensure you follow convential commits convention when writing commits
+
+https://www.conventionalcommits.org/en/v1.0.0/
 
 ## Branches
 
