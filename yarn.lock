@@ -724,6 +724,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@headlessui/react@npm:^1.7.13":
+  version: 1.7.13
+  resolution: "@headlessui/react@npm:1.7.13"
+  dependencies:
+    client-only: ^0.0.1
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+  checksum: 132e5fce86978b9a6fd9d669fb556acec783debcd8f510c99226b3b3229dad50a13aeed69fc9af66465fc7029487ecfc46e6226f14218b760d5a309e08c0d059
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.8":
   version: 0.11.8
   resolution: "@humanwhocodes/config-array@npm:0.11.8"
@@ -1829,6 +1841,32 @@ __metadata:
   dependencies:
     tslib: ^2.4.0
   checksum: 273fd3f3fc461a92f3790cc551ea054745c6d6959afbe1232e6d7aa1c722bbc114d308aab96bef5c78fc0303c85c7b472ef00e2253251cc89737f3b1af56e5a5
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:4.27.0":
+  version: 4.27.0
+  resolution: "@tanstack/query-core@npm:4.27.0"
+  checksum: 914b4f01ac75632f4603b650e9105f64c739b79250baf76aad16cee216f7bad6060c04eda0c70838fe61a5f6c17883e19fcc3075b2433a906539da95ce785796
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^4.27.0":
+  version: 4.27.0
+  resolution: "@tanstack/react-query@npm:4.27.0"
+  dependencies:
+    "@tanstack/query-core": 4.27.0
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-native: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 15cebe9ccb8df737548763223438ce0c28808e3a9f2434307d2ac966a6bb8da01f172019a5490966503797ccdf2482d1e488f5fe52de5da86dbdae20ef772e8c
   languageName: node
   linkType: hard
 
@@ -3696,7 +3734,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"client-only@npm:0.0.1":
+"client-only@npm:0.0.1, client-only@npm:^0.0.1":
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
   checksum: 0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
@@ -5936,6 +5974,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "frontend@workspace:packages/frontend"
   dependencies:
+    "@headlessui/react": ^1.7.13
+    "@tanstack/react-query": ^4.27.0
     "@testing-library/cypress": ^9.0.0
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^14.0.0
@@ -5953,6 +5993,8 @@ __metadata:
     react-dom: 18.2.0
     tailwindcss: ^3.2.7
     typescript: ^5.0.2
+    zod: ^3.21.4
+    zustand: ^4.3.6
   languageName: unknown
   linkType: soft
 
@@ -12386,6 +12428,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
+  languageName: node
+  linkType: hard
+
 "util-deprecate@npm:^1.0.1, util-deprecate@npm:^1.0.2, util-deprecate@npm:~1.0.1":
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
@@ -12893,9 +12944,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.20.6, zod@npm:^3.21.1":
+"zod@npm:^3.20.6, zod@npm:^3.21.1, zod@npm:^3.21.4":
   version: 3.21.4
   resolution: "zod@npm:3.21.4"
   checksum: f185ba87342ff16f7a06686767c2b2a7af41110c7edf7c1974095d8db7a73792696bcb4a00853de0d2edeb34a5b2ea6a55871bc864227dace682a0a28de33e1f
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^4.3.6":
+  version: 4.3.6
+  resolution: "zustand@npm:4.3.6"
+  dependencies:
+    use-sync-external-store: 1.2.0
+  peerDependencies:
+    immer: ">=9.0"
+    react: ">=16.8"
+  peerDependenciesMeta:
+    immer:
+      optional: true
+    react:
+      optional: true
+  checksum: 4d3cec03526f04ff3de6dc45b6f038c47f091836af9660fbf5f682cae1628221102882df20e4048dfe699a43f67424e5d6afc1116f3838a80eea5dd4f95ddaed
   languageName: node
   linkType: hard
