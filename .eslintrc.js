@@ -35,13 +35,14 @@ module.exports = {
         // Ignore js,ts,tsx required file extention imports
         'import/extensions': [
           'error',
-          'ignorePackages',
+          'never',
           {
             js: 'never',
             ts: 'never',
             tsx: 'never',
           },
         ],
+
         // prefer named arrow-function components
         'react/function-component-definition': [
           'error',
@@ -53,6 +54,10 @@ module.exports = {
         'react/jsx-no-bind': 'off',
         // use ES6+ deconstructed inner props instead of defaultProps
         'react/require-default-props': 'off',
+        // ignore need to include import of react
+        'react/react-in-jsx-scope': 'off',
+        // ignore prop types since typescript is being used
+        'react/prop-types': 'off',
       },
     },
     // use testing library linting rules for appropriate test files
