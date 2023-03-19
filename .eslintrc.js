@@ -64,6 +64,10 @@ module.exports = {
       extends: ['plugin:testing-library/react'],
     },
     {
+      files: './packages/frontend/cypress/?(*.)cy.[jt]s',
+      extends: ['plugin:cypress/recommended'],
+    },
+    {
       env: {
         node: true,
       },
