@@ -82,7 +82,19 @@ module.exports = {
         project: './packages/*/tsconfig.json',
       },
       extends: ['airbnb/base', 'airbnb-typescript/base'],
-      rules: {},
+      rules: {
+        'import/prefer-default-export': 'off',
+        // allow console usage
+        'no-console': 'off',
+        // allow unused variables within scope of files
+        '@typescript-eslint/no-unused-vars': 'off',
+        // allow local variable scoping
+        '@typescript-eslint/no-shadow': 'off',
+        // Carl's function preferences - not mine!
+        'func-names': 'off',
+        'consistent-return': 'off',
+        'prefer-arrow-callback': 'off',
+      },
     },
   ],
 };
