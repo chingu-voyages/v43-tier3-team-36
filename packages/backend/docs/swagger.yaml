@@ -4,11 +4,10 @@
 #   description: An API for trading marvel comics
 #   version: 1.0.0
 # servers:
-#   # - url: 
+#   # - url:
 #     description: Main (production) server
 #   # - url: http://localhost:3000/api/v1
 #     description: Internal development server for local testing
 # tags:
 #   - name: user
 #     description: Operations about users
-  

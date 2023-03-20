@@ -1,24 +1,26 @@
-import { PassportStatic } from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
-import { findUserById, findUserByUsername } from "../services/user.service";
+import { PassportStatic } from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { findUserById, findUserByUsername } from '../services/user.service';
 
 const passportLocal = (passport: PassportStatic) => {
-  passport.use(new LocalStrategy(async (username, password, done) => {
-    try {
-      const findUser = await findUserByUsername({ username });
-      if(findUser){
-        if(password == findUser.password){
-          return done(null, findUser, { message: "Login succesful"});
-        }else{
-          return done(null, false, { message: "username or password is incorrect"});
+  passport.use(
+    new LocalStrategy(async (username, password, done) => {
+      try {
+        const findUser: any = await findUserByUsername({ username });
+        if (findUser) {
+          if (password === findUser.password) {
+            return done(null, findUser, { message: 'Login succesful' });
+          }
+          return done(null, false, {
+            message: 'username or password is incorrect',
+          });
         }
-      }else{
-        return done(null, false, { message: "username does not exist"});
+        return done(null, false, { message: 'username does not exist' });
+      } catch (error: any) {
+        return done(null, false, error);
       }
-    } catch (error: any) {
-      return done(null, false, error);
-    }
-  }));
+    }),
+  );
 
   passport.serializeUser((user: any, done) => {
     done(null, user.id);
@@ -32,7 +34,6 @@ const passportLocal = (passport: PassportStatic) => {
       done(null, false);
     }
   });
-  
-}
+};
 
 export default passportLocal;
