@@ -12,10 +12,6 @@
     "start": "node build/src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "prettier": {
-    "printWidth": 80,
-    "trailingComma": "all"
-  },
   "dependencies": {
     "@prisma/client": "^4.11.0",
     "@types/bcrypt": "^5.0.0",
