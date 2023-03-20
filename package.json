@@ -17,7 +17,8 @@
     "start:frontend": "lerna run start --scope frontend",
     "test": "lerna run test --parallel",
     "test:backend": "lerna run test --scope backend",
-    "test:frontend": "lerna run test --scope frontend"
+    "test:frontend": "lerna run test --scope frontend",
+    "types:generate": "lerna run prisma:generate --scope backend"
   },
   "commitlint": {
     "extends": [

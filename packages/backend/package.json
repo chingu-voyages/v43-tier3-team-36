@@ -4,15 +4,17 @@
   "main": "./src/app.js",
   "scripts": {
     "build": "npx tsc",
+    "dev": "NODE_ENV=development nodemon",
     "predev": "npx prisma migrate deploy",
-    "dev": "nodemon",
     "migrate": "npx prisma migrate deploy",
+    "prisma:generate": "prisma generate",
     "production": "cross-env NODE_ENV=production nodemon",
     "prestart": "npx prisma migrate deploy",
     "start": "node build/src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@marvel-collector/types": "^0.1.0",
     "@prisma/client": "^4.11.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
