@@ -3,9 +3,10 @@ import 'express-async-errors';
 import cors from 'cors';
 import passport from 'passport';
 import session from 'express-session';
+import * as dotenv from 'dotenv';
 import morgan from 'morgan';
 import API from './routes';
-import * as dotenv from 'dotenv';
+
 dotenv.config({ path: '../.env ' });
 
 // import usePassportLocal from "./utils/passportLocal";
@@ -17,7 +18,7 @@ app.use(
     origin: '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  })
+  }),
 );
 
 app.use(express.json());
@@ -28,7 +29,7 @@ app.use(
     secret: 'anything',
     resave: false,
     saveUninitialized: false,
-  })
+  }),
 );
 
 app.use(passport.initialize());
@@ -55,7 +56,7 @@ app.use(
       status: 'Error',
       message: 'Internal Server Error',
     });
-  }
+  },
 );
 
 const PORT = process.env.PORT || 3000;
