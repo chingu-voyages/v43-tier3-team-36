@@ -12,27 +12,36 @@ https://google.github.io/styleguide/jsguide.html#file-name
 
 The naming of React components should be in **CamelCase** and follow this convention -
 
-`(Page | Context) ComponentName (Type)`
+`(Page | Context) ComponentName`
 
 _where parenthesis '()' is used are considered optional to include_
 
 _For example_
 
-SearchFilterableListComponent
+SearchFilterSelect
 
-(Context|ComponentName|Type)
+(Context|ComponentName)
 
 _or_
 
-ComicCollection
+ComicCollections
 
 (ComponentName)
 
 **Terms:**
 
-- **Page/Context:** where is this component supposed to used
-- **ComponentName:** what is the responability of this component
-- **Type:** how does this component identify itself as either view (default), component (HoC), connect, or form (i.e. input, button, etc.)
+- **Page/Context:** where this component is supposed to be used
+- **ComponentName:** what the responsibility of this component is
+
+Also, React components need to be in their separate folder -
+
+`ComponentName/ComponentName.tsx`
+
+It should also include an "entry" file to export your component -
+
+`ComponentName/index.tsx`
+
+_where 'index.tsx' exports your component as a default export_
 
 ## Variable naming
 
