@@ -1,16 +1,21 @@
 import { Router } from 'express';
-import { logout, register, signin } from '../../controllers/user.controller';
-import validateSchema from '../../middleware/validateSchema';
-// import { UserOptionalDefaultsSchema } from "../../schemas";
-// import { z } from 'zod';
-// import { isLoggedIn } from '../../middleware/isLoggedIn';
-// import { authPassportLocal } from '../../middleware/authPassportLocal';
-// const router = Router();
+import { UserSchema } from '@marvel-collector/types/';
+import prisma from '../../database/PrismaClient';
 
-// Auth
-// router.post('/register', validateSchema(z.object({body: UserOptionalDefaultsSchema})), register);
-// router.post('/signin', validateSchema(z.object({body: UserOptionalDefaultsSchema})),
-// authPassportLocal);
-// router.post('/logout', isLoggedIn, logout);
+const router = Router();
 
-// export default router;
+router.get('/user', async (req, res) => {
+  // this should be a global call
+
+  const user = await prisma.user.findFirst({
+    where: {
+      username: '@Fouad',
+    },
+  });
+
+  if (UserSchema.parse(user)) return res.send(user);
+
+  return res.send('User not found');
+});
+
+export default router;

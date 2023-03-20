@@ -1,6 +1,12 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+generator zod {
+  provider         = "zod-prisma-types"
+  output           = "../../types/generated"
+  createInputTypes = false // default is true
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,20 +16,58 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-generator zod {
-  provider          = "zod-prisma-types"
-  output            = "../src/schemas"
-  useMultipleFiles                 = true // default is false
-  createInputTypes                 = false // default is true
-  createModelTypes                 = true // default is true
-  createPartialTypes               = true // default is false
-  createOptionalDefaultValuesTypes = true 
+model User {
+  id           Int            @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String         @unique
+  password     String
+  username     String         @unique
+  profileImage String?
+  collection   Comic[]
+  History      History[]
+  Transaction  Transaction[]
+  Transactions Transactions[]
 }
 
-model Table {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
+model Comic {
+  id     String @id @unique
+  User   User?  @relation(fields: [userId], references: [id])
+  userId Int?
+}
 
+enum TradeType {
+  EXCHANGE
+  BUY
+  SELL
+}
+
+model HistoryItem {
+  tradeType     TradeType
+  comidId       String    @unique
+  History       History?  @relation(fields: [historyUserId], references: [userId])
+  historyUserId Int?
+}
+
+model History {
+  user   User          @relation(fields: [userId], references: [id])
+  userId Int           @id @unique
+  items  HistoryItem[]
+}
+
+model Transaction {
+  id             String        @id @unique
+  user           User          @relation(fields: [userId], references: [id])
+  userId         Int
+  accepted       Boolean
+  type           TradeType
+  Transactions   Transactions? @relation(fields: [transactionsId], references: [id])
+  transactionsId String?
+}
+
+model Transactions {
+  user   User          @relation(fields: [userId], references: [id])
+  id     String        @id @unique
+  items  Transaction[]
+  userId Int
 }
