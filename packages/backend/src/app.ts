@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 import morgan from 'morgan';
 import API from './routes';
 
-dotenv.config({ path: '../.env ' });
+dotenv.config();
 
 // import usePassportLocal from "./utils/passportLocal";
 
