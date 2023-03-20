@@ -29,9 +29,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "prettier": {
-    "singleQuote": true
-  },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
