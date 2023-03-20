@@ -73,10 +73,14 @@ module.exports = {
       extends: ['plugin:cypress/recommended'],
     },
     {
+      files: './packages/backend/src/**',
       env: {
         node: true,
       },
-      files: './packages/backend/*',
+      parserOptions: {
+        tsconfigRootDir: __dirname,
+        project: './packages/*/tsconfig.json',
+      },
       extends: ['airbnb/base', 'airbnb-typescript/base'],
       rules: {},
     },
