@@ -24,50 +24,57 @@ model User {
   password     String
   username     String         @unique
   profileImage String?
-  collection   Comic[]
-  History      History[]
-  Transaction  Transaction[]
-  Transactions Transactions[]
+  collection   Collection?
 }
 
-model Comic {
-  id     String @id @unique
+model Collection {
+  id     Int @id @unique
   User   User?  @relation(fields: [userId], references: [id])
-  userId Int?
+  userId Int? @unique
+  collectionItem CollectionItem[]
 }
 
-enum TradeType {
-  EXCHANGE
-  BUY
-  SELL
+model CollectionItem {
+ id     Int @id @unique
+ collection Collection? @relation(fields: [collectionId], references: [id])
+ collectionId  Int?
+ comicId    Int
+ userId     Int
 }
 
-model HistoryItem {
-  tradeType     TradeType
-  comidId       String    @unique
-  History       History?  @relation(fields: [historyUserId], references: [userId])
-  historyUserId Int?
-}
 
-model History {
-  user   User          @relation(fields: [userId], references: [id])
-  userId Int           @id @unique
-  items  HistoryItem[]
-}
+// enum TradeType {
+//   EXCHANGE
+//   BUY
+//   SELL
+// }
 
-model Transaction {
-  id             String        @id @unique
-  user           User          @relation(fields: [userId], references: [id])
-  userId         Int
-  accepted       Boolean
-  type           TradeType
-  Transactions   Transactions? @relation(fields: [transactionsId], references: [id])
-  transactionsId String?
-}
+// model HistoryItem {
+//   tradeType     TradeType
+//   comidId       String    @unique
+//   History       History?  @relation(fields: [historyUserId], references: [userId])
+//   historyUserId Int?
+// }
 
-model Transactions {
-  user   User          @relation(fields: [userId], references: [id])
-  id     String        @id @unique
-  items  Transaction[]
-  userId Int
-}
+// model History {
+//   user   User          @relation(fields: [userId], references: [id])
+//   userId Int           @id @unique
+//   items  HistoryItem[]
+// }
+
+// model Transaction {
+//   id             String        @id @unique
+//   user           User          @relation(fields: [userId], references: [id])
+//   userId         Int
+//   accepted       Boolean
+//   type           TradeType
+//   Transactions   Transactions? @relation(fields: [transactionsId], references: [id])
+//   transactionsId String?
+// }
+
+// model Transactions {
+//   user   User          @relation(fields: [userId], references: [id])
+//   id     String        @id @unique
+//   items  Transaction[]
+//   userId Int
+// }
