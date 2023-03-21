@@ -27,7 +27,7 @@ This is a project for trading marvel comics
 
 ### Executing program
 
-1. `npm run dev`
+1. `yarn run dev`
    Runs the app in the development mode.\
 
 The page will reload when you make changes.\
@@ -39,6 +39,10 @@ You may also see any lint errors in the console.
 0## Help
 
 Any advise for common problems or issues.
+
+### Generating types
+
+yarn prisma:generate or yarn prisma generate
 
 ### How do I add a new migration?
 
