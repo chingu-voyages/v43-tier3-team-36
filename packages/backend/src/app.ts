@@ -6,10 +6,9 @@ import session from 'express-session';
 import * as dotenv from 'dotenv';
 import morgan from 'morgan';
 import API from './routes';
+import usePassportLocal from './utils/passportLocal';
 
 dotenv.config();
-
-// import usePassportLocal from "./utils/passportLocal";
 
 const app = express();
 app.use(
@@ -33,7 +32,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-// usePassportLocal(passport);
+usePassportLocal(passport);
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
