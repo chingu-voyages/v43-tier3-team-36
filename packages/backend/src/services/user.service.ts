@@ -1,5 +1,8 @@
 import { z } from 'zod';
-import { UserOptionalDefaults, UserPartial } from '@marvel-collector/types/generated/generated';
+import {
+  UserOptionalDefaults,
+  UserPartial,
+} from '@marvel-collector/types/generated';
 import prisma from '../database/PrismaClient';
 
 export const createUser = (payload: UserOptionalDefaults) => prisma.user.create({
