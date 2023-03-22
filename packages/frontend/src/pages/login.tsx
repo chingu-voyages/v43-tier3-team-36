@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Button, FormField } from './signup';
+import { Button } from '@/components/ui';
+import { FormField } from './signup';
 
 const Login = () => (
   <section className="h-screen flex flex-col justify-center items-center">
@@ -19,12 +20,12 @@ const Login = () => (
           type="password"
           placeholder="••••••••"
         />
-        <Button label="Log in" />
+        <Button className="w-full py-4 my-8 text-base font-normal">Log in</Button>
       </form>
-      <div className="my-4 text-center">
+      <div className="my-5 text-base text-center">
         <p className="">
           Don&apos;t have an account?
-          <Link className="ml-2 underline font-bold" href="/signup">
+          <Link className="ml-1.5 underline font-bold" href="/signup">
             Create an account
           </Link>
         </p>

@@ -1,14 +1,11 @@
 import Link from 'next/link';
+import { Button } from '@/components/ui';
 
 interface FormFieldProps {
   id: string;
   label: string;
   type?: string;
   placeholder: string;
-}
-
-interface ButtonProps {
-  label: string;
 }
 
 export const FormField = ({
@@ -25,15 +22,6 @@ export const FormField = ({
       placeholder={placeholder}
     />
   </div>
-);
-
-export const Button = ({ label }: ButtonProps) => (
-  <button
-    className="w-full my-5 p-4 bg-black rounded-lg text-center text-white font-medium disabled:bg-gray-500 disabled:text-gray-300 hover:bg-gray-800"
-    type="submit"
-  >
-    {label}
-  </button>
 );
 
 const Signup = () => (
@@ -70,12 +58,17 @@ const Signup = () => (
           type="password"
           placeholder="••••••••"
         />
-        <Button label="Create an account" />
+        <Button className="w-full py-4 my-8 text-base font-normal">
+          Create my account
+        </Button>
       </form>
-      <div className="my-4 text-center">
+      <div
+        className="my-5 text-base
+       text-center"
+      >
         <p className="">
           Already got an account?
-          <Link className="ml-2 underline font-bold" href="/login">
+          <Link className="ml-1.5 underline font-bold" href="/login">
             Log in
           </Link>
         </p>
