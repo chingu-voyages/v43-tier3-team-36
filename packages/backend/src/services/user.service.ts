@@ -1,11 +1,6 @@
 import { z } from 'zod';
-import {
-  UserOptionalDefaults,
-  UserPartial,
-} from '@marvel-collector/types/generated/modelSchema/modelSchema';
+import { UserOptionalDefaults, UserPartial } from '@marvel-collector/types/generated/generated';
 import prisma from '../database/PrismaClient';
-// import { UserOptionalDefaults, UserPartial, } from "../schemas";
-// the user is underlined because we don't have a user schema yet
 
 export const createUser = (payload: UserOptionalDefaults) => prisma.user.create({
   data: payload,
