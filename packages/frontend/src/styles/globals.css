@@ -1,12 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+<<<<<<< HEAD
+=======
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+>>>>>>> development
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+<<<<<<< HEAD
     body {
         font-family: "DM Sans", sans-serif;
         font-weight: 300;
     }
 }
+=======
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+  }
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+}
+>>>>>>> development
