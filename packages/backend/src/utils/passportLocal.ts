@@ -1,40 +1,38 @@
-// import { PassportStatic } from "passport";
-// import { Strategy as LocalStrategy } from "passport-local";
-// import { findUserById, findUserByUsername } from "../services/user.service";
+import { PassportStatic } from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { findUserById, findUserByUsername } from '../services/user.service';
+import { comparePassword } from './hashPassword';
 
-// const passportLocal = (passport: PassportStatic) => {
-//   passport.use(new LocalStrategy(async (username, password, done) => {
-//     try {
-//       const findUser = await findUserByUsername({ username });
-//       if(findUser){
-//         if(password == findUser.password){
-//           return done(null, findUser, { message: "Login succesful"});
-//         }else{
-//           return done(null, false, { message: "username or password is incorrect"});
-//         }
-//       }else{
-//         return done(null, false, { message: "username does not exist"});
-//       }
-//     } catch (error: any) {
-//       return done(null, false, error);
-//     }
-//   }));
+const passportLocal = (passport: PassportStatic) => {
+  passport.use(
+    new LocalStrategy(async (username, password, done) => {
+      try {
+        const findUser = await findUserByUsername({ username });
+        if (findUser) {
+          if (await comparePassword(password, findUser.password)) {
+            return done(null, findUser, { message: 'Login successful' });
+          }
+          return done(null, false, { message: 'invalid credentials' });
+        }
+        return done(null, false, { message: 'invalid credential' });
+      } catch (error: any) {
+        return done(null, false, error);
+      }
+    }),
+  );
 
-//   passport.serializeUser((user: any, done) => {
-//     done(null, user.id);
-//   });
+  passport.serializeUser((user: any, done) => {
+    done(null, user.id);
+  });
 
-//   passport.deserializeUser(async (id: string, done) => {
-//     const user = await findUserById({ id });
-//     if (user) {
-//       done(null, user);
-//     } else {
-//       done(null, false);
-//     }
-//   });
+  passport.deserializeUser(async (id: string, done) => {
+    const user = await findUserById({ id });
+    if (user) {
+      done(null, user);
+    } else {
+      done(null, false);
+    }
+  });
+};
 
-// }
-
-// export default passportLocal;
-
-export default {};
+export default passportLocal;
