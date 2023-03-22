@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
-const useSearchResource = <TResults>(url: string) => {
+const useSearchResource = <TResults>(url?: string) => {
   const [results, setResults] = useState<TResults>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>();
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (resourceUrl: string) => {
     setIsLoading(true);
     try {
-      const data = await fetch(url);
+      const data = await fetch(resourceUrl);
       const json = await data.json();
 
       setResults(json.data.results);
@@ -18,10 +18,10 @@ const useSearchResource = <TResults>(url: string) => {
       setError('Unable to fetch resource');
     }
     setIsLoading(false);
-  }, [url]);
+  }, []);
 
   useEffect(() => {
-    fetchData();
+    if (url) fetchData(url);
   }, [url, fetchData]);
 
   return {
