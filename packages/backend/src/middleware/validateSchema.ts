@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import * as z from 'zod';
+import { AnyZodObject } from 'zod';
 
 // eslint-disable-next-line max-len
-const validateSchema = (schema: z.AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
+const validateSchema = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
   try {
     schema.parse({
       body: req.body,
