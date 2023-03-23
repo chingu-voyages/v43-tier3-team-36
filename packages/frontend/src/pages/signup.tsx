@@ -100,6 +100,7 @@ const Signup = () => {
           <Button
             className="w-full py-4 my-8 text-base font-normal"
             type="submit"
+            disabled={newUserMutation.isLoading}
           >
             Create my account
           </Button>

@@ -1,4 +1,4 @@
-type RegisterOptions = {
+export type SignupOptions = {
   firstName: string;
   lastName: string;
   username: string;
@@ -11,8 +11,8 @@ type LoginOptions = {
   password: string;
 };
 
-export async function signup(data: RegisterOptions) {
-  const res = await fetch('http://localhost:3000/api/v1/register', {
+export async function signup(data: SignupOptions) {
+  const res = await fetch('/api/v1/register', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -25,7 +25,7 @@ export async function signup(data: RegisterOptions) {
 }
 
 export async function login(data: LoginOptions) {
-  const res = await fetch('http://localhost:3000/api/v1/login', {
+  const res = await fetch('/api/v1/login', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {

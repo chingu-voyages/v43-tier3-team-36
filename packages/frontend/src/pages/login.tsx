@@ -68,6 +68,7 @@ const Login = () => {
           <Button
             className="w-full py-4 my-8 text-base font-normal"
             type="submit"
+            disabled={LogUserMutation.isLoading}
           >
             Log in
           </Button>
