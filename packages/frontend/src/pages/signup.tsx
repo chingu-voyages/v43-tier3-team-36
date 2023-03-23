@@ -1,8 +1,12 @@
 import Link from 'next/link';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui';
 import FormField from '@/components/auth/FormField';
+import { signup } from '@/services/AuthService';
 
 const Signup = () => {
   const {
@@ -11,9 +15,18 @@ const Signup = () => {
     formState: { errors, isValid },
   } = useForm();
 
-  const onSubmit = (data: object) => {
+  const router = useRouter();
+
+  const newUserMutation = useMutation({
+    mutationFn: signup,
+    onSuccess: () => {
+      router.push('/');
+    },
+  });
+
+  const onSubmit = (data) => {
     if (isValid) {
-      console.log(JSON.stringify(data));
+      newUserMutation.mutate(data);
     }
   };
 
@@ -25,7 +38,7 @@ const Signup = () => {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormField
-            id="firstname"
+            id="firstName"
             label="First name"
             placeholder="Enter your firstname"
             register={register}
@@ -33,7 +46,7 @@ const Signup = () => {
             error={errors}
           />
           <FormField
-            id="lastname"
+            id="lastName"
             label="Last name"
             placeholder="Enter your lastname"
             register={register}
