@@ -8,6 +8,7 @@
     "cypress:run": "cypress run",
     "dev": "next dev",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "start": "next start",
     "test": "jest",
     "test:cov": "jest --coverage",
