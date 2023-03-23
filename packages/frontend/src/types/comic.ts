@@ -1,8 +1,10 @@
-type TComicType = {
+export type TComicImages = { path: string; extension: string }[];
+
+export type TComicItem = {
   id: number;
   title: string;
   issueNumber: number;
-  url: string;
+  images: TComicImages;
 };
 
-export default TComicType;
+export default TComicItem;
