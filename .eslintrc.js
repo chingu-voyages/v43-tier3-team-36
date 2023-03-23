@@ -94,6 +94,7 @@ module.exports = {
         'func-names': 'off',
         'consistent-return': 'off',
         'prefer-arrow-callback': 'off',
+        "linebreak-style": 0,
       },
     },
   ],

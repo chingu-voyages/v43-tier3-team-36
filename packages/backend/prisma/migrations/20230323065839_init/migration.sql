@@ -7,7 +7,7 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "profileImage" TEXT,
-    "collection" TEXT[],
+    "collection" JSONB[],
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

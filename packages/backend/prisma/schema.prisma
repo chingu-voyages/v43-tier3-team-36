@@ -28,5 +28,5 @@ model User {
   password     String
   username     String   @unique
   profileImage String?
-  collection   String[] @unique
+  collection   Json[] @unique
 }

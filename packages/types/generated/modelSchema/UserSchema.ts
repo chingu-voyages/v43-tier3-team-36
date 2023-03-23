@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { InputJsonValue } from "../inputTypeSchemas/InputJsonValue"
 
 /////////////////////////////////////////
 // USER SCHEMA
@@ -12,27 +13,25 @@ export const UserSchema = z.object({
   password: z.string(),
   username: z.string(),
   profileImage: z.string().nullable(),
-  collection: z.string().array(),
-});
+  collection: InputJsonValue.array(),
+})
 
-export type User = z.infer<typeof UserSchema>;
+export type User = z.infer<typeof UserSchema>
 
 // USER PARTIAL SCHEMA
 //------------------------------------------------------
 
-export const UserPartialSchema = UserSchema.partial();
+export const UserPartialSchema = UserSchema.partial()
 
-export type UserPartial = z.infer<typeof UserPartialSchema>;
+export type UserPartial = z.infer<typeof UserPartialSchema>
 
 // USER OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
 
-export const UserOptionalDefaultsSchema = UserSchema.merge(
-  z.object({
-    id: z.string().uuid().optional(),
-  }),
-);
+export const UserOptionalDefaultsSchema = UserSchema.merge(z.object({
+  id: z.string().uuid().optional(),
+}))
 
-export type UserOptionalDefaults = z.infer<typeof UserOptionalDefaultsSchema>;
+export type UserOptionalDefaults = z.infer<typeof UserOptionalDefaultsSchema>
 
 export default UserSchema;
