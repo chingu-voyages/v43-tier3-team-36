@@ -1,3 +1,5 @@
+const baseUrl: string = 'https://marvel-collector-backend.onrender.com';
+
 export type SignupOptions = {
   firstName: string;
   lastName: string;
@@ -12,7 +14,7 @@ type LoginOptions = {
 };
 
 export async function signup(data: SignupOptions) {
-  const res = await fetch('/api/v1/register', {
+  const res = await fetch(`${baseUrl}/api/v1/register`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -25,13 +27,14 @@ export async function signup(data: SignupOptions) {
 }
 
 export async function login(data: LoginOptions) {
-  const res = await fetch('/api/v1/login', {
+  const res = await fetch(`${baseUrl}/api/v1/login`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
     },
   });
+
   const result = await res.json();
   return result;
 }
