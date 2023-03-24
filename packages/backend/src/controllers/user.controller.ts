@@ -63,7 +63,6 @@ export const currentUser = async (req: Request, res: Response) => {
         email: user?.email,
         username: user?.username,
         profileImage: user?.profileImage,
-        collection: user?.collection,
       },
     });
   } catch (error) {
