@@ -1,32 +1,43 @@
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui';
-import FormField from '@/components/auth/FormField';
+import { FormField } from '@/components/auth/FormField';
 import { signup } from '@/services/AuthService';
+import { UseAlertStore } from '@/store/store';
 
 const Signup = () => {
+  const setAlert = UseAlertStore((state: any) => state.setAlert);
+  const resetAlert = UseAlertStore((state: any) => state.resetAlert);
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm();
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  const newUserMutation = useMutation({
+  const NewUserMutation = useMutation({
     mutationFn: signup,
-    onSuccess: () => {
-      router.push('/');
+    onSuccess: (data) => {
+      setAlert({ type: 'success', message: data.message });
+    },
+    onError: () => {
+      setAlert({
+        type: 'error',
+        message: 'authentication unsuccessful',
+      });
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data: any) => {
+    resetAlert();
     if (isValid) {
-      newUserMutation.mutate(data);
+      NewUserMutation.mutate(data);
     }
   };
 
@@ -100,14 +111,14 @@ const Signup = () => {
           <Button
             className="w-full py-4 my-8 text-base font-normal"
             type="submit"
-            disabled={newUserMutation.isLoading}
+            disabled={isSubmitting}
           >
             Create my account
           </Button>
         </form>
         <div
           className="my-5 text-base
-       text-center"
+   text-center"
         >
           <p className="">
             Already got an account?
