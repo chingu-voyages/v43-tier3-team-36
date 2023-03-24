@@ -18,6 +18,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'placekeanu.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
