@@ -28,5 +28,15 @@ model User {
   password     String
   username     String   @unique
   profileImage String?
-  collection   Json[] @unique
+  location     String?
+  collection   Collection?
+}
+
+model Collection {
+  id      String  @id @default(uuid())
+  comicId String  @unique
+  title   String
+  imageUrl String
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String  @unique
 }
