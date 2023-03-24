@@ -1,27 +1,33 @@
-import { InputJsonValueType } from '@marvel-collector/types/generated/inputTypeSchemas/InputJsonValue';
+import {
+  Collection,
+  CollectionPartial,
+  CollectionOptionalDefaultsSchema,
+  CollectionOptionalDefaults,
+} from '@marvel-collector/types/generated/modelSchema/';
 import prisma from '../database/PrismaClient';
 
-export const findUniqueIdSelectCollection = async (userId: string) => prisma.user.findUnique({
+export const findUniqueId = async (userId: string) => prisma.user.findUnique({
   where: {
     id: userId,
   },
-  select: {
-    collection: true,
+});
+
+export const findUniqueComicId = async (comicId: string) => prisma.collection.findUnique({
+  where: {
+    comicId,
   },
 });
 
 export const assignComic = async (
-  userId : string,
-  comic: InputJsonValueType,
-) => prisma.user.update({
-
-  where: {
-    id: userId,
-  },
+  userId: string,
+  comicId: string,
+  title: string,
+  imageUrl: string,
+) => prisma.collection.create({
   data: {
-    collection: {
-      push: comic,
-    },
-
+    comicId,
+    title,
+    imageUrl,
+    user: { connect: { id: userId } },
   },
 });
