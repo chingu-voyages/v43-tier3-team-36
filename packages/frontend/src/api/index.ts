@@ -12,5 +12,3 @@ export const searchComics = async (
   const json = await response.json();
   return json.data.results;
 };
-
-export default searchComics;
