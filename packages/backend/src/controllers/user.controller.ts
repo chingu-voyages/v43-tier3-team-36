@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User, UserOptionalDefaults } from '@marvel-collector/types/generated';
+import { User, UserOptionalDefaults } from '@marvel-collector/types/generated/';
 import {
   createUser,
   findUserByEmail,
@@ -39,8 +39,6 @@ export const register = async (
         firstName,
         email,
         lastName,
-        collection: [],
-        collectionId: newUser?.collection?.id,
       },
     });
   } catch (error) {
