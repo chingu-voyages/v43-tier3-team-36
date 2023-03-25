@@ -1,4 +1,4 @@
-// import { Alert } from '@/components/ui/Alert';
+import { Alert } from '@/components/ui/Alert';
 
 interface Props {
   children: React.ReactNode;
@@ -8,6 +8,7 @@ interface Props {
 
 const AlertLayout: React.FC<Props> = ({ children }) => (
   <section className="relative w-full min-h-screen">
+    <Alert type="" message="" />
     {/* <Alert type={alert.type} message={alert.message} /> */}
     {children}
   </section>
