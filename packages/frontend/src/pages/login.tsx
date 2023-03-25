@@ -5,13 +5,13 @@ import { useMutation } from '@tanstack/react-query';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui';
-import { FormField } from '@/components/auth/FormField';
-import { login } from '@/services/AuthService';
-import { UseAlertStore } from '@/store/store';
+import FormField from '@/components/auth/FormField/FormField';
+import { login } from '@/api';
+// import { UseAlertStore } from '@/store/store';
 
 const Login = () => {
-  const setAlert = UseAlertStore((state: any) => state.setAlert);
-  const resetAlert = UseAlertStore((state: any) => state.resetAlert);
+  // const setAlert = UseAlertStore((state: any) => state.setAlert);
+  // const resetAlert = UseAlertStore((state: any) => state.resetAlert);
 
   const {
     register,
@@ -22,18 +22,20 @@ const Login = () => {
   const LogUserMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      setAlert({ type: 'success', message: data.message });
+      console.log(data);
+      // setAlert({ type: 'success', message: data.message });
     },
-    onError: () => {
-      setAlert({
-        type: 'error',
-        message: 'authentication unsuccessful',
-      });
+    onError: (error) => {
+      console.log(error);
+      // setAlert({
+      //   type: 'error',
+      //   message: 'authentication unsuccessful',
+      // });
     },
   });
 
   const onSubmit = async (data: any) => {
-    resetAlert();
+    // resetAlert();
     if (isValid) {
       LogUserMutation.mutate(data);
     }
