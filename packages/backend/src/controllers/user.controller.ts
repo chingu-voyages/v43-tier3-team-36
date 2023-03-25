@@ -22,9 +22,16 @@ export const register = async (
     }
 
     const hashedPassword = await hashPassword(password);
-    const tempUser = { ...req.body, password: hashedPassword };
+    // const tempUser = { ...req.body, password: hashedPassword };
 
-    await createUser(tempUser);
+    const newUser = await createUser(
+      firstName,
+      lastName,
+      username,
+      hashedPassword,
+      email,
+    );
+
     return res.status(201).json({
       message: 'user created successfully',
       user: {
@@ -32,6 +39,10 @@ export const register = async (
         firstName,
         email,
         lastName,
+        collection: {
+          collectionId: newUser?.collection?.id,
+          userId: newUser.collection?.userId,
+        },
       },
     });
   } catch (error) {
