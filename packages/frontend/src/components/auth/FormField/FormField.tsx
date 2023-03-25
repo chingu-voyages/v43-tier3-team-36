@@ -13,7 +13,7 @@ type RegisterOptions = {
   };
 };
 
-export type FormFieldProps = {
+type FormFieldProps = {
   id: string;
   label: string;
   type?: string;
@@ -23,7 +23,7 @@ export type FormFieldProps = {
   error: FieldValues;
 };
 
-export const FormField = ({
+const FormField = ({
   id,
   label,
   type,
@@ -48,3 +48,5 @@ export const FormField = ({
     )}
   </div>
 );
+
+export default FormField;
