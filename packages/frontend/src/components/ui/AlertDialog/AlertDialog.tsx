@@ -4,15 +4,15 @@ import clsx from 'clsx';
 import type { ForwardRefExoticComponent, RefAttributes } from 'react';
 import { forwardRef, Fragment } from 'react';
 
-export interface ModalProps {
+export interface AlertDialogProps {
   children?: React.ReactNode;
   title: string;
   description?: string;
   actions: React.ElementType[];
 }
 
-export const Modal: ForwardRefExoticComponent<
-ModalProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
+export const AlertDialog: ForwardRefExoticComponent<
+AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
 > = forwardRef(
   (
     {
