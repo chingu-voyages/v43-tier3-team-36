@@ -39,10 +39,8 @@ export const register = async (
         firstName,
         email,
         lastName,
-        collection: {
-          collectionId: newUser?.collection?.id,
-          userId: newUser.collection?.userId,
-        },
+        collection: [],
+        collectionId: newUser?.collection?.id,
       },
     });
   } catch (error) {
