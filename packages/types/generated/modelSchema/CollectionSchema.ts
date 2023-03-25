@@ -6,9 +6,6 @@ import { z } from 'zod';
 
 export const CollectionSchema = z.object({
   id: z.string().uuid(),
-  comicId: z.string(),
-  title: z.string(),
-  imageUrl: z.string(),
   userId: z.string(),
 });
 
