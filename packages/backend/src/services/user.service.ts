@@ -2,7 +2,7 @@ import { z } from 'zod';
 import {
   UserOptionalDefaults,
   UserPartial,
-} from '@marvel-collector/types/generated';
+} from '@marvel-collector/types/generated/';
 import prisma from '../database/PrismaClient';
 
 export const createUser = (
@@ -18,12 +18,6 @@ export const createUser = (
     username,
     password,
     email,
-    collection: {
-      create: {},
-    },
-  },
-  include: {
-    collection: true,
   },
 });
 
