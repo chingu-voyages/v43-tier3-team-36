@@ -5,8 +5,26 @@ import {
 } from '@marvel-collector/types/generated';
 import prisma from '../database/PrismaClient';
 
-export const createUser = (payload: UserOptionalDefaults) => prisma.user.create({
-  data: payload,
+export const createUser = (
+  firstName: string,
+  lastName: string,
+  username: string,
+  password: string,
+  email: string,
+) => prisma.user.create({
+  data: {
+    firstName,
+    lastName,
+    username,
+    password,
+    email,
+    collection: {
+      create: {},
+    },
+  },
+  include: {
+    collection: true,
+  },
 });
 
 export const findUserByUsername = (payload: UserPartial) => prisma.user.findUnique({
