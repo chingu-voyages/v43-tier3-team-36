@@ -5,7 +5,7 @@ export const CollectionItemScalarFieldEnumSchema = z.enum([
   'comicId',
   'title',
   'imageUrl',
-  'collectionId',
+  'userId',
 ]);
 
 export default CollectionItemScalarFieldEnumSchema;
