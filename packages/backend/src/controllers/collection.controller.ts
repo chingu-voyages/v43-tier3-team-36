@@ -7,51 +7,103 @@ import {
   CollectionOptionalDefaultsSchema,
   CollectionOptionalDefaults,
 } from '@marvel-collector/types/generated/modelSchema';
+import { strict } from 'assert';
 import {
   findUniqueId,
-  assignComic,
-  findUniqueComicId,
+  findUserCollection,
+  createUserCollection,
+  connectCollectionItems,
+  findUserWithCollection,
+  findCollectionWithUser,
+  findExistingComic,
 } from '../services/collection.service';
+import prisma from '../database/PrismaClient';
 
-interface Comic {
-  comicId: string;
-  title: string;
-  imageUrl: string;
-}
+// This function is for creating a user's collection
 
-export const assignComicToCollection = async (
-  req: Request<{}, {}, Collection>,
-  res: Response,
-) => {
+export async function createCollection(req: Request, res: Response) {
+  const { id } = req.user as User;
+  console.log(id, 'first id');
   try {
-    const { id } = req.user as User;
-    const user = findUniqueId(id);
-    const { comicId, title, imageUrl } = req.body;
+    const user = await findUniqueId(id);
+    console.log(user, id);
 
-    // Check if user exists
+    // Check whether user exists
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ error: 'User not found' });
     }
-    // Check if comicId already exist in collection
 
-    const existingCollection = await findUniqueComicId(comicId);
-    if (existingCollection) {
+    const existingCollection = await findUserCollection(id);
+
+    if (existingCollection !== null) {
       return res
-        .status(409)
-        .json({ message: 'Comic already exist in collection' });
+        .status(400)
+        .json({ error: 'Collection already exists for this user' });
     }
 
-    // Add comic to user's collection
-    const collection = await assignComic(id, comicId, title, imageUrl);
+    const collection = await createUserCollection(id);
 
     return res.status(200).json({
-      message: 'Comic added to user collection',
-      user: {
-        collection,
+      status: 'success',
+      message: 'user collection successfully created',
+      data: {
+        id: collection.id,
+        userId: collection.userId,
       },
     });
   } catch (error) {
     console.error(error);
-    return res.status(400).send(error);
+    return res.status(500).json({
+      error: 'Internal server error/ Collection already exists for this user',
+    });
   }
-};
+}
+
+// This endpoint is for assigning comics to a User's collection
+
+export async function assignCollectionItems(req: Request, res: Response) {
+  const { id } = req.user as User;
+  const { collectionId } = req.params;
+  const { comicId, title, imageUrl } = req.body;
+
+  try {
+    const collection = await findCollectionWithUser(collectionId);
+
+    // Check that the collection exists and belongs to the authenticated user
+    if (!collection || collection.user.id !== id) {
+      return res.status(404).json({
+        error:
+          'Collection not found, check collectionId or create a collection',
+      });
+    }
+
+    const existingItem = await findExistingComic(comicId, collectionId);
+
+    if (existingItem) {
+      return res
+        .status(400)
+        .json({ error: 'Comic already exist in user collection' });
+    }
+
+    // New collection item
+
+    const newCollectionItem = {
+      comicId,
+      title,
+      imageUrl,
+      collectionId,
+    };
+
+    console.log(newCollectionItem, 'new collection item');
+
+    // Add the new collection items to the database
+    const createdItem = await prisma.collectionItem.create({
+      data: newCollectionItem,
+    });
+
+    return res.status(201).json({ Comic: createdItem });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
