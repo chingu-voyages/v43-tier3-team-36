@@ -9,7 +9,7 @@ export const CollectionItemSchema = z.object({
   comicId: z.string(),
   title: z.string(),
   imageUrl: z.string(),
-  collectionId: z.string(),
+  userId: z.string().nullable(),
 });
 
 export type CollectionItem = z.infer<typeof CollectionItemSchema>;
