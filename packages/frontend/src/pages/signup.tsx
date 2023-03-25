@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
@@ -12,6 +12,8 @@ import { signup } from '@/api';
 const Signup = () => {
   // const setAlert = UseAlertStore((state: any) => state.setAlert);
   // const resetAlert = UseAlertStore((state: any) => state.resetAlert);
+
+  const router = useRouter();
 
   const {
     register,
@@ -25,6 +27,7 @@ const Signup = () => {
     mutationFn: signup,
     onSuccess: (data) => {
       console.log(data);
+      router.push('/profile');
       // setAlert({ type: 'success', message: data.message });
     },
     onError: (error) => {

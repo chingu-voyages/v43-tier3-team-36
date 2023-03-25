@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
@@ -13,6 +13,8 @@ const Login = () => {
   // const setAlert = UseAlertStore((state: any) => state.setAlert);
   // const resetAlert = UseAlertStore((state: any) => state.resetAlert);
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -24,6 +26,7 @@ const Login = () => {
     onSuccess: (data) => {
       console.log(data);
       // setAlert({ type: 'success', message: data.message });
+      router.push('/profile');
     },
     onError: (error) => {
       console.log(error);
