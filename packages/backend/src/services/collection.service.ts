@@ -3,7 +3,8 @@ import {
   CollectionPartial,
   CollectionOptionalDefaultsSchema,
   CollectionOptionalDefaults,
-} from '@marvel-collector/types/generated/modelSchema/';
+} from '@marvel-collector/types/generated/modelSchema';
+import { Prisma } from '@prisma/client';
 import prisma from '../database/PrismaClient';
 
 export const findUniqueId = async (userId: string) => prisma.user.findUnique({
@@ -12,22 +13,36 @@ export const findUniqueId = async (userId: string) => prisma.user.findUnique({
   },
 });
 
-export const findUniqueComicId = async (comicId: string) => prisma.collection.findUnique({
+export const findUserCollection = async (userId: string) => prisma.collection.findUnique({
   where: {
-    comicId,
+    id: userId,
   },
 });
 
-export const assignComic = async (
-  userId: string,
-  comicId: string,
-  title: string,
-  imageUrl: string,
-) => prisma.collection.create({
+export const createUserCollection = async (userId: string) => prisma.collection.create({
   data: {
-    comicId,
-    title,
-    imageUrl,
     user: { connect: { id: userId } },
   },
+});
+export const connectCollectionItems = async (id: string) => prisma.collectionItem.findMany({
+  where: {
+    collectionId: id,
+  },
+});
+
+export const findUserWithCollection = async (userId: string) => prisma.collection.findUnique({
+  where: { userId },
+  include: { collectionItems: true },
+});
+
+export const findCollectionWithUser = async (collectionId: string) => prisma.collection.findUnique({
+  where: { id: collectionId },
+  include: { user: true },
+});
+
+export const findExistingComic = async (
+  comicId: string,
+  collectionId: string,
+) => prisma.collectionItem.findFirst({
+  where: { comicId, collectionId },
 });
