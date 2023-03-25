@@ -21,43 +21,43 @@ import prisma from '../database/PrismaClient';
 
 // This function is for creating a user's collection
 
-export async function createCollection(req: Request, res: Response) {
-  const { id } = req.user as User;
-  console.log(id, 'first id');
-  try {
-    const user = await findUniqueId(id);
-    console.log(user, id);
+// export async function createCollection(req: Request, res: Response) {
+//   const { id } = req.user as User;
+//   console.log(id, 'first id');
+//   try {
+//     const user = await findUniqueId(id);
+//     console.log(user, id);
 
-    // Check whether user exists
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+//     // Check whether user exists
+//     if (!user) {
+//       return res.status(404).json({ error: 'User not found' });
+//     }
 
-    const existingCollection = await findUserCollection(id);
+//     const existingCollection = await findUserCollection(id);
 
-    if (existingCollection !== null) {
-      return res
-        .status(400)
-        .json({ error: 'Collection already exists for this user' });
-    }
+//     if (existingCollection !== null) {
+//       return res
+//         .status(400)
+//         .json({ error: 'Collection already exists for this user' });
+//     }
 
-    const collection = await createUserCollection(id);
+//     const collection = await createUserCollection(id);
 
-    return res.status(200).json({
-      status: 'success',
-      message: 'user collection successfully created',
-      data: {
-        id: collection.id,
-        userId: collection.userId,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      error: 'Internal server error/ Collection already exists for this user',
-    });
-  }
-}
+//     return res.status(200).json({
+//       status: 'success',
+//       message: 'user collection successfully created',
+//       data: {
+//         id: collection.id,
+//         userId: collection.userId,
+//       },
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({
+//       error: 'Internal server error/ Collection already exists for this user',
+//     });
+//   }
+// }
 
 // This endpoint is for assigning comics to a User's collection
 
