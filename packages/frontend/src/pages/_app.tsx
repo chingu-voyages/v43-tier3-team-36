@@ -5,7 +5,6 @@ import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import '../styles/globals.css';
-import { AlertLayout } from '@/components/ui/Alert';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -22,9 +21,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return getLayout(
     <QueryClientProvider client={queryClient}>
-      <AlertLayout>
-        <Component {...pageProps} />
-      </AlertLayout>
+      <Component {...pageProps} />
     </QueryClientProvider>,
   );
 };
