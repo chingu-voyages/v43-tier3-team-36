@@ -1,6 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import '../styles/globals.css';
 
@@ -12,11 +14,16 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+const queryClient = new QueryClient();
+
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return getLayout(<Component {...pageProps} />);
+  return getLayout(
+    <QueryClientProvider client={queryClient}>
+      <Component {...pageProps} />
+    </QueryClientProvider>,
+  );
 };
 
 export default App;

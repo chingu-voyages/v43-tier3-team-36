@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User, UserOptionalDefaults } from '@marvel-collector/types/generated/';
+import { User, UserOptionalDefaults } from '@marvel-collector/types/generated';
 import {
   createUser,
   findUserByEmail,
@@ -13,25 +13,16 @@ export const register = async (
   res: Response,
 ) => {
   try {
-    const {
-      username, password, firstName, email, lastName,
-    } = req.body;
+    const { username, password, firstName, email, lastName } = req.body;
     const findUser = await findUserByUsername({ username });
     if (findUser) {
       return res.status(400).json({ message: 'username already taken' });
     }
 
     const hashedPassword = await hashPassword(password);
-    // const tempUser = { ...req.body, password: hashedPassword };
+    const tempUser = { ...req.body, password: hashedPassword };
 
-    const newUser = await createUser(
-      firstName,
-      lastName,
-      username,
-      hashedPassword,
-      email,
-    );
-
+    await createUser(tempUser);
     return res.status(201).json({
       message: 'user created successfully',
       user: {
@@ -47,7 +38,9 @@ export const register = async (
 };
 
 // eslint-disable-next-line max-len
-export const login = async (req: Request, res: Response) => res.status(200).json({ message: 'Login successful' });
+
+export const login = async (req: Request, res: Response) =>
+  res.status(200).json({ message: 'Login successful' });
 
 export const logout = async (req: Request, res: Response) => {
   req.logOut((error) => {
@@ -73,6 +66,7 @@ export const currentUser = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
+
     return res.status(400).json(error);
   }
 };
