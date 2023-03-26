@@ -53,7 +53,7 @@ export async function viewComicBookCollectionOfUser(
   req: Request,
   res: Response,
 ) {
-  const { id } = req.params as User;
+  const { id } = req.params;
 
   try {
     const user = await viewCollections(id);
@@ -70,15 +70,9 @@ export async function viewComicBookCollectionOfUser(
         firstName: user.firstName,
         lastName: user.lastName,
         username: user.username,
-        email: user.email,
         profileImage: user.profileImage,
         location: user.location,
-        collection: user.collection.map((item) => ({
-          id: item.id,
-          comicId: item.comicId,
-          title: item.title,
-          imageUrl: item.imageUrl,
-        })),
+        collection: user.collection,
       },
     });
   } catch (error) {
@@ -103,7 +97,6 @@ export async function queryCollectorsByUsernameAndLocation(
           firstName: collector.firstName,
           lastName: collector.lastName,
           username: collector.username,
-          email: collector.email,
           profileImage: collector.profileImage,
           location: collector.location,
           collection: collector.collection.map((item) => ({
