@@ -5,6 +5,7 @@
   "scripts": {
     "build": "npx tsc",
     "dev": "NODE_ENV=development nodemon",
+    "dev:prisma-logging": "cross-env NODE_ENV=development PRISMA_LOGGING=true nodemon",
     "predev": "npx prisma migrate deploy",
     "migrate": "npx prisma migrate deploy",
     "prisma:generate": "prisma generate",

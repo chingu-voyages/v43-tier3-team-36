@@ -25,6 +25,16 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    dangerouslyAllowSVG: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: '/explore',
+        destination: '/explore/comics',
+        permanent: true,
+      },
+    ];
   },
 };
 

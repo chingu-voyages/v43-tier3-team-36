@@ -1,19 +1,46 @@
 import Link from 'next/link';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui';
-import FormField from '@/components/auth/FormField';
+import FormField from '@/components/auth/FormField/FormField';
+import { login } from '@/api';
+// import { UseAlertStore } from '@/store/store';
 
 const Login = () => {
+  // const setAlert = UseAlertStore((state: any) => state.setAlert);
+  // const resetAlert = UseAlertStore((state: any) => state.resetAlert);
+
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data: object) => {
+  const LogUserMutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      console.log(data);
+      // setAlert({ type: 'success', message: data.message });
+      router.push('/profile');
+    },
+    onError: (error) => {
+      console.log(error);
+      // setAlert({
+      //   type: 'error',
+      //   message: 'authentication unsuccessful',
+      // });
+    },
+  });
+
+  const onSubmit = async (data: any) => {
+    // resetAlert();
     if (isValid) {
-      console.log(JSON.stringify(data));
+      LogUserMutation.mutate(data);
     }
   };
 
@@ -56,6 +83,7 @@ const Login = () => {
           <Button
             className="w-full py-4 my-8 text-base font-normal"
             type="submit"
+            disabled={isSubmitting}
           >
             Log in
           </Button>
