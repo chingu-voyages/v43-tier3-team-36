@@ -48,6 +48,7 @@ const AddComic = ({
           title={comic.title}
           issue={comic.issueNumber}
           imageUrl={createImageUrl(comic.images)}
+          large
         />
       </div>
     </AlertDialog>
