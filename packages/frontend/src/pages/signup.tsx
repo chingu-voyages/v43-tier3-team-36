@@ -1,19 +1,48 @@
 import Link from 'next/link';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui';
-import FormField from '@/components/auth/FormField';
+import FormField from '@/components/auth/FormField/FormField';
+import { signup } from '@/api';
+// import { UseAlertStore } from '@/store/store';
 
 const Signup = () => {
+  // const setAlert = UseAlertStore((state: any) => state.setAlert);
+  // const resetAlert = UseAlertStore((state: any) => state.resetAlert);
+
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data: object) => {
+  // const router = useRouter();
+
+  const NewUserMutation = useMutation({
+    mutationFn: signup,
+    onSuccess: (data) => {
+      console.log(data);
+      router.push('/profile');
+      // setAlert({ type: 'success', message: data.message });
+    },
+    onError: (error) => {
+      console.log(error);
+      // setAlert({
+      //   type: 'error',
+      //   message: 'authentication unsuccessful',
+      // });
+    },
+  });
+
+  const onSubmit = async (data: any) => {
+    // resetAlert();
     if (isValid) {
-      console.log(JSON.stringify(data));
+      NewUserMutation.mutate(data);
     }
   };
 
@@ -25,7 +54,7 @@ const Signup = () => {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormField
-            id="firstname"
+            id="firstName"
             label="First name"
             placeholder="Enter your firstname"
             register={register}
@@ -33,7 +62,7 @@ const Signup = () => {
             error={errors}
           />
           <FormField
-            id="lastname"
+            id="lastName"
             label="Last name"
             placeholder="Enter your lastname"
             register={register}
@@ -87,13 +116,14 @@ const Signup = () => {
           <Button
             className="w-full py-4 my-8 text-base font-normal"
             type="submit"
+            disabled={isSubmitting}
           >
             Create my account
           </Button>
         </form>
         <div
           className="my-5 text-base
-       text-center"
+   text-center"
         >
           <p className="">
             Already got an account?
