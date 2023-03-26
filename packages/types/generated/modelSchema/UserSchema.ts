@@ -12,7 +12,7 @@ export const UserSchema = z.object({
   password: z.string(),
   username: z.string(),
   profileImage: z.string().nullable(),
-  collection: z.string().array(),
+  location: z.string().nullable(),
 });
 
 export type User = z.infer<typeof UserSchema>;

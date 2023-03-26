@@ -2289,6 +2289,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^18.15.7":
+  version: 18.15.7
+  resolution: "@types/node@npm:18.15.7"
+  checksum: 08d1dd1898be10cd274955ed7f491bcab5b7e70ce66b6a1e996a582d5467f7517046b0d9c5f4e15871df94dd72d1ad9e7be236d2cff1a1450ec906d7fa3062d2
+  languageName: node
+  linkType: hard
+
 "@types/normalize-package-data@npm:^2.4.0":
   version: 2.4.1
   resolution: "@types/normalize-package-data@npm:2.4.1"
@@ -3246,7 +3253,7 @@ __metadata:
     "@types/express-session": ^1.17.6
     "@types/jsonwebtoken": ^9.0.1
     "@types/morgan": ^1.9.4
-    "@types/node": ^18.15.3
+    "@types/node": ^18.15.7
     "@types/passport": ^1.0.12
     "@types/passport-local": ^1.0.35
     "@types/swagger-ui-express": ^4.1.3

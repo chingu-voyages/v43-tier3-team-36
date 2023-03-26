@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User, UserOptionalDefaults } from '@marvel-collector/types/generated';
+import { User, UserOptionalDefaults } from '@marvel-collector/types/generated/';
 import {
   createUser,
   findUserByEmail,
@@ -20,9 +20,16 @@ export const register = async (
     }
 
     const hashedPassword = await hashPassword(password);
-    const tempUser = { ...req.body, password: hashedPassword };
+    // const tempUser = { ...req.body, password: hashedPassword };
 
-    await createUser(tempUser);
+    const newUser = await createUser(
+      firstName,
+      lastName,
+      username,
+      hashedPassword,
+      email,
+    );
+
     return res.status(201).json({
       message: 'user created successfully',
       user: {
@@ -62,7 +69,6 @@ export const currentUser = async (req: Request, res: Response) => {
         email: user?.email,
         username: user?.username,
         profileImage: user?.profileImage,
-        collection: user?.collection,
       },
     });
   } catch (error) {

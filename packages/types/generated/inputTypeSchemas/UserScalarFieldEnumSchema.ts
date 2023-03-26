@@ -8,7 +8,7 @@ export const UserScalarFieldEnumSchema = z.enum([
   'password',
   'username',
   'profileImage',
-  'collection',
+  'location',
 ]);
 
 export default UserScalarFieldEnumSchema;
