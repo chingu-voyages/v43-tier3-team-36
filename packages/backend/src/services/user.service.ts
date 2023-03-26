@@ -48,4 +48,3 @@ export const findUserById = async (payload: UserPartial) => {
 
   return user;
 };
-
