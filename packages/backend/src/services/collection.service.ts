@@ -30,3 +30,25 @@ export const existingComicInCollection = async (
     userId,
   },
 });
+
+export const viewCollections = async (userId: string) => prisma.user.findUnique({
+  where: { id: userId },
+  include: { collection: true },
+});
+
+export const queryCollectors = async (username: string, location: string) => prisma.user.findMany({
+  where: {
+    AND: [
+      { collection: { some: {} } }, // Filter for users with at least one collection item
+      username
+        ? { username: { contains: username, mode: 'insensitive' } }
+        : {}, // Filter by username if provided
+      location
+        ? { location: { contains: location, mode: 'insensitive' } }
+        : {}, // Filter by location if provided
+    ],
+  },
+  include: {
+    collection: true,
+  },
+});
