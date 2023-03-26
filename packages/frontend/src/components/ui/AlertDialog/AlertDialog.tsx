@@ -12,12 +12,10 @@ export interface AlertDialogProps {
 }
 
 export const AlertDialog: ForwardRefExoticComponent<
-AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
+  AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
 > = forwardRef(
   (
-    {
-      children, title, description, open, actions, className, ...rest
-    },
+    { children, title, description, open, actions, className, ...rest },
     ref,
   ) => (
     <Transition.Root show={open} as={Fragment}>
@@ -47,7 +45,7 @@ AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
             >
               <Dialog.Panel
                 className={clsx(
-                  'relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg',
+                  'relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm',
                   className,
                 )}
               >
@@ -56,7 +54,7 @@ AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title
                         as="h3"
-                        className="text-base font-semibold leading-6 text-gray-900"
+                        className="text-lg font-semibold leading-6 text-gray-900 "
                       >
                         {title}
                       </Dialog.Title>
@@ -68,7 +66,7 @@ AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
                     </div>
                   </div>
                 </div>
-                {children ? <div>{children}</div> : null}
+                {children}
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   {actions.map((Component, idx) => (
                     // eslint-disable-next-line react/no-array-index-key

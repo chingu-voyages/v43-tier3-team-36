@@ -2,14 +2,18 @@ import { ReactElement, useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import { InputField } from '@/components/ui/Input';
-import searchComics from '@/api';
+import { addComic, searchComics } from '@/api';
 import { useDebounce } from '@/hooks';
-import ComicList from '@/components/ui/Comic/ComicList';
 import AuthLayout from '@/layouts/AuthLayout';
-import { NextPageWithLayout } from './_app';
+import ComicList from '@/components/Comic/ComicList';
+import { NextPageWithLayout } from '../_app';
+import TComicItem from '@/types/comic';
+import AddComic from '@/components/Comic/AddComic';
+import { createImageUrl } from '@/utils';
 
 const ComicSearch: NextPageWithLayout = () => {
   const [value, setValue] = useState('');
+  const [selected, setSelected] = useState<TComicItem>();
 
   const handleChange = (inputValue: string) => setValue(inputValue);
   const debouncedValue = useDebounce(value, 500);
@@ -19,6 +23,14 @@ const ComicSearch: NextPageWithLayout = () => {
     () => searchComics(debouncedValue),
     { enabled: !!value.length, initialData: [] },
   );
+
+  const handleAddComic = (comic: TComicItem) => {
+    addComic({
+      comicId: comic.id,
+      title: comic.title,
+      imageUrl: createImageUrl(comic.images),
+    });
+  };
 
   return (
     <main>
@@ -32,8 +44,19 @@ const ComicSearch: NextPageWithLayout = () => {
             fullWidth
           />
         </div>
-
-        <ComicList comics={data} isLoading={isLoading} />
+        {selected && (
+          <AddComic
+            comic={selected}
+            onAdd={() => handleAddComic(selected)}
+            onClose={() => setSelected(undefined)}
+            show={!!selected}
+          />
+        )}
+        <ComicList
+          comics={data}
+          isLoading={isLoading}
+          onAddComic={(comic) => setSelected(comic)}
+        />
       </div>
     </main>
   );

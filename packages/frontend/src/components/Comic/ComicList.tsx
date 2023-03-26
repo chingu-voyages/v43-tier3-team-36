@@ -6,10 +6,15 @@ import { trimString, createImageUrl } from '@/utils/';
 export const ComicList = ({
   comics,
   isLoading,
+  onAddComic,
 }: {
   comics: TComicItem[];
   isLoading: boolean;
+  onAddComic: (comic: TComicItem) => void;
 }) => {
+  const handleAddComic = (comic: TComicItem) => {
+    onAddComic(comic);
+  };
   if (isLoading) return <h6>Fetching comics</h6>;
   return (
     <div className="flex gap-2 justify-center flex-wrap">
@@ -19,7 +24,8 @@ export const ComicList = ({
           title={trimString(comic.title, 15, true)}
           issue={comic.issueNumber}
           imageUrl={createImageUrl(comic.images)}
-          onAction={() => alert(`You selected comic with id ${comic.id}}`)}
+          withBorder
+          onAction={() => handleAddComic(comic)}
         />
       ))}
     </div>

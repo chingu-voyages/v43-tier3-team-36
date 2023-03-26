@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
-import {
-  User,
-  UserOptionalDefaults,
-} from '@marvel-collector/types/generated/modelSchema/';
+import { User } from '@marvel-collector/types/generated/modelSchema/';
 import {
   createCollectionItem,
   existingComicInCollection,
@@ -12,6 +9,8 @@ import {
 // Assigning Comics to a User collection
 
 export async function addCollectionItemToUser(req: Request, res: Response) {
+  console.log(req.user);
+
   const { id } = req.user as User;
   const { comicId, title, imageUrl } = req.body;
 
@@ -26,11 +25,9 @@ export async function addCollectionItemToUser(req: Request, res: Response) {
 
     const existingCollectionItem = await existingComicInCollection(comicId, id);
     if (existingCollectionItem) {
-      return res
-        .status(400)
-        .json({
-          error: `Comic with id ${comicId} already exists in User's collection`,
-        });
+      return res.status(400).json({
+        error: `Comic with id ${comicId} already exists in User's collection`,
+      });
     }
 
     // Create a new collection item

@@ -6,7 +6,6 @@ import { AssignComicSchema } from '../../utils/customValidation';
 const router = Router();
 router.post(
   '/user/collection',
-  isLoggedIn,
   validateSchema(AssignComicSchema),
   addCollectionItemToUser,
 );
