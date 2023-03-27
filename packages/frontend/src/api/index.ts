@@ -14,10 +14,9 @@ export const searchComics = async (
   return json.data.results;
 };
 
-const baseUrl: string =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:4000'
-    : 'https://marvel-collector-backend.onrender.com';
+const baseUrl: string = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:4000'
+  : 'https://marvel-collector-backend.onrender.com';
 
 export type SignupOptions = {
   firstName: string;
@@ -38,8 +37,13 @@ export async function signup(data: SignupOptions) {
     body: JSON.stringify(data),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
+      credentials: 'include',
     },
   });
+
+  if (!res.ok) {
+    throw new Error();
+  }
 
   const result = await res.json();
   return result;
@@ -51,8 +55,13 @@ export async function login(data: LoginOptions) {
     body: JSON.stringify(data),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
+      credentials: 'include',
     },
   });
+
+  if (!res.ok) {
+    throw new Error();
+  }
 
   const result = await res.json();
   return result;
