@@ -52,3 +52,15 @@ export const queryCollectors = async (username: string, location: string) => pri
     collection: true,
   },
 });
+
+export const findCollectionItemByComicId = async (
+  comicId: string,
+  userId: string,
+) => prisma.collectionItem.findUnique({
+  where: { comicId },
+  select: { userId: true },
+});
+
+export const deleteCollectionItem = async (comicId: string) => prisma.collectionItem.delete({
+  where: { comicId },
+});
