@@ -1,3 +1,5 @@
+import { FieldValues } from 'react-hook-form';
+
 /* eslint-disable react/jsx-props-no-spreading */
 type RegisterOptions = {
   required?: boolean | string;
@@ -18,7 +20,7 @@ type FormFieldProps = {
   placeholder: string;
   register: (name: string, RegisterOptions: object) => object;
   options: RegisterOptions;
-  error: object;
+  error: FieldValues;
 };
 
 const FormField = ({

@@ -10,9 +10,19 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*',
         port: '',
-        pathname: '/*',
+        pathname: '/**',
       },
     ],
+    dangerouslyAllowSVG: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: '/explore',
+        destination: '/explore/comics',
+        permanent: true,
+      },
+    ];
   },
 };
 
