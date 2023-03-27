@@ -6,7 +6,9 @@ import {
 import { string } from 'zod';
 import {
   createCollectionItem,
+  deleteCollectionItem,
   existingComicInCollection,
+  findCollectionItemByComicId,
   findUniqueId,
   queryCollectors,
   viewCollections,
@@ -107,6 +109,37 @@ export async function queryCollectorsByUsernameAndLocation(
           })),
         })),
       },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+// Edit by deleting comic in a user's collection
+
+export async function editByDeletingUserComic(req: Request, res: Response) {
+  const { comicId } = req.params;
+  const { id } = req.user as User;
+
+  try {
+    const collectionItem = await findCollectionItemByComicId(comicId, id);
+
+    // Checking if collecion item exists
+
+    if (!collectionItem) {
+      return res.status(404).json({ error: 'Collection item not found' });
+    }
+
+    if (collectionItem.userId !== id) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const deletedItem = await deleteCollectionItem(comicId);
+
+    return res.status(200).json({
+      status: 'success',
+      data: { message: 'Comic has been successfully deleted' },
     });
   } catch (error) {
     console.error(error);
