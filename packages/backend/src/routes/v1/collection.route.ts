@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   addCollectionItemToUser,
+  editByDeletingUserComic,
   queryCollectorsByUsernameAndLocation,
   viewComicBookCollectionOfUser,
 } from '../../controllers/collection.controller';
@@ -14,6 +15,7 @@ router.post(
   validateSchema(AssignComicSchema),
   addCollectionItemToUser,
 );
+router.delete('/user/collection/:comicId', isLoggedIn, editByDeletingUserComic);
 
 router.get('/user/:id/collection', isLoggedIn, viewComicBookCollectionOfUser);
 
