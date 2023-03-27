@@ -8,6 +8,7 @@ import {
 
 import { Avatar } from '@/components/ui';
 import { SEO, type SEOProps } from './SEO';
+import AlertLayout from './AlertLayout';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -83,8 +84,12 @@ const AuthLayout: React.FC<LayoutProps> = ({ children, seo }) => (
   <>
     <SEO {...seo} />
     <div className="min-h-screen">
-      <Navigation />
-      {children}
+      <AlertLayout>
+        <Navigation />
+        {children}
+
+      </AlertLayout>
+
     </div>
   </>
 );
