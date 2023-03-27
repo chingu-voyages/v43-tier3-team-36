@@ -1,17 +1,20 @@
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
+
+import { ReactElement } from 'react';
 import { Button } from '@/components/ui';
 import FormField from '@/components/auth/FormField/FormField';
 import { signup } from '@/api';
-// import { UseAlertStore } from '@/store/store';
+import UseAlertStore from '@/store/store';
+import { NextPageWithLayout } from './_app';
+import Layout from '@/layouts/Layout';
 
-const Signup = () => {
-  // const setAlert = UseAlertStore((state: any) => state.setAlert);
-  // const resetAlert = UseAlertStore((state: any) => state.resetAlert);
+const Signup: NextPageWithLayout = () => {
+  const setAlert = UseAlertStore((state: any) => state.setAlert);
+  const resetAlert = UseAlertStore((state: any) => state.resetAlert);
 
   const router = useRouter();
 
@@ -21,26 +24,22 @@ const Signup = () => {
     formState: { errors, isValid, isSubmitting },
   } = useForm();
 
-  // const router = useRouter();
-
   const NewUserMutation = useMutation({
     mutationFn: signup,
     onSuccess: (data) => {
-      console.log(data);
       router.push('/profile');
-      // setAlert({ type: 'success', message: data.message });
+      setAlert({ type: 'success', message: data.message });
     },
-    onError: (error) => {
-      console.log(error);
-      // setAlert({
-      //   type: 'error',
-      //   message: 'authentication unsuccessful',
-      // });
+    onError: () => {
+      setAlert({
+        type: 'error',
+        message: 'authentication unsuccessful',
+      });
     },
   });
 
   const onSubmit = async (data: any) => {
-    // resetAlert();
+    resetAlert();
     if (isValid) {
       NewUserMutation.mutate(data);
     }
@@ -139,4 +138,21 @@ const Signup = () => {
     </section>
   );
 };
+
+Signup.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <Layout seo={{
+      title: 'Profile',
+      meta: {
+        description:
+          'A profile of your recent activity and trades, and as well as your current digital comics collection',
+      },
+    }}
+    >
+      {page}
+
+    </Layout>
+  );
+};
+
 export default Signup;
