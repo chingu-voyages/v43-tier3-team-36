@@ -18,3 +18,29 @@ export const LoginSchema = z.object({
     password: z.string().min(6),
   }),
 });
+
+// In this example we will validate the request body for assigning collection to user
+
+export const AssignComicSchema = z.object({
+  body: z.object({
+    comicId: z
+      .number({
+        required_error: 'ComicId is required',
+        invalid_type_error: 'ComicId must be a string',
+      })
+      .min(1),
+    title: z
+      .string({
+        required_error: 'Title is required',
+        invalid_type_error: 'Title must be a string',
+      })
+      .min(2)
+      .max(100),
+    imageUrl: z
+      .string({
+        required_error: 'ImageUrl is required',
+        invalid_type_error: 'ImageUrl must be a string',
+      })
+      .min(4),
+  }),
+});

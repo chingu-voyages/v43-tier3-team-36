@@ -21,12 +21,22 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id           String           @id @default(uuid())
   firstName    String
   lastName     String
-  email        String   @unique 
+  email        String           @unique
   password     String
-  username     String   @unique
+  username     String           @unique
   profileImage String?
-  collection   String[] @unique
+  location     String?
+  collection   CollectionItem[]
+}
+
+model CollectionItem {
+  id       String  @id @default(uuid())
+  comicId  Int     @unique
+  title    String
+  imageUrl String
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   String?
 }
