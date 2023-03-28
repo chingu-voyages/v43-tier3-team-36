@@ -4,7 +4,7 @@ import { AlertDialog, Button } from '../ui';
 import ComicCard from '@/components/common/ComicCard';
 import { createImageUrl } from '@/utils';
 
-const AddComic = ({
+export const AddComic = ({
   comic,
   show,
   onAdd,

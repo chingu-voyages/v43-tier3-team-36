@@ -2,7 +2,7 @@ import ComicCard from '@/components/common/ComicCard';
 import type TComicItem from '@/types/comic';
 import { trimString, createImageUrl } from '@/utils';
 
-const ComicList = ({
+export const ComicList = ({
   comics,
   isLoading,
   onAddComic,
@@ -20,7 +20,7 @@ const ComicList = ({
   }
 
   return (
-    <div className="flex gap-2 justify-center flex-wrap">
+    <div className="flex gap-3 justify-center flex-wrap">
       {comics.map((comic) => (
         <ComicCard
           key={comic.id}
@@ -29,6 +29,7 @@ const ComicList = ({
             issueNo: comic.issueNumber,
             imageUrl: createImageUrl(comic.images),
           }}
+          withBorder
           onAddComic={() => addComicHandler(comic)}
         />
       ))}
