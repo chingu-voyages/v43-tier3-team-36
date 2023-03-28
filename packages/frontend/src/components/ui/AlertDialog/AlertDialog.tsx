@@ -12,12 +12,10 @@ export interface AlertDialogProps {
 }
 
 export const AlertDialog: ForwardRefExoticComponent<
-AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
+  AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
 > = forwardRef(
   (
-    {
-      children, title, description, open, actions, className, ...rest
-    },
+    { children, title, description, open, actions, className, ...rest },
     ref,
   ) => (
     <Transition.Root show={open} as={Fragment}>
