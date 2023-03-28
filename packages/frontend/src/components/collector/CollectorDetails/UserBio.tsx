@@ -1,31 +1,30 @@
-import { useState, useMemo } from 'react';
 import type { User } from '@marvel-collector/types';
 
 import { Button } from '@/components/ui';
 
-const DUMMY_COLLECTOR: Partial<User> = {
-  profileImage:
-    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-  firstName: 'Lilly',
-  lastName: 'Rose',
+const PROFILE_BANNER_FALLBACK = 'https://placebear.com/g/1290/300';
+const PROFILE_IMAGE_FALLBACK = 'https://placekeanu.com/250/g';
+
+type Props = {
+  info: Pick<User, 'firstName' | 'lastName' | 'profileImage'>;
 };
 
-const CollectorBio = () => {
-  const [collector] = useState(DUMMY_COLLECTOR);
+const UserBio: React.FC<Props> = ({ info }) => {
+  const { firstName, lastName, profileImage } = info;
 
-  const fullName = useMemo(
-    () => [collector.firstName, collector.lastName].join(' '),
-    [collector],
-  );
-
-  const { profileImage } = collector;
+  const fullName = [firstName, lastName].join(' ');
 
   return (
     <div>
-      <div className="sm:relative sm:bg-gray-200 sm:mb-10 sm:rounded-lg sm:h-52">
+      <div className="sm:relative sm:mb-10 sm:h-52 max-w-full">
+        <img
+          className="absolute w-full h-52 sm:rounded-lg hidden sm:block"
+          src={PROFILE_BANNER_FALLBACK}
+          alt="Profile banner"
+        />
         <div className="flex sm:absolute sm:-bottom-10 sm:w-20 sm:left-5 sm:rounded-lg sm:mb-4 ">
           <img
-            src={profileImage || ''}
+            src={profileImage || PROFILE_IMAGE_FALLBACK}
             alt={fullName}
             className="m-auto rounded-full w-32 h-32 sm:w-full sm:max-h-20 object-cover sm:rounded-lg"
           />
@@ -47,4 +46,4 @@ const CollectorBio = () => {
   );
 };
 
-export default CollectorBio;
+export default UserBio;
