@@ -2,12 +2,10 @@ import type { ReactElement } from 'react';
 
 import type { NextPageWithLayout } from '../_app';
 import AuthLayout from '@/layouts/AuthLayout';
-import CollectorBio from '@/components/collector/CollectorBio';
 import CollectorDetails from '@/components/collector/CollectorDetails';
 
 const Collector: NextPageWithLayout = () => (
   <main className="p-8">
-    <CollectorBio />
     <CollectorDetails />
   </main>
 );
