@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import TComicItem from '@/types/comic';
 import { AlertDialog, Button } from '../ui';
-import { ComicCard } from './ComicCard';
+import ComicCard from '@/components/common/ComicCard';
 import { createImageUrl } from '@/utils';
 
 const AddComic = ({
@@ -45,9 +45,11 @@ const AddComic = ({
     >
       <div className="flex justify-center">
         <ComicCard
-          title={comic.title}
-          issue={comic.issueNumber}
-          imageUrl={createImageUrl(comic.images)}
+          comic={{
+            title: comic.title,
+            issueNo: comic.issueNumber,
+            imageUrl: createImageUrl(comic.images),
+          }}
           large
         />
       </div>

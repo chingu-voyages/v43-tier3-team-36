@@ -11,16 +11,15 @@ export const createUser = (
   username: string,
   password: string,
   email: string,
-) =>
-  prisma.user.create({
-    data: {
-      firstName,
-      lastName,
-      username,
-      password,
-      email,
-    },
-  });
+) => prisma.user.create({
+  data: {
+    firstName,
+    lastName,
+    username,
+    password,
+    email,
+  },
+});
 
 export const findUserByUsername = async (payload: UserPartial) => {
   const user = await prisma.user.findUnique({

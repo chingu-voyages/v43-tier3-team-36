@@ -1,31 +1,49 @@
 import Image from 'next/image';
+import clsx from 'clsx';
 import { MoreHorizontal } from 'lucide-react';
 
+import { Button } from '@/components/ui';
+
+const COMIC_FALLBACK = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/5876fe74-9e55-493f-a3e0-e95076ef3962/dfld4s6-678156d5-357d-4f01-83c8-39c555889984.jpg/v1/fill/w_1024,h_742,q_75,strp/comic_placeholder_1_by_oceanside7_dfld4s6-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzQyIiwicGF0aCI6IlwvZlwvNTg3NmZlNzQtOWU1NS00OTNmLWEzZTAtZTk1MDc2ZWYzOTYyXC9kZmxkNHM2LTY3ODE1NmQ1LTM1N2QtNGYwMS04M2M4LTM5YzU1NTg4OTk4NC5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.0wYHMk-cn4o0BLbDEDyebHIAr7lj265-7yHRRcbmSGQ';
+
 type Props = {
-  comic: any;
+  comic: {
+    title: string;
+    issueNo: number;
+    imageUrl?: string;
+  };
+  large?: boolean;
+  onAddComic?: () => void;
 };
 
-const ComicCard: React.FC<Props> = ({ comic }) => {
-  const {
-    img, title, description, issueNo, tags,
-  } = comic;
+const ComicCard: React.FC<Props> = ({ comic, large, onAddComic }) => {
+  const { imageUrl, title, issueNo } = comic;
 
   return (
-    <article className="min-w-full border-2 rounded-md px-4 border-gray-200 pt-4 sm:min-w-0 sm:max-w-[18rem] lg:min-w-[21rem]">
+    <div
+      className={clsx(
+        'max-w-full border-2 rounded-md px-4 border-gray-200 pt-4 w-64',
+        { 'w-84': large },
+      )}
+    >
       <Image
-        className="w-full max-h-[15rem] object-fill rounded-md mb-2"
-        src={img}
+        className="rounded-md mb-2"
+        src={imageUrl || COMIC_FALLBACK}
         alt=""
+        width={large ? 600 : 270}
+        height={600}
       />
-      <div className="flex justify-between py-4">
+      <div className="flex justify-between py-4 items-end pt-2">
         <div>
-          <h4>{title}</h4>
-          <p className="text-sm">{description}</p>
+          <h1 className="font-bold tracking-tight text-black-900">{title}</h1>
+          {/* TODO: Add comic book description */}
+          {/* <p className="text-sm">{description}</p> */}
           <div className="mt-3">
             <span className="bg-red-400 rounded-full text-xs text-center p-1 mr-4">
-              {issueNo}
+              {`Issue ${issueNo}`}
             </span>
-            {(tags as string[]).map((tag, idx) => (
+            {/* TODO: Add tags for genres */}
+            {/* {(genres as string[]).map((genre, idx) => (
               <span
                 // eslint-disable-next-line react/no-array-index-key
                 key={idx}
@@ -33,12 +51,17 @@ const ComicCard: React.FC<Props> = ({ comic }) => {
               >
                 {tag}
               </span>
-            ))}
+            ))} */}
           </div>
         </div>
         <MoreHorizontal cursor="pointer" fontSize="1.5rem" />
+        {onAddComic && (
+          <Button onClick={onAddComic} variant="outlined">
+            Add
+          </Button>
+        )}
       </div>
-    </article>
+    </div>
   );
 };
 
