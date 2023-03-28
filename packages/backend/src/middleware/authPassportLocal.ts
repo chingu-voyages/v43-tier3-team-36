@@ -11,13 +11,13 @@ export function authPassportLocal(
       return next(err);
     }
     if (!user) {
-      return res.json({ success: false, message: info.message });
+      return res.status(400).json({ success: false, message: info.message });
     }
     req.login(user, (err) => {
       if (err) {
         return next(err);
       }
-      return res.json({ success: true, message: info.message });
+      return res.status(200).json({ success: true, message: info.message });
     });
   })(req, res, next);
 }

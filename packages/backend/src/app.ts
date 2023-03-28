@@ -6,13 +6,11 @@ import session from 'express-session';
 import * as dotenv from 'dotenv';
 import morgan from 'morgan';
 import API from './routes';
+import usePassportLocal from './utils/passportLocal';
 
-dotenv.config({ path: '../.env ' });
-
-// import usePassportLocal from "./utils/passportLocal";
+dotenv.config();
 
 const app = express();
-
 app.use(
   cors({
     origin: '*',
@@ -26,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(
   session({
-    secret: 'anything',
+    secret: process.env.SESSION_SECRET || '',
     resave: false,
     saveUninitialized: false,
   }),
@@ -34,14 +32,16 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-// usePassportLocal(passport);
+usePassportLocal(passport);
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
 app.get('/api/v1/health', (req: Request, res: Response) => {
   res.send('Health is ok!');
 });
+
 app.use('/api', API);
 
 app.use(

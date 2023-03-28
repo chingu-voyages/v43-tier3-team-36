@@ -1,16 +1,27 @@
 import { Router } from 'express';
-import { logout, register, signin } from '../../controllers/user.controller';
-import validateSchema from '../../middleware/validateSchema';
-// import { UserOptionalDefaultsSchema } from "../../schemas";
-// import { z } from 'zod';
-// import { isLoggedIn } from '../../middleware/isLoggedIn';
-// import { authPassportLocal } from '../../middleware/authPassportLocal';
-// const router = Router();
+import {
+  UserSchema,
+  UserOptionalDefaultsSchema,
+  UserPartialSchema,
+} from '@marvel-collector/types/generated/modelSchema';
+import prisma from '../../database/PrismaClient';
+import {
+  register,
+  logout,
+  currentUser,
+  login,
+} from '../../controllers/user.controller';
+import { RegisterSchema, LoginSchema } from '../../utils/customValidation';
+import {
+  authPassportLocal,
+  isLoggedIn,
+  validateSchema,
+} from '../../middleware';
 
-// Auth
-// router.post('/register', validateSchema(z.object({body: UserOptionalDefaultsSchema})), register);
-// router.post('/signin', validateSchema(z.object({body: UserOptionalDefaultsSchema})),
-// authPassportLocal);
-// router.post('/logout', isLoggedIn, logout);
+const router = Router();
+router.post('/register', validateSchema(RegisterSchema), register);
+router.post('/login', authPassportLocal);
+router.post('/logout', logout);
+router.get('/users/current-user', isLoggedIn, currentUser);
 
-// export default router;
+export default router;

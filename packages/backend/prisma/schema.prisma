@@ -1,6 +1,16 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+generator zod {
+  provider                         = "zod-prisma-types"
+  output                           = "../../types/generated"
+  useMultipleFiles                 = true // default is false
+  createInputTypes                 = false // default is true
+  createModelTypes                 = true // default is true
+  createPartialTypes               = true // default is false
+  createOptionalDefaultValuesTypes = true
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,20 +20,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-generator zod {
-  provider          = "zod-prisma-types"
-  output            = "../src/schemas"
-  useMultipleFiles                 = true // default is false
-  createInputTypes                 = false // default is true
-  createModelTypes                 = true // default is true
-  createPartialTypes               = true // default is false
-  createOptionalDefaultValuesTypes = true 
+model User {
+  id           String           @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String           @unique
+  password     String
+  username     String           @unique
+  profileImage String?
+  location     String?
+  collection   CollectionItem[]
 }
 
-model Table {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-
+model CollectionItem {
+  id       String  @id @default(uuid())
+  comicId  Int     @unique
+  title    String
+  imageUrl String
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   String?
 }

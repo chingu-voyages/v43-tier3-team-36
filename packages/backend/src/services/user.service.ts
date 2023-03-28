@@ -1,34 +1,58 @@
+import { z } from 'zod';
+import {
+  UserOptionalDefaults,
+  UserPartial,
+} from '@marvel-collector/types/generated/';
 import prisma from '../database/PrismaClient';
-// import { UserOptionalDefaults, UserPartial, } from "../schemas";
 
-// the user is underlined because we don't have a user schema yet
+export const createUser = (
+  firstName: string,
+  lastName: string,
+  username: string,
+  password: string,
+  email: string,
+) => prisma.user.create({
+  data: {
+    firstName,
+    lastName,
+    username,
+    password,
+    email,
+  },
+});
 
-// export const createUser = (payload: UserOptionalDefaults) => {
-//   return prisma.user.create({
-//     data: payload
-//   });
-// }
+export const findUserByUsername = async (payload: UserPartial) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      username: payload.username,
+    },
+  });
+  return user;
+};
 
-// export const findUserByUsername = (payload: UserPartial) => {
-//   return prisma.user.findUnique({
-//     where: {
-//       username: payload.username
-//     }
-//   });
-// }
+export const findUser = async (payload: UserPartial) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      username: payload.username,
+    },
+  });
 
-// export const findUser = async (payload: UserPartial) => {
-//   return prisma.user.findUnique({
-//     where: {
-//       username: payload.username
-//     }
-//   });
-// }
+  return user;
+};
+export const findUserByEmail = async (payload: UserPartial) => {
+  await prisma.user.findUnique({
+    where: {
+      username: payload.email,
+    },
+  });
+};
 
-// export const findUserById = async (payload: UserPartial) => {
-//   return prisma.user.findUnique({
-//     where: {
-//       id: payload.id
-//     }
-//   });
-// }
+export const findUserById = async (payload: UserPartial) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: payload.id,
+    },
+  });
+
+  return user;
+};

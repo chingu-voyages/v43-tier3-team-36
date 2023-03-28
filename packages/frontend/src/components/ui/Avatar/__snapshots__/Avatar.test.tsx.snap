@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Avatar /> Snapshots should match snapshot 1`] = `
+<div>
+  <div
+    class="max-w-full rounded-full"
+  >
+    <img
+      alt="Foo"
+      class="object-cover"
+      data-nimg="1"
+      decoding="async"
+      height="40"
+      loading="lazy"
+      src="http://localhost/_next/image?url=%2F&w=96&q=75"
+      srcset="/_next/image?url=%2F&w=48&q=75 1x, /_next/image?url=%2F&w=96&q=75 2x"
+      style="color: transparent;"
+      width="40"
+    />
+  </div>
+</div>
+`;

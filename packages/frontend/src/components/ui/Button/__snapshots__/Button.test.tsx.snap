@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Button /> Snapshots should match snapshot 1`] = `
+<div>
+  <button
+    class="flex items-center justify-center gap-x-2 py-2 px-4 border-2 rounded-lg bg-black text-white border-transparent"
+    type="button"
+  >
+    <p
+      class="font-medium leading-normal"
+    />
+  </button>
+</div>
+`;
+
+exports[`<Button /> Snapshots should match snapshot with outlined variant 1`] = `
+<div>
+  <button
+    class="flex items-center justify-center gap-x-2 py-2 px-4 border-2 rounded-lg bg-transparent border-current"
+    type="button"
+  >
+    <p
+      class="font-medium leading-normal"
+    >
+      Foo
+    </p>
+  </button>
+</div>
+`;

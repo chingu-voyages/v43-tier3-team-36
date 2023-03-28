@@ -1,0 +1,14 @@
+{
+  "name": "@marvel-collector/types",
+  "packageManager": "yarn@3.4.1",
+  "version": "0.1.0",
+  "dependencies": {
+    "@prisma/client": "^4.11.0",
+    "prisma": "^4.11.0",
+    "zod": "^3.21.4",
+    "zod-prisma-types": "^2.5.1"
+  },
+  "scripts": {
+    "types:generate": "prisma generate"
+  }
+}
