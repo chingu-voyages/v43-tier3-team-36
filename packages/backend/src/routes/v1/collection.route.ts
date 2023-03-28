@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
   addCollectionItemToUser,
   queryCollectorsByUsernameAndLocation,
-  viewComicBookCollectionOfUser,
+  viewComicBookCollector,
 } from '../../controllers/collection.controller';
 import { isLoggedIn, validateSchema } from '../../middleware';
 import { AssignComicSchema } from '../../utils/customValidation';
@@ -15,8 +15,7 @@ router.post(
   addCollectionItemToUser,
 );
 
-router.get('/user/:id/collection', isLoggedIn, viewComicBookCollectionOfUser);
-
 router.get('/collectors', isLoggedIn, queryCollectorsByUsernameAndLocation);
+router.get('/collectors/:id', isLoggedIn, viewComicBookCollector);
 
 export default router;

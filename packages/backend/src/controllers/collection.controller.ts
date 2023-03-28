@@ -47,30 +47,33 @@ export async function addCollectionItemToUser(req: Request, res: Response) {
 
 // Endpoint for viewing comic book collections of a USER
 
-export async function viewComicBookCollectionOfUser(
-  req: Request,
-  res: Response,
-) {
+export async function viewComicBookCollector(req: Request, res: Response) {
   const { id } = req.params;
 
   try {
-    const user = await viewCollections(id);
+    const collectorId = await viewCollections(id);
+
+    if (!collectorId) {
+      return res.status(400).json({
+        error: `Collector with id ${collectorId} doesn't exist`,
+      });
+    }
 
     // Check if user has any collections
 
-    if (!user?.collection.length) {
-      return res.status(404).json({ error: 'User has no collections' });
-    }
+    // if (!user?.collection.length) {
+    //   return res.status(404).json({ error: 'User has no collections' });
+    // }
     return res.status(200).json({
       status: 'success',
       data: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        profileImage: user.profileImage,
-        location: user.location,
-        collection: user.collection,
+        id: collectorId.id,
+        firstName: collectorId.firstName,
+        lastName: collectorId.lastName,
+        username: collectorId.username,
+        profileImage: collectorId.profileImage,
+        location: collectorId.location,
+        collection: collectorId.collection,
       },
     });
   } catch (error) {
@@ -90,7 +93,7 @@ export async function queryCollectorsByUsernameAndLocation(
     return res.status(200).json({
       status: 'success',
       data: {
-        user: collectors.map((collector) => ({
+        users: collectors.map((collector) => ({
           id: collector.id,
           firstName: collector.firstName,
           lastName: collector.lastName,
