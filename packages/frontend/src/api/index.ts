@@ -89,5 +89,11 @@ export const getComicBookCollectors = async (
 
   const response = await fetch(url.toString());
   const json = await response.json();
-  return json.data.user;
+  return json.data.users;
+};
+
+export const getComicBookCollector = async (id: string): Promise<User> => {
+  const response = await fetch(`${SERVER_URL}/api/v1/collectors/${id}`);
+  const json = await response.json();
+  return json.data.users;
 };
