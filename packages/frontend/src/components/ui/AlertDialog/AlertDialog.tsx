@@ -12,10 +12,12 @@ export interface AlertDialogProps {
 }
 
 export const AlertDialog: ForwardRefExoticComponent<
-  AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
+AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
 > = forwardRef(
   (
-    { children, title, description, open, actions, className, ...rest },
+    {
+      children, title, description, open, actions, className, ...rest
+    },
     ref,
   ) => (
     <Transition.Root show={open} as={Fragment}>
@@ -54,19 +56,19 @@ export const AlertDialog: ForwardRefExoticComponent<
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title
                         as="h3"
-                        className="text-lg font-semibold leading-6 text-gray-900 "
+                        className="font-bold tracking-tight text-black-900 text-2xl"
                       >
                         {title}
                       </Dialog.Title>
                       {description ? (
                         <div className="mt-2">
-                          <p className="text-sm text-gray-500">{description}</p>
+                          <p className="text-md text-gray-500">{description}</p>
                         </div>
                       ) : null}
                     </div>
                   </div>
                 </div>
-                <div className="p-4">{children}</div>
+                <div className="py-0 px-4">{children}</div>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   {actions.map((Component, idx) => (
                     // eslint-disable-next-line react/no-array-index-key

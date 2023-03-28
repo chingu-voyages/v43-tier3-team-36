@@ -12,18 +12,23 @@ type Props = {
     imageUrl?: string;
   };
   large?: boolean;
+  withBorder?: boolean;
   onAddComic?: () => void;
 };
 
-const ComicCard: React.FC<Props> = ({ comic, large, onAddComic }) => {
+const ComicCard: React.FC<Props> = ({
+  comic,
+  large,
+  onAddComic,
+  withBorder,
+}) => {
   const { imageUrl, title, issueNo } = comic;
 
   return (
     <div
-      className={clsx(
-        'max-w-full border-2 rounded-md px-4 border-gray-200 pt-4 w-64',
-        { 'w-84': large },
-      )}
+      className={`w-${large ? '84' : '60'} p-2 bg-white ${
+        withBorder ? 'border' : ''
+      } border-gray-200 rounded-lg`}
     >
       <Image
         className="rounded-md mb-2"
@@ -32,7 +37,7 @@ const ComicCard: React.FC<Props> = ({ comic, large, onAddComic }) => {
         width={large ? 600 : 270}
         height={600}
       />
-      <div className="py-4 items-end pt-2">
+      <div className="items-end pt-2">
         <div>
           <h1 className="font-bold tracking-tight text-black-900 text-xl">
             {title}
@@ -40,7 +45,7 @@ const ComicCard: React.FC<Props> = ({ comic, large, onAddComic }) => {
           {/* TODO: Add comic book description */}
           {/* <p className="text-sm">{description}</p> */}
           <div className="flex justify-between items-end mt-2">
-            <Chip className="bg-blue-400" label={`Issue: ${issueNo}`} />
+            <Chip className="bg-blue-500 " label={`Issue: ${issueNo}`} />
             {onAddComic && (
               <Button onClick={onAddComic} variant="outlined">
                 Add

@@ -5,10 +5,10 @@ import { InputField } from '@/components/ui/Input';
 import { addComic, searchComics } from '@/api';
 import { useDebounce } from '@/hooks';
 import AuthLayout from '@/layouts/AuthLayout';
-import ComicList from '@/components/Comic/ComicList';
+import ComicList from '@/components/comic/ComicList';
 import { NextPageWithLayout } from '../_app';
 import TComicItem from '@/types/comic';
-import AddComic from '@/components/Comic/AddComic';
+import AddComic from '@/components/comic/AddComic';
 import { createImageUrl } from '@/utils';
 
 const ComicSearch: NextPageWithLayout = () => {
