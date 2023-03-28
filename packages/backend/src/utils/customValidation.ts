@@ -24,9 +24,9 @@ export const LoginSchema = z.object({
 export const AssignComicSchema = z.object({
   body: z.object({
     comicId: z
-      .string({
+      .number({
         required_error: 'ComicId is required',
-        invalid_type_error: 'ComicId must be a string',
+        invalid_type_error: 'ComicId must be a number',
       })
       .min(1),
     title: z
@@ -35,7 +35,7 @@ export const AssignComicSchema = z.object({
         invalid_type_error: 'Title must be a string',
       })
       .min(2)
-      .max(30),
+      .max(100),
     imageUrl: z
       .string({
         required_error: 'ImageUrl is required',

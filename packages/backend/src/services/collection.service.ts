@@ -7,7 +7,7 @@ export const findUniqueId = async (userId: string) => prisma.user.findUnique({
 
 export const createCollectionItem = async (
   userId: string,
-  comicId: string,
+  comicId: number,
   title: string,
   imageUrl: string,
 ) => prisma.collectionItem.create({
@@ -22,7 +22,7 @@ export const createCollectionItem = async (
 });
 
 export const existingComicInCollection = async (
-  comicId: string,
+  comicId: number,
   userId: string,
 ) => prisma.collectionItem.findFirst({
   where: {

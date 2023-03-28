@@ -2,16 +2,24 @@ import { z } from 'zod';
 import {
   UserOptionalDefaults,
   UserPartial,
-} from '@marvel-collector/types/generated';
+} from '@marvel-collector/types/generated/';
 import prisma from '../database/PrismaClient';
 
-export const createUser = async (payload: UserOptionalDefaults) => {
-  const user = await prisma.user.create({
-    data: payload,
-  });
-
-  return user;
-};
+export const createUser = (
+  firstName: string,
+  lastName: string,
+  username: string,
+  password: string,
+  email: string,
+) => prisma.user.create({
+  data: {
+    firstName,
+    lastName,
+    username,
+    password,
+    email,
+  },
+});
 
 export const findUserByUsername = async (payload: UserPartial) => {
   const user = await prisma.user.findUnique({
@@ -48,4 +56,3 @@ export const findUserById = async (payload: UserPartial) => {
 
   return user;
 };
-

@@ -1,6 +1,6 @@
-import type { User } from '@marvel-collector/types';
+import type { User, CollectionItemPartial } from '@marvel-collector/types';
 
-import { TComicType } from '@/types/comic';
+import type TComicType from '@/types/comic';
 
 const API_KEY = process.env.NEXT_PUBLIC_PUBLIC_KEY;
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -16,7 +16,9 @@ export const searchComics = async (
   return json.data.results;
 };
 
-const baseUrl: string = 'https://marvel-collector-backend.onrender.com';
+const baseUrl: string = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:4000'
+  : 'https://marvel-collector-backend.onrender.com';
 
 export type SignupOptions = {
   firstName: string;
@@ -56,6 +58,19 @@ export async function login(data: LoginOptions) {
   const result = await res.json();
   return result;
 }
+
+export const addComic = (data: CollectionItemPartial) => {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+      credentials: 'include',
+    },
+    body: JSON.stringify(data),
+  };
+
+  fetch(`${baseUrl}/api/v1/user/collection`, options);
+};
 
 export function logout() {}
 

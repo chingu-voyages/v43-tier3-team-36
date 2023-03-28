@@ -1147,7 +1147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@marvel-collector/types@^0.1.0, @marvel-collector/types@workspace:packages/types":
+"@marvel-collector/types@0.1.0, @marvel-collector/types@^0.1.0, @marvel-collector/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@marvel-collector/types@workspace:packages/types"
   dependencies:
@@ -3263,6 +3263,7 @@ __metadata:
     cors: ^2.8.5
     cross-env: ^7.0.3
     dotenv: ^16.0.3
+    eslint: ^8.36.0
     express: ^4.18.2
     express-async-errors: ^3.1.1
     express-session: ^1.17.3
@@ -6066,6 +6067,7 @@ __metadata:
   dependencies:
     "@headlessui/react": ^1.7.13
     "@heroicons/react": ^2.0.16
+    "@marvel-collector/types": 0.1.0
     "@tanstack/react-query": ^4.27.0
     "@testing-library/cypress": ^9.0.0
     "@testing-library/jest-dom": ^5.16.5

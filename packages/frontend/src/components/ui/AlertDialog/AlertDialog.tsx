@@ -31,7 +31,7 @@ AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -47,7 +47,7 @@ AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
             >
               <Dialog.Panel
                 className={clsx(
-                  'relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg',
+                  'relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md',
                   className,
                 )}
               >
@@ -56,7 +56,7 @@ AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title
                         as="h3"
-                        className="text-base font-semibold leading-6 text-gray-900"
+                        className="text-lg font-semibold leading-6 text-gray-900 "
                       >
                         {title}
                       </Dialog.Title>
@@ -68,7 +68,7 @@ AlertDialogProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
                     </div>
                   </div>
                 </div>
-                {children ? <div>{children}</div> : null}
+                <div className="p-4">{children}</div>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   {actions.map((Component, idx) => (
                     // eslint-disable-next-line react/no-array-index-key

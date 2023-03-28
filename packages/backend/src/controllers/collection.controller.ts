@@ -1,9 +1,5 @@
 import { Request, Response } from 'express';
-import {
-  User,
-  UserOptionalDefaults,
-} from '@marvel-collector/types/generated/modelSchema/';
-import { string } from 'zod';
+import { User } from '@marvel-collector/types/generated/modelSchema/';
 import {
   createCollectionItem,
   existingComicInCollection,
@@ -15,6 +11,8 @@ import {
 // Assigning Comics to a User collection
 
 export async function addCollectionItemToUser(req: Request, res: Response) {
+  console.log(req.user);
+
   const { id } = req.user as User;
   const { comicId, title, imageUrl } = req.body;
 

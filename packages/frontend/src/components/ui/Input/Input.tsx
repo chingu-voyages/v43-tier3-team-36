@@ -16,13 +16,13 @@ export const InputField = ({
   onChange,
 }: TInputFieldProps) => (
   <div
-    className={`flex gap-3 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  ${
+    className={`flex gap-3 border-none text-gray-900 text-sm rounded-lg bg-gray-100  ${
       fullWidth ? ' w-full ' : 'w-60'
-    } p-2 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+    } p-2  `}
   >
     {Icon && <span>{Icon}</span>}
     <input
-      className="w-full outline-none bg-white"
+      className="w-full outline-none bg-gray-100 "
       value={value}
       onChange={(e) => onChange(e.target.value)}
       type="text"
