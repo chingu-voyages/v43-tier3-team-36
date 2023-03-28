@@ -1,8 +1,10 @@
-import { CollectionItemPartial } from '@marvel-collector/types';
-import TComicType from '@/types/comic';
+import type { User, CollectionItemPartial } from '@marvel-collector/types';
+
+import type TComicType from '@/types/comic';
 
 const API_KEY = process.env.NEXT_PUBLIC_PUBLIC_KEY;
-const API_URL = process.env.NEXT_PUBLIC_API;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const searchComics = async (
   comicTitle: string,
@@ -81,3 +83,27 @@ export const addComic = (data: CollectionItemPartial) => {
 };
 
 export function logout() {}
+
+export type TComicBookCollectorQuery = Partial<{
+  username: string;
+  location: string;
+}>;
+
+export const getComicBookCollectors = async (
+  query?: TComicBookCollectorQuery,
+): Promise<User[]> => {
+  const url = new URL('/api/v1/collectors', SERVER_URL);
+  if (query && Object.keys(query).length > 0) {
+    url.search = new URLSearchParams(query).toString();
+  }
+
+  const response = await fetch(url.toString());
+  const json = await response.json();
+  return json.data.users;
+};
+
+export const getComicBookCollector = async (id: string): Promise<User> => {
+  const response = await fetch(`${SERVER_URL}/api/v1/collectors/${id}`);
+  const json = await response.json();
+  return json.data.users;
+};

@@ -26,7 +26,7 @@ export const AssignComicSchema = z.object({
     comicId: z
       .number({
         required_error: 'ComicId is required',
-        invalid_type_error: 'ComicId must be a string',
+        invalid_type_error: 'ComicId must be a number',
       })
       .min(1),
     title: z
