@@ -8,7 +8,7 @@ import {
 
 import { Avatar } from '@/components/ui';
 import { SEO, type SEOProps } from './SEO';
-import AlertLayout from './AlertLayout';
+import AlertPopup from '@/components/common/AlertPopup/AlertPopup';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -83,13 +83,10 @@ const Navigation: React.FC = () => {
 const AuthLayout: React.FC<LayoutProps> = ({ children, seo }) => (
   <>
     <SEO {...seo} />
-    <div className="min-h-screen">
-      <AlertLayout>
-        <Navigation />
-        {children}
-
-      </AlertLayout>
-
+    <div className="relative min-h-screen">
+      <AlertPopup />
+      <Navigation />
+      {children}
     </div>
   </>
 );

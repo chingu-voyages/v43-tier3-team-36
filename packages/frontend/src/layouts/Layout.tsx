@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import AlertLayout from './AlertLayout';
+import AlertPopup from '@/components/common/AlertPopup/AlertPopup';
 import { SEO, type SEOProps } from './SEO';
 
 type LayoutProps = {
@@ -11,7 +11,8 @@ const Layout: React.FC<LayoutProps> = ({ children, seo }) => (
   <>
     <SEO {...seo} />
     <div className="min-h-screen">
-      <AlertLayout>{children}</AlertLayout>
+      <AlertPopup />
+      {children}
     </div>
   </>
 );
