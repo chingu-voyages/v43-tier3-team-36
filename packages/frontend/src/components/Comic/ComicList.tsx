@@ -1,9 +1,8 @@
-import React from 'react';
-import TComicItem from '@/types/comic';
-import { ComicCard } from './ComicCard';
-import { trimString, createImageUrl } from '@/utils/';
+import ComicCard from '@/components/common/ComicCard';
+import type TComicItem from '@/types/comic';
+import { trimString, createImageUrl } from '@/utils';
 
-export const ComicList = ({
+const ComicList = ({
   comics,
   isLoading,
   onAddComic,
@@ -12,20 +11,25 @@ export const ComicList = ({
   isLoading: boolean;
   onAddComic: (comic: TComicItem) => void;
 }) => {
-  const handleAddComic = (comic: TComicItem) => {
+  const addComicHandler = (comic: TComicItem) => {
     onAddComic(comic);
   };
-  if (isLoading) return <h6>Fetching comics</h6>;
+
+  if (isLoading) {
+    return <h6>Fetching comics</h6>;
+  }
+
   return (
     <div className="flex gap-2 justify-center flex-wrap">
-      {comics?.map((comic) => (
+      {comics.map((comic) => (
         <ComicCard
           key={comic.id}
-          title={trimString(comic.title, 15, true)}
-          issue={comic.issueNumber}
-          imageUrl={createImageUrl(comic.images)}
-          withBorder
-          onAction={() => handleAddComic(comic)}
+          comic={{
+            title: trimString(comic.title, 15, true),
+            issueNo: comic.issueNumber,
+            imageUrl: createImageUrl(comic.images),
+          }}
+          onAddComic={() => addComicHandler(comic)}
         />
       ))}
     </div>
