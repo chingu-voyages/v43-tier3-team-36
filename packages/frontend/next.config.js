@@ -24,6 +24,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'placebear.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
     dangerouslyAllowSVG: true,
   },
