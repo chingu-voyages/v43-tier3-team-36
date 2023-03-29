@@ -1,3 +1,3 @@
-import ProfileComics from './ProfileComics';
+import ProfileCollection from './ProfileCollection';
 
-export default ProfileComics;
+export default ProfileCollection;
