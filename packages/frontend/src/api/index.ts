@@ -66,6 +66,20 @@ export async function login(data: LoginOptions) {
   return result;
 }
 
+export const getCurrentUserDetails = async (): Promise<User> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/users/current-user`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error();
+  }
+
+  const result = await res.json();
+  return result.user;
+};
+
 export const addComic = (data: CollectionItemPartial) => {
   fetch(`${SERVER_URL}/api/v1/user/collection`, {
     method: 'POST',
