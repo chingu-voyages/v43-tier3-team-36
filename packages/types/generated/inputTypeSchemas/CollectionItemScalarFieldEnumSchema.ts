@@ -6,6 +6,7 @@ export const CollectionItemScalarFieldEnumSchema = z.enum([
   'title',
   'imageUrl',
   'userId',
+  'tradeOfferId',
 ]);
 
 export default CollectionItemScalarFieldEnumSchema;
