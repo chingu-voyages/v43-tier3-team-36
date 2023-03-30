@@ -1,12 +1,17 @@
 import { Router } from 'express';
 import {
   addCollectionItemToUser,
+  createTradeOffers,
+  deleteTradeOffer,
   editByDeletingUserComic,
   queryCollectorsByUsernameAndLocation,
-  viewComicBookCollectionOfUser,
+  viewComicBookCollector,
 } from '../../controllers/collection.controller';
 import { isLoggedIn, validateSchema } from '../../middleware';
-import { AssignComicSchema } from '../../utils/customValidation';
+import {
+  AssignComicSchema,
+  TradeOfferSchema,
+} from '../../utils/customValidation';
 
 const router = Router();
 router.post(
@@ -17,8 +22,17 @@ router.post(
 );
 router.delete('/user/collection/:comicId', isLoggedIn, editByDeletingUserComic);
 
-router.get('/user/:id/collection', isLoggedIn, viewComicBookCollectionOfUser);
+router.get('/user/:id/collection', isLoggedIn, viewComicBookCollector);
 
 router.get('/collectors', isLoggedIn, queryCollectorsByUsernameAndLocation);
+
+router.post(
+  '/user/trade-offer',
+  isLoggedIn,
+  validateSchema(TradeOfferSchema),
+  createTradeOffers,
+);
+
+router.delete('/user/trade-offer/:tradeOfferId', isLoggedIn, deleteTradeOffer);
 
 export default router;
