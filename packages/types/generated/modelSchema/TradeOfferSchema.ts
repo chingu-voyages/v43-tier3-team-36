@@ -13,6 +13,7 @@ export const TradeOfferSchema = z.object({
   createdById: z.string(),
   price: z.number().nullable(),
   phoneNumber: z.string().nullable(),
+  email: z.string().nullable(),
   message: z.string().nullable(),
   createdAt: z.coerce.date(),
 });
