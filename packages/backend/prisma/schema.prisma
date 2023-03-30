@@ -53,6 +53,7 @@ model TradeOffer {
   collection  CollectionItem[]
   price       Float?
   phoneNumber String?
+  email       String?
   message     String?
   createdAt   DateTime           @default(now())
 }
