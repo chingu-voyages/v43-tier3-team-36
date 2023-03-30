@@ -35,7 +35,6 @@ export async function signup(data: SignupOptions) {
     credentials: 'include',
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
-      credentials: 'include',
     },
     body: JSON.stringify(data),
   });
@@ -89,6 +88,21 @@ export const addComic = (data: CollectionItemPartial) => {
     },
     body: JSON.stringify(data),
   });
+};
+
+export const removeComic = async (comicId: number) => {
+  const res = await fetch(`${SERVER_URL}/api/v1/user/collection/${comicId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    // @ts-ignore
+    // NOTE: Error type needs defining
+    throw new Error(res.error);
+  }
+
+  return res.json();
 };
 
 export function logout() {}
