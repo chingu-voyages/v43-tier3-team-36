@@ -209,6 +209,7 @@ export async function createTradeOffers(req: Request, res: Response) {
         type: tradeOffer.type,
         status: tradeOffer.status,
         message: tradeOffer.message,
+        price: tradeOffer.price,
         createdAt: tradeOffer.createdAt,
         createdBy: {
           userId: tradeOffer.createdBy.id,
