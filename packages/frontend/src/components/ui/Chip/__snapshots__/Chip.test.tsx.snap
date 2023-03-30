@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Chip/> Snapshots should match snapshot 1`] = `
+<div>
+  <span
+    class="font-semibold rounded-full text-xs px-2 py-1 text-white bg-red-500"
+  >
+    Foo
+  </span>
+</div>
+`;
+
+exports[`<Chip/> Snapshots should match snapshot with large prop 1`] = `
+<div>
+  <span
+    class="font-semibold rounded-full text-xs px-2 py-1 text-white bg-red-500 text-sm"
+  >
+    Foo
+  </span>
+</div>
+`;

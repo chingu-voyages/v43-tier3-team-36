@@ -35,7 +35,7 @@ export const AssignComicSchema = z.object({
         invalid_type_error: 'Title must be a string',
       })
       .min(2)
-      .max(30),
+      .max(100),
     imageUrl: z
       .string({
         required_error: 'ImageUrl is required',
@@ -61,3 +61,4 @@ export const TradeOfferSchema = z.object({
     message: z.string().optional(),
   }),
 });
+

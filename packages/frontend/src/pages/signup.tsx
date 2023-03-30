@@ -1,19 +1,47 @@
 import Link from 'next/link';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
-import { Button } from '@/components/ui';
-import FormField from '@/components/auth/FormField';
 
-const Signup = () => {
+import { ReactElement } from 'react';
+import { Button } from '@/components/ui';
+import FormField from '@/components/auth/FormField/FormField';
+import { signup } from '@/api';
+import UseAlertStore from '@/store/store';
+import { NextPageWithLayout } from './_app';
+import Layout from '@/layouts/Layout';
+
+const Signup: NextPageWithLayout = () => {
+  const setAlert = UseAlertStore((state: any) => state.setAlert);
+  const resetAlert = UseAlertStore((state: any) => state.resetAlert);
+
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data: object) => {
+  const NewUserMutation = useMutation({
+    mutationFn: signup,
+    onSuccess: (data) => {
+      router.push('/profile');
+      setAlert({ type: 'success', message: data.message });
+    },
+    onError: () => {
+      setAlert({
+        type: 'error',
+        message: 'authentication unsuccessful',
+      });
+    },
+  });
+
+  const onSubmit = async (data: any) => {
+    resetAlert();
     if (isValid) {
-      console.log(JSON.stringify(data));
+      NewUserMutation.mutate(data);
     }
   };
 
@@ -25,7 +53,7 @@ const Signup = () => {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormField
-            id="firstname"
+            id="firstName"
             label="First name"
             placeholder="Enter your firstname"
             register={register}
@@ -33,7 +61,7 @@ const Signup = () => {
             error={errors}
           />
           <FormField
-            id="lastname"
+            id="lastName"
             label="Last name"
             placeholder="Enter your lastname"
             register={register}
@@ -87,13 +115,14 @@ const Signup = () => {
           <Button
             className="w-full py-4 my-8 text-base font-normal"
             type="submit"
+            disabled={isSubmitting}
           >
             Create my account
           </Button>
         </form>
         <div
           className="my-5 text-base
-       text-center"
+   text-center"
         >
           <p className="">
             Already got an account?
@@ -109,4 +138,21 @@ const Signup = () => {
     </section>
   );
 };
+
+Signup.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <Layout seo={{
+      title: 'Profile',
+      meta: {
+        description:
+          'A profile of your recent activity and trades, and as well as your current digital comics collection',
+      },
+    }}
+    >
+      {page}
+
+    </Layout>
+  );
+};
+
 export default Signup;

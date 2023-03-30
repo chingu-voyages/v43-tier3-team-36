@@ -3,7 +3,6 @@ import {
   UserSchema,
   UserOptionalDefaultsSchema,
 } from '@marvel-collector/types/generated/modelSchema';
-
 import prisma from '../../database/PrismaClient';
 import {
   register,
