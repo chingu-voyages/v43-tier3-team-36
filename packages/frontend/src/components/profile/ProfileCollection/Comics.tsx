@@ -42,7 +42,7 @@ const Comics: React.FC<Props> = ({ isEdit }) => {
   return (
     <div className="grid grid-cols-3 lg:grid-cols-none lg:grid-flow-col justify-items-center gap-y-5 lg:gap-x-2 py-5 md:py-11 px-2 md:px-8 mt-8 mb-6 overflow-x-auto bg-neutral-100 border border-zinc-200 rounded-xl">
       {/* @ts-ignore */}
-      {userData?.comics.map(({ id, images }) => (
+      {userData?.comics?.map(({ id, images }) => (
         <div
           key={id}
           className="relative w-28 sm:w-36 md:w-44 lg:w-56 h-36 sm:h-44 md:h-48 lg:h-64 max-w-full"

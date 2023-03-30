@@ -10,10 +10,13 @@ import { NextPageWithLayout } from '../_app';
 import TComicItem from '@/types/comic';
 import AddComic from '@/components/comic/AddComic';
 import { createImageUrl } from '@/utils';
+import useAlertStore, { IAlert } from '@/store/store';
 
 const ComicSearch: NextPageWithLayout = () => {
   const [value, setValue] = useState('');
   const [selected, setSelected] = useState<TComicItem>();
+
+  const setAlert = useAlertStore((state) => state.setAlert);
 
   const handleChange = (inputValue: string) => setValue(inputValue);
   const debouncedValue = useDebounce(value, 500);
@@ -24,12 +27,27 @@ const ComicSearch: NextPageWithLayout = () => {
     { enabled: !!value.length, initialData: [] },
   );
 
-  const handleAddComic = (comic: TComicItem) => {
-    addComic({
-      comicId: comic.id,
-      title: comic.title,
-      imageUrl: createImageUrl(comic.images),
-    });
+  const handleAddComic = async (comic: TComicItem) => {
+    const alert: IAlert = {
+      type: undefined,
+      message: undefined,
+    };
+
+    try {
+      const response = await addComic({
+        comicId: comic.id,
+        title: comic.title,
+        imageUrl: createImageUrl(comic.images),
+      });
+      alert.type = 'success';
+      alert.message = response;
+    } catch (e) {
+      alert.type = 'error';
+      alert.message = 'Error. Failed to add comic to collection';
+    } finally {
+      setAlert(alert);
+      setSelected(undefined);
+    }
   };
 
   return (
