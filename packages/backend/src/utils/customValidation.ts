@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, ZodArray } from 'zod';
 
 export const RegisterSchema = z.object({
   // In this example we will only validate the body for registration.
@@ -24,9 +24,9 @@ export const LoginSchema = z.object({
 export const AssignComicSchema = z.object({
   body: z.object({
     comicId: z
-      .string({
+      .number({
         required_error: 'ComicId is required',
-        invalid_type_error: 'ComicId must be a string',
+        invalid_type_error: 'ComicId must be a number',
       })
       .min(1),
     title: z
@@ -42,5 +42,21 @@ export const AssignComicSchema = z.object({
         invalid_type_error: 'ImageUrl must be a string',
       })
       .min(4),
+  }),
+});
+
+export const TradeOfferSchema = z.object({
+  body: z.object({
+    type: z.string({
+      required_error: 'Type is required',
+      invalid_type_error: 'Type must be a string',
+    }),
+    comicId: z.number({
+      required_error: 'ComicId is required',
+      invalid_type_error: 'ComicId must be a number',
+    }),
+    phoneNumber: z.string().optional(),
+    price: z.string().optional(),
+    message: z.string().optional(),
   }),
 });
