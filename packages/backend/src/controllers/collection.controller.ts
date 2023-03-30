@@ -169,7 +169,7 @@ export async function editByDeletingUserComic(req: Request, res: Response) {
 
 export async function createTradeOffers(req: Request, res: Response) {
   const {
-    type, comicId, phoneNumber, price, message,
+    type, comicId, phoneNumber, email, price, message,
   } = req.body;
   const { id } = req.user as User;
 
@@ -199,6 +199,7 @@ export async function createTradeOffers(req: Request, res: Response) {
       id,
       userComic,
       phoneNumber,
+      email,
       price,
       message,
     );
@@ -220,7 +221,7 @@ export async function createTradeOffers(req: Request, res: Response) {
           location: tradeOffer.createdBy.location,
         },
         contactDetails: {
-          email: tradeOffer.createdBy.email,
+          email: tradeOffer.email,
           phoneNumber: tradeOffer.phoneNumber,
         },
         tradeOffer: tradeOffer.collection.map((item: any) => ({
