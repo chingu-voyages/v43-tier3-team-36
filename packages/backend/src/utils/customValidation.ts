@@ -56,7 +56,7 @@ export const TradeOfferSchema = z.object({
       invalid_type_error: 'ComicId must be a number',
     }),
     phoneNumber: z.string().optional(),
-    price: z.string().optional(),
+    price: z.number().optional(),
     message: z.string().optional(),
   }),
 });
