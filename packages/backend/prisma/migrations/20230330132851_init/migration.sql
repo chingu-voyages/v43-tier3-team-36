@@ -38,6 +38,7 @@ CREATE TABLE "TradeOffer" (
     "createdById" TEXT NOT NULL,
     "price" DOUBLE PRECISION,
     "phoneNumber" TEXT,
+    "email" TEXT,
     "message" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
