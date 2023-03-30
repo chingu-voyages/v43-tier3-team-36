@@ -85,6 +85,7 @@ export const createOffer = async (
   id: string,
   userComic: any,
   phoneNumber: string,
+  email: string,
   price: number,
   message: string,
 ) =>
@@ -95,6 +96,7 @@ export const createOffer = async (
       createdBy: { connect: { id } },
       collection: { connect: { comicId: userComic.comicId } },
       phoneNumber,
+      email,
       price,
       message,
     },
