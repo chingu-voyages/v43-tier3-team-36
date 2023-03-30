@@ -6,10 +6,11 @@ import { z } from 'zod';
 
 export const CollectionItemSchema = z.object({
   id: z.string().uuid(),
-  comicId: z.string(),
+  comicId: z.number().int(),
   title: z.string(),
   imageUrl: z.string(),
   userId: z.string().nullable(),
+  tradeOfferId: z.string().nullable(),
 });
 
 export type CollectionItem = z.infer<typeof CollectionItemSchema>;
