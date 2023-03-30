@@ -11,7 +11,7 @@ const ProfileComics: React.FC = () => {
     isLoading,
     isError,
   } = useQuery(['user'], {
-    queryFn: () => getCurrentUserDetails(),
+    queryFn: getCurrentUserDetails,
   });
   const [isEdit, setIsEdit] = useState(false);
 
