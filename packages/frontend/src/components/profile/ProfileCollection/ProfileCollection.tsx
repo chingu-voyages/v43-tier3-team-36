@@ -1,15 +1,20 @@
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 
 import Comics from './Comics';
 import Actions from './Actions';
 import UseAlertStore from '@/store/store';
-import { removeComic } from '@/api';
+import { getCurrentUserDetails, removeComic } from '@/api';
 
-const ProfileComics: React.FC = () => {
-  const setAlert = UseAlertStore((state: any) => state.setAlert);
-  const [isEdit, setIsEdit] = useState(false);
-
+const ProfileCollection: React.FC = () => {
+  const setAlert = UseAlertStore((state) => state.setAlert);
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery(['user'], {
+    queryFn: getCurrentUserDetails,
+  });
   const removeComicMutation = useMutation({
     mutationFn: removeComic,
     onSuccess: (data) => {
@@ -18,10 +23,11 @@ const ProfileComics: React.FC = () => {
     onError: (err) => {
       setAlert({
         type: 'error',
-        message: err,
+        message: err as string,
       });
     },
   });
+  const [isEdit, setIsEdit] = useState(false);
 
   const removeComicHandler = (id: number) => {
     removeComicMutation.mutate(id);
@@ -31,15 +37,30 @@ const ProfileComics: React.FC = () => {
     setIsEdit((prevState) => !prevState);
   };
 
+  if (isLoading) {
+    // TODO: Replace with loader component
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    // TODO: Replace with alert/error component
+    return <span>Failed to retrieve user!</span>;
+  }
+
   const disableActions = removeComicMutation.isLoading;
 
   return (
     <section>
       <h2 className="font-bold">Your Collection</h2>
-      <Comics isEdit={isEdit} onRemoveComic={removeComicHandler} />
+      {/* @ts-ignore */}
+      <Comics
+        userId={userData.userId}
+        isEdit={isEdit}
+        onRemoveComic={removeComicHandler}
+      />
       <Actions disabled={disableActions} onEdit={toggleEditHandler} />
     </section>
   );
 };
 
-export default ProfileComics;
+export default ProfileCollection;

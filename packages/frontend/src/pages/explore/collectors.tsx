@@ -2,15 +2,10 @@ import type { ReactElement } from 'react';
 
 import type { NextPageWithLayout } from '../_app';
 import AuthLayout from '@/layouts/AuthLayout';
-import ExploreNavbar from '@/components/explore/ExploreNavbar';
 import ExploreCollectors from '@/components/explore/ExploreCollectors/ExploreCollectors';
+import ExploreLayout from '@/layouts/ExploreLayout';
 
-const Collectors: NextPageWithLayout = () => (
-  <main className="pt-8 lg:pt-9 px-4 lg:px-7 pb-9 lg:pb-10">
-    <ExploreNavbar />
-    <ExploreCollectors />
-  </main>
-);
+const Collectors: NextPageWithLayout = () => <ExploreCollectors />;
 
 Collectors.getLayout = function getLayout(page: ReactElement) {
   return (
@@ -23,7 +18,7 @@ Collectors.getLayout = function getLayout(page: ReactElement) {
         },
       }}
     >
-      {page}
+      <ExploreLayout>{page}</ExploreLayout>
     </AuthLayout>
   );
 };

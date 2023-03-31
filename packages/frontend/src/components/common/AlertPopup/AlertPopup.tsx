@@ -2,7 +2,10 @@ import { Alert } from '@/components/ui/Alert';
 import UseAlertStore from '@/store/store';
 
 const AlertPopup = () => {
-  const alert = UseAlertStore((state:any) => state.alert);
+  const alert = UseAlertStore((state) => state.alert);
+
+  if (!alert.message) return null;
+
   return (
     <section>
       {alert.type && alert.message ? (
