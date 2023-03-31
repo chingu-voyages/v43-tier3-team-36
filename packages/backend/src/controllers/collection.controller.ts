@@ -16,6 +16,7 @@ import {
   getTradeOfferByTradeOfferId,
   getUserComic,
   queryCollectors,
+  queryTradeOffers,
   viewCollections,
   viewComicBookOffers,
 } from '../services/collection.service';
@@ -275,8 +276,15 @@ export async function deleteTradeOffer(req: Request, res: Response) {
 // View Comic Book Offers
 
 export async function viewTradeOffers(req: Request, res: Response) {
+  const { location } = req.query as Record<string, string>;
   try {
-    const tradeOffers = await viewComicBookOffers();
+    let tradeOffers;
+
+    if (location) {
+      tradeOffers = await queryTradeOffers(location);
+    } else {
+      tradeOffers = await viewComicBookOffers();
+    }
 
     if (!tradeOffers.length) {
       return res
