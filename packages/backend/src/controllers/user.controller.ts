@@ -66,6 +66,7 @@ export const currentUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.user as User;
     const user = await findUserById({ id });
+
     return res.status(200).json({
       user: {
         userId: user?.id,
@@ -74,6 +75,9 @@ export const currentUser = async (req: Request, res: Response) => {
         email: user?.email,
         username: user?.username,
         profileImage: user?.profileImage,
+        location: user?.location,
+        collection: user?.collection,
+        tradeOffers: user?.tradeOffers,
       },
     });
   } catch (error) {
