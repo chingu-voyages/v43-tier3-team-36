@@ -10,7 +10,7 @@ export const searchComics = async (
   comicTitle: string,
 ): Promise<TComicType[]> => {
   const response = await fetch(
-    `${MARVEL_API_URL}/comics?titleStartsWith=${comicTitle}&apikey=${MARVEL_API_KEY}`,
+    `${MARVEL_API_URL}/comics?titleStartsWith=${comicTitle}&apikey=${MARVEL_API_KEY}&limit=50`,
   );
   const json = await response.json();
   return json.data.results;
@@ -80,8 +80,10 @@ export const getCurrentUserDetails = async (): Promise<User> => {
   return result.user;
 };
 
-export const addComic = (data: CollectionItemPartial) => {
-  fetch(`${SERVER_URL}/api/v1/user/collection`, {
+export const addComic = async (
+  data: CollectionItemPartial,
+): Promise<string> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/user/collection`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -89,6 +91,11 @@ export const addComic = (data: CollectionItemPartial) => {
     },
     body: JSON.stringify(data),
   });
+  const json = await res.json();
+
+  if (json.error) throw new Error(json.error);
+
+  return json.message;
 };
 
 export function logout() {}
