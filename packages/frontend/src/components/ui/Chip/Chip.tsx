@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import type { ForwardRefExoticComponent, HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
-import clsx from 'clsx';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { twMerge } from 'tailwind-merge';
 
 export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
   /**
@@ -24,7 +25,7 @@ ChipProps & React.RefAttributes<HTMLSpanElement>
 > = forwardRef(({
   label, large = false, className, ...rest
 }, ref) => {
-  const spanClassNames = clsx(
+  const spanClassNames = twMerge(
     styles.base,
     large ? 'text-md' : 'text-sm',
     className,
