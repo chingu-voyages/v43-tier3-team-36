@@ -10,6 +10,7 @@ import { NextPageWithLayout } from '../_app';
 import TComicItem from '@/types/comic';
 import AddComic from '@/components/comic/AddComic';
 import { createImageUrl } from '@/utils';
+import ExploreLayout from '@/layouts/ExploreLayout';
 
 const ComicSearch: NextPageWithLayout = () => {
   const [value, setValue] = useState('');
@@ -72,7 +73,8 @@ ComicSearch.getLayout = function getLayout(page: ReactElement) {
         },
       }}
     >
-      {page}
+      {/* nested explore layout */}
+      <ExploreLayout>{page}</ExploreLayout>
     </AuthLayout>
   );
 };
