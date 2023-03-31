@@ -1,7 +1,7 @@
 import { Chip } from '@/components/ui/Chip';
 import { Button } from '@/components/ui/Button';
 
-export interface IOfferItem {
+interface IOfferItem {
   comicName: string;
   imageUrl: string;
   issue: number;
@@ -10,7 +10,7 @@ export interface IOfferItem {
   type: string;
 }
 
-export interface IOfferList {
+export interface IOfferList extends IOfferItem {
   comicId: string;
 }
 
