@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { InputField } from '@/components/ui/Input';
 import { addComic, searchComics } from '@/api';
 import { useDebounce } from '@/hooks';
@@ -11,10 +11,13 @@ import TComicItem from '@/types/comic';
 import AddComic from '@/components/comic/AddComic';
 import { createImageUrl } from '@/utils';
 import ExploreLayout from '@/layouts/ExploreLayout';
+import useAlertStore from '@/store/store';
 
 const ComicSearch: NextPageWithLayout = () => {
   const [value, setValue] = useState('');
   const [selected, setSelected] = useState<TComicItem>();
+
+  const setAlert = useAlertStore((state) => state.setAlert);
 
   const handleChange = (inputValue: string) => setValue(inputValue);
   const debouncedValue = useDebounce(value, 500);
@@ -25,13 +28,21 @@ const ComicSearch: NextPageWithLayout = () => {
     { enabled: !!value.length, initialData: [] },
   );
 
-  const handleAddComic = (comic: TComicItem) => {
-    addComic({
-      comicId: comic.id,
-      title: comic.title,
-      imageUrl: createImageUrl(comic.images),
-    });
-  };
+  const { mutate: addNewComic } = useMutation({
+    mutationFn: addComic,
+    onSuccess: (response) => {
+      setAlert({
+        type: 'success',
+        message: response,
+      });
+    },
+    onError: (error: Error) => {
+      setAlert({
+        type: 'error',
+        message: error.message,
+      });
+    },
+  });
 
   return (
     <main>
@@ -48,7 +59,14 @@ const ComicSearch: NextPageWithLayout = () => {
         {selected && (
           <AddComic
             comic={selected}
-            onAdd={() => handleAddComic(selected)}
+            onAdd={() => {
+              addNewComic({
+                comicId: selected.id,
+                title: selected.title,
+                imageUrl: createImageUrl(selected.images),
+              });
+              setSelected(undefined);
+            }}
             onClose={() => setSelected(undefined)}
             show={!!selected}
           />

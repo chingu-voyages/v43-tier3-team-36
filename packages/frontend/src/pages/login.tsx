@@ -12,9 +12,8 @@ import UseAlertStore from '@/store/store';
 import { NextPageWithLayout } from './_app';
 import Layout from '@/layouts/Layout';
 
-const Login : NextPageWithLayout = () => {
+const Login: NextPageWithLayout = () => {
   const setAlert = UseAlertStore((state: any) => state.setAlert);
-  const resetAlert = UseAlertStore((state: any) => state.resetAlert);
 
   const router = useRouter();
 
@@ -39,7 +38,6 @@ const Login : NextPageWithLayout = () => {
   });
 
   const onSubmit = async (data: any) => {
-    resetAlert();
     if (isValid) {
       LogUserMutation.mutate(data);
     }
@@ -107,16 +105,15 @@ const Login : NextPageWithLayout = () => {
 
 Login.getLayout = function getLayout(page: ReactElement) {
   return (
-    <Layout seo={{
-      title: 'Login',
-      meta: {
-        description:
-          'Login authentication page for already existing users',
-      },
-    }}
+    <Layout
+      seo={{
+        title: 'Login',
+        meta: {
+          description: 'Login authentication page for already existing users',
+        },
+      }}
     >
       {page}
-
     </Layout>
   );
 };
