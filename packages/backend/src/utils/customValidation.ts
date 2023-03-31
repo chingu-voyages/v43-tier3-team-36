@@ -61,4 +61,3 @@ export const TradeOfferSchema = z.object({
     message: z.string().optional(),
   }),
 });
-

@@ -1,26 +1,40 @@
 import { create } from 'zustand';
 
-interface IAlert {
-  type: string;
-  message: string;
+export type TAlertType = 'error' | 'success';
+
+export interface IAlert {
+  type?: TAlertType;
+  message?: string;
 }
 
-const UseAlertStore = create((set) => ({
-  alert: { type: '', message: '' },
-  setAlert: ({ type, message }: IAlert) => set((state: any) => ({
+type TStoreState = {
+  alert: IAlert;
+  setAlert: (alert: IAlert) => void;
+  resetAlert: () => void;
+};
+
+const useAlertStore = create<TStoreState>((set, get) => ({
+  alert: { type: undefined, message: undefined },
+  setAlert: ({ type, message }) => {
+    set((state) => ({
+      alert: {
+        ...state,
+        type,
+        message,
+      },
+    }));
+    // reset alert state after 2 seconds
+    setTimeout(() => {
+      get().resetAlert();
+    }, 2000);
+  },
+  resetAlert: () => set((state) => ({
     alert: {
-      ...state.alert,
-      type,
-      message,
-    },
-  })),
-  resetAlert: () => set((state: any) => ({
-    alert: {
-      ...state.alert,
-      type: '',
-      message: '',
+      ...state,
+      type: undefined,
+      message: undefined,
     },
   })),
 }));
 
-export default UseAlertStore;
+export default useAlertStore;

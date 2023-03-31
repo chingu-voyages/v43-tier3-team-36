@@ -1,11 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import Comics from './Comics';
 import Actions from './Actions';
-import { getCurrentUserDetails } from '@/api';
+import UseAlertStore from '@/store/store';
+import { getCurrentUserDetails, removeComic } from '@/api';
 
-const ProfileComics: React.FC = () => {
+const ProfileCollection: React.FC = () => {
+  const setAlert = UseAlertStore((state) => state.setAlert);
   const {
     data: userData,
     isLoading,
@@ -13,7 +15,23 @@ const ProfileComics: React.FC = () => {
   } = useQuery(['user'], {
     queryFn: getCurrentUserDetails,
   });
+  const removeComicMutation = useMutation({
+    mutationFn: removeComic,
+    onSuccess: (data) => {
+      setAlert({ type: 'success', message: data.message });
+    },
+    onError: (err) => {
+      setAlert({
+        type: 'error',
+        message: err as string,
+      });
+    },
+  });
   const [isEdit, setIsEdit] = useState(false);
+
+  const removeComicHandler = (id: number) => {
+    removeComicMutation.mutate(id);
+  };
 
   const toggleEditHandler = () => {
     setIsEdit((prevState) => !prevState);
@@ -29,14 +47,20 @@ const ProfileComics: React.FC = () => {
     return <span>Failed to retrieve user!</span>;
   }
 
+  const disableActions = removeComicMutation.isLoading;
+
   return (
     <section>
       <h2 className="font-bold">Your Collection</h2>
       {/* @ts-ignore */}
-      <Comics userId={userData.userId} isEdit={isEdit} />
-      <Actions onEdit={toggleEditHandler} />
+      <Comics
+        userId={userData.userId}
+        isEdit={isEdit}
+        onRemoveComic={removeComicHandler}
+      />
+      <Actions disabled={disableActions} onEdit={toggleEditHandler} />
     </section>
   );
 };
 
-export default ProfileComics;
+export default ProfileCollection;
