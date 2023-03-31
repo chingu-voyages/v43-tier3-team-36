@@ -3,6 +3,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { InputField } from '@/components/ui';
 import { NextPageWithLayout } from '../_app';
 import AuthLayout from '@/layouts/AuthLayout';
+import OfferList from '@/components/ui/OfferList/OfferList';
 
 const Offers: NextPageWithLayout = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,6 +17,7 @@ const Offers: NextPageWithLayout = () => {
         value={searchQuery}
         onChange={handleChange}
       />
+      <OfferList />
     </section>
   );
 };
