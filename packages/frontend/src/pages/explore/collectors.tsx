@@ -5,9 +5,7 @@ import AuthLayout from '@/layouts/AuthLayout';
 import ExploreCollectors from '@/components/explore/ExploreCollectors/ExploreCollectors';
 import ExploreLayout from '@/layouts/ExploreLayout';
 
-const Collectors: NextPageWithLayout = () => (
-  <ExploreCollectors />
-);
+const Collectors: NextPageWithLayout = () => <ExploreCollectors />;
 
 Collectors.getLayout = function getLayout(page: ReactElement) {
   return (
