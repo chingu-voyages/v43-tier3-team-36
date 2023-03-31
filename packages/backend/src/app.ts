@@ -13,7 +13,10 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: '*',
+    origin:
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : 'production link',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   }),
