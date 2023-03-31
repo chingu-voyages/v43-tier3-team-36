@@ -15,8 +15,8 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : 'production link',
+        ? process.env.DEV_ORIGIN
+        : process.env.PROD_ORIGIN,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   }),
