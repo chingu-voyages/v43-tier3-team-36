@@ -124,3 +124,7 @@ export const deleteTradeOfferByTradeOfferId = async (tradeOfferId: string) =>
     where: { id: tradeOfferId },
   });
 
+export const viewComicBookOffers = async () =>
+  prisma.tradeOffer.findMany({
+    include: { createdBy: true, collection: true },
+  });
