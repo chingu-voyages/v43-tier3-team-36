@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { InputField } from '@/components/ui/Input';
 import { addComic, searchComics } from '@/api';
 import { useDebounce } from '@/hooks';
@@ -10,7 +10,7 @@ import { NextPageWithLayout } from '../_app';
 import TComicItem from '@/types/comic';
 import AddComic from '@/components/comic/AddComic';
 import { createImageUrl } from '@/utils';
-import useAlertStore, { IAlert } from '@/store/store';
+import useAlertStore from '@/store/store';
 
 const ComicSearch: NextPageWithLayout = () => {
   const [value, setValue] = useState('');
@@ -27,28 +27,21 @@ const ComicSearch: NextPageWithLayout = () => {
     { enabled: !!value.length, initialData: [] },
   );
 
-  const handleAddComic = async (comic: TComicItem) => {
-    const alert: IAlert = {
-      type: undefined,
-      message: undefined,
-    };
-
-    try {
-      const response = await addComic({
-        comicId: comic.id,
-        title: comic.title,
-        imageUrl: createImageUrl(comic.images),
+  const { mutate: addNewComic } = useMutation({
+    mutationFn: addComic,
+    onSuccess: (response) => {
+      setAlert({
+        type: 'success',
+        message: response,
       });
-      alert.type = 'success';
-      alert.message = response;
-    } catch (e) {
-      alert.type = 'error';
-      alert.message = 'Error. Failed to add comic to collection';
-    } finally {
-      setAlert(alert);
-      setSelected(undefined);
-    }
-  };
+    },
+    onError: (error: Error) => {
+      setAlert({
+        type: 'error',
+        message: error.message,
+      });
+    },
+  });
 
   return (
     <main>
@@ -65,7 +58,14 @@ const ComicSearch: NextPageWithLayout = () => {
         {selected && (
           <AddComic
             comic={selected}
-            onAdd={() => handleAddComic(selected)}
+            onAdd={() => {
+              addNewComic({
+                comicId: selected.id,
+                title: selected.title,
+                imageUrl: createImageUrl(selected.images),
+              });
+              setSelected(undefined);
+            }}
             onClose={() => setSelected(undefined)}
             show={!!selected}
           />

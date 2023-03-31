@@ -80,7 +80,9 @@ export const getCurrentUserDetails = async (): Promise<User> => {
   return result.user;
 };
 
-export const addComic = async (data: CollectionItemPartial) => {
+export const addComic = async (
+  data: CollectionItemPartial,
+): Promise<string> => {
   const res = await fetch(`${SERVER_URL}/api/v1/user/collection`, {
     method: 'POST',
     credentials: 'include',
