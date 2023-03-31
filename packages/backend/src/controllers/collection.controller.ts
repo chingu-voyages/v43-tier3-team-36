@@ -16,7 +16,9 @@ import {
   getTradeOfferByTradeOfferId,
   getUserComic,
   queryCollectors,
+  queryTradeOffers,
   viewCollections,
+  viewComicBookOffers,
 } from '../services/collection.service';
 import prisma from '../database/PrismaClient';
 
@@ -271,3 +273,59 @@ export async function deleteTradeOffer(req: Request, res: Response) {
   }
 }
 
+// View Comic Book Offers
+
+export async function viewTradeOffers(req: Request, res: Response) {
+  const { location } = req.query as Record<string, string>;
+  try {
+    let tradeOffers;
+
+    if (location) {
+      tradeOffers = await queryTradeOffers(location);
+    } else {
+      tradeOffers = await viewComicBookOffers();
+    }
+
+    if (!tradeOffers.length) {
+      return res
+        .status(404)
+        .json({ error: 'There are currently no trade offers' });
+    }
+
+    return res.status(201).json({
+      status: 'Success',
+      data: {
+        tradeOffers: tradeOffers.map((tradeOffer: any) => ({
+          tradeOfferId: tradeOffer.id,
+          type: tradeOffer.type,
+          status: tradeOffer.status,
+          message: tradeOffer.message,
+          price: tradeOffer.price,
+          createdAt: tradeOffer.createdAt,
+          createdBy: {
+            userId: tradeOffer.createdBy.id,
+            firstName: tradeOffer.createdBy.firstName,
+            lastName: tradeOffer.createdBy.lastName,
+            username: tradeOffer.createdBy.username,
+            profileImage: tradeOffer.createdBy.profileImage,
+            location: tradeOffer.createdBy.location,
+          },
+          contactDetails: {
+            email: tradeOffer.email,
+            phoneNumber: tradeOffer.phoneNumber,
+          },
+          tradeOffer: tradeOffer.collection.map((item: any) => ({
+            collectionId: item.id,
+            comicId: item.comicId,
+            title: item.title,
+            imageUrl: item.imageUrl,
+            tradeOfferId: item.tradeOfferId,
+          })),
+        })),
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error fetching trade offers');
+  }
+}

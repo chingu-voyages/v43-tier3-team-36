@@ -6,12 +6,14 @@ import {
   editByDeletingUserComic,
   queryCollectorsByUsernameAndLocation,
   viewComicBookCollector,
+  viewTradeOffers,
 } from '../../controllers/collection.controller';
 import { isLoggedIn, validateSchema } from '../../middleware';
 import {
   AssignComicSchema,
   TradeOfferSchema,
 } from '../../utils/customValidation';
+
 const router = Router();
 router.post(
   '/user/collection',
@@ -33,5 +35,7 @@ router.post(
 );
 
 router.delete('/user/trade-offer/:tradeOfferId', isLoggedIn, deleteTradeOffer);
+
+router.get('/trade-offers', viewTradeOffers);
 
 export default router;
