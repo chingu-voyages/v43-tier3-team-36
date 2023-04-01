@@ -10,7 +10,7 @@ import {
   findUserByUsername,
 } from '../services/user.service';
 import { hashPassword } from '../utils/hashPassword';
-import { viewUserTradeOffers } from './collection.controller';
+import { viewUserTradeOffers } from '../services/collection.service';
 
 export const register = async (
   req: Request<{}, {}, UserOptionalDefaults>,
