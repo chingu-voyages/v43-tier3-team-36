@@ -10,7 +10,7 @@ export const searchComics = async (
   comicTitle: string,
 ): Promise<TComicType[]> => {
   const response = await fetch(
-    `${MARVEL_API_URL}/comics?titleStartsWith=${comicTitle}&apikey=${MARVEL_API_KEY}`,
+    `${MARVEL_API_URL}/comics?titleStartsWith=${comicTitle}&apikey=${MARVEL_API_KEY}&limit=50`,
   );
   const json = await response.json();
   return json.data.results;
@@ -35,7 +35,6 @@ export async function signup(data: SignupOptions) {
     credentials: 'include',
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
-      credentials: 'include',
     },
     body: JSON.stringify(data),
   });
@@ -66,8 +65,24 @@ export async function login(data: LoginOptions) {
   return result;
 }
 
-export const addComic = (data: CollectionItemPartial) => {
-  fetch(`${SERVER_URL}/api/v1/user/collection`, {
+export const getCurrentUserDetails = async (): Promise<User> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/users/current-user`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error();
+  }
+
+  const result = await res.json();
+  return result.user;
+};
+
+export const addComic = async (
+  data: CollectionItemPartial,
+): Promise<string> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/user/collection`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -75,6 +90,26 @@ export const addComic = (data: CollectionItemPartial) => {
     },
     body: JSON.stringify(data),
   });
+  const json = await res.json();
+
+  if (json.error) throw new Error(json.error);
+
+  return json.message;
+};
+
+export const removeComic = async (comicId: number) => {
+  const res = await fetch(`${SERVER_URL}/api/v1/user/collection/${comicId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    // @ts-ignore
+    // NOTE: Error type needs defining
+    throw new Error(res.error);
+  }
+
+  return res.json();
 };
 
 export function logout() {}
