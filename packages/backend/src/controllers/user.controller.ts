@@ -10,6 +10,7 @@ import {
   findUserByUsername,
 } from '../services/user.service';
 import { hashPassword } from '../utils/hashPassword';
+import { viewUserTradeOffers } from './collection.controller';
 
 export const register = async (
   req: Request<{}, {}, UserOptionalDefaults>,
@@ -66,6 +67,7 @@ export const currentUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.user as User;
     const user = await findUserById({ id });
+    const userTradeOffers = await viewUserTradeOffers(id);
 
     return res.status(200).json({
       user: {
@@ -76,8 +78,31 @@ export const currentUser = async (req: Request, res: Response) => {
         username: user?.username,
         profileImage: user?.profileImage,
         location: user?.location,
-        collection: user?.collection,
-        tradeOffers: user?.tradeOffers,
+        collection: user?.collection.map((item: any) => ({
+          id: item.id,
+          comicId: item.comicId,
+          title: item.title,
+          imageUrl: item.imageUrl,
+        })),
+        tradeOfferDetail: userTradeOffers.map((tradeOffer: any) => ({
+          tradeOfferId: tradeOffer.id,
+          type: tradeOffer.type,
+          status: tradeOffer.status,
+          message: tradeOffer.message,
+          price: tradeOffer.price,
+          createdAt: tradeOffer.createdAt,
+          contactDetails: {
+            email: tradeOffer.email,
+            phoneNumber: tradeOffer.phoneNumber,
+          },
+          tradeOfferItems: tradeOffer.collection.map((item: any) => ({
+            collectionId: item.id,
+            comicId: item.comicId,
+            title: item.title,
+            imageUrl: item.imageUrl,
+            tradeOfferId: item.tradeOfferId,
+          })),
+        })),
       },
     });
   } catch (error) {
