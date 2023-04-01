@@ -270,3 +270,12 @@ export async function deleteTradeOffer(req: Request, res: Response) {
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+export const viewUserTradeOffers = async (id: string) => prisma.tradeOffer.findMany({
+  where: {
+    createdBy: {
+      id,
+    },
+  },
+  include: { createdBy: true, collection: true },
+});
