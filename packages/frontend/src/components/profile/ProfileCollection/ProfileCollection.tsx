@@ -52,8 +52,8 @@ const ProfileCollection: React.FC = () => {
   return (
     <section>
       <h2 className="font-bold">Your Collection</h2>
-      {/* @ts-ignore */}
       <Comics
+        // @ts-ignore
         userId={userData.userId}
         isEdit={isEdit}
         onRemoveComic={removeComicHandler}

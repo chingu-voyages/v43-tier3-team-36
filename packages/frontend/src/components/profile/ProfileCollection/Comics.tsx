@@ -14,7 +14,7 @@ type Props = {
   onRemoveComic: (id: number) => void;
 };
 
-const Comics: React.FC<Props> = ({ userId, isEdit }) => {
+const Comics: React.FC<Props> = ({ userId, isEdit, onRemoveComic }) => {
   const {
     data: comicsData,
     isLoading,
@@ -34,12 +34,12 @@ const Comics: React.FC<Props> = ({ userId, isEdit }) => {
   }
 
   return (
-    <div className="grid grid-cols-3 lg:grid-cols-none lg:grid-flow-col justify-items-center gap-y-5 lg:gap-x-2 py-5 md:py-11 px-2 md:px-8 mt-8 mb-6 overflow-x-auto bg-neutral-100 border border-zinc-200 rounded-xl">
+    <div className="grid grid-cols-3 px-2 py-5 mt-8 mb-6 overflow-x-auto border lg:grid-cols-none lg:grid-flow-col justify-items-center gap-y-5 lg:gap-x-2 md:py-11 md:px-8 bg-neutral-100 border-zinc-200 rounded-xl">
       {/* @ts-ignore */}
       {comicsData?.comics.map(({ id, images }) => (
         <div
           key={id}
-          className="relative w-28 sm:w-36 md:w-44 lg:w-56 h-36 sm:h-44 md:h-48 lg:h-64 max-w-full"
+          className="relative max-w-full w-28 sm:w-36 md:w-44 lg:w-56 h-36 sm:h-44 md:h-48 lg:h-64"
         >
           <Image
             className={clsx({ 'opacity-75': isEdit })}
