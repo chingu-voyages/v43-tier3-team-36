@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Actions: React.FC<Props> = ({ disabled, onEdit, onTrade }) => (
-  <div className="flex gap-x-2">
+  <div className="flex justify-center gap-x-2 lg:order-1">
     <Button
       className="flex-row-reverse"
       variant="outlined"

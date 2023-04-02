@@ -1,12 +1,12 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import type { CollectionItemPartial } from '@marvel-collector/types';
 
 import Comics from './Comics';
 import CollectionActions from './CollectionActions';
+import NewTradeOffer from './NewTradeOffer';
 import UseAlertStore from '@/store/store';
 import { getCurrentUserDetails, removeComic } from '@/api';
-import NewTradeOffer from './NewTradeOffer';
-import TComicItem from '@/types/comic';
 
 const ProfileCollection: React.FC = () => {
   const setAlert = UseAlertStore((state) => state.setAlert);
@@ -31,13 +31,15 @@ const ProfileCollection: React.FC = () => {
   });
   const [isEdit, setIsEdit] = useState(false);
   const [isTrade, setIsTrade] = useState(false);
-  const [activeComic, setActiveComic] = useState<TComicItem | null>(null);
+  const [activeComic, setActiveComic] = useState<CollectionItemPartial | null>(
+    null,
+  );
 
   const removeComicHandler = (id: number) => {
     removeComicMutation.mutate(id);
   };
 
-  const pickComicHandler = (pickedComic: TComicItem) => {
+  const pickComicHandler = (pickedComic: CollectionItemPartial) => {
     setActiveComic(pickedComic);
   };
 
@@ -64,8 +66,12 @@ const ProfileCollection: React.FC = () => {
   return (
     <>
       <section>
-        <h2 className="font-bold">Your Collection</h2>
-        {isTrade && <p>Please select a comic below</p>}
+        <h2 className="flex flex-col mb-8 font-bold">Your Collection</h2>
+        {isTrade && (
+          <p className="mb-3 text-center md:text-left">
+            Please select a comic below
+          </p>
+        )}
         <Comics
           // @ts-ignore
           userId={userData?.userId}
