@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useForm } from 'react-hook-form';
+import clsx from 'clsx';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 
@@ -9,18 +10,13 @@ import { TELEPHONE_REGEX } from '@/data/constants';
 
 const formSchema = z
   .object({
-    price: z.coerce.number().gte(1),
+    price: z.coerce.number().gte(1).or(z.literal('')),
     message: z.string().min(32),
-    email: z
-      .string()
-      .email()
-      .or(z.literal(''))
-      .transform((val) => (val === '' ? null : val)),
+    email: z.string().email().or(z.literal('')),
     phoneNumber: z
       .string()
       .regex(TELEPHONE_REGEX, 'Invalid telephone')
-      .or(z.literal(''))
-      .transform((val) => (val === '' ? null : val)),
+      .or(z.literal('')),
   })
   .refine((data) => data.phoneNumber || data.email, {
     path: ['email'],
@@ -39,16 +35,27 @@ const AddTradeForm: React.FC<Props> = ({ isExchange, isLoading, onSubmit }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<TFormSchema>({
     resolver: zodResolver(formSchema),
   });
+
+  // eslint-disable-next-line arrow-body-style
   const submitHandler = (data: TFormSchema) => {
-    if (isValid) {
-      return onSubmit(data);
+    const transformedData = { ...data };
+
+    // NOTE: Backend DOES NOT ACCEPT these values
+    // so therefore must be removed before data submission
+    if (transformedData.email === '') {
+      // @ts-ignore
+      delete transformedData.email;
+    }
+    if (transformedData.phoneNumber === '') {
+      // @ts-ignore
+      delete transformedData.email;
     }
 
-    return null;
+    return onSubmit(data);
   };
 
   return (
@@ -95,7 +102,10 @@ const AddTradeForm: React.FC<Props> = ({ isExchange, isLoading, onSubmit }) => {
         />
       )}
       <Button
-        className="w-64 max-w-full py-4 mx-auto my-8 text-base font-normal"
+        className={clsx(
+          'w-64 max-w-full py-4 mx-auto my-8 text-base font-normal',
+          { 'opacity-[.38]': isLoading },
+        )}
         type="submit"
         disabled={isLoading}
       >
