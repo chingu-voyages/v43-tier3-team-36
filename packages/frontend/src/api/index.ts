@@ -140,12 +140,12 @@ export const getComicBookCollectors = async (
 };
 
 export const getComicBookCollector = async (id: string): Promise<User> => {
-  const response = await fetch(`${SERVER_URL}/api/v1/collectors/${id}`, {
+  const response = await fetch(`${SERVER_URL}/api/v1/user/${id}/collection`, {
     method: 'GET',
     credentials: 'include',
   });
   const json = await response.json();
-  return json.data.users;
+  return json.data;
 };
 
 export const createTradeOffer = async (
