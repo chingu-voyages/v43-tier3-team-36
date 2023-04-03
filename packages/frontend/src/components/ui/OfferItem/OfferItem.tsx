@@ -36,7 +36,7 @@ export const OfferItem = ({
   };
 
   if (status === 'fulfilled') {
-    return <> </>;
+    return null;
   }
 
   return (
