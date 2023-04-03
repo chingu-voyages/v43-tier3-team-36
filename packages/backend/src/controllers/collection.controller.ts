@@ -155,7 +155,7 @@ export async function editByDeletingUserComic(req: Request, res: Response) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const deletedItem = await deleteCollectionItem(Number(comicId));
+    await deleteCollectionItem(Number(comicId));
 
     return res.status(200).json({
       status: 'success',
@@ -226,13 +226,13 @@ export async function createTradeOffers(req: Request, res: Response) {
           email: tradeOffer.email,
           phoneNumber: tradeOffer.phoneNumber,
         },
-        tradeOffer: tradeOffer.collection.map((item: any) => ({
-          collectionId: item.id,
-          comicId: item.comicId,
-          title: item.title,
-          imageUrl: item.imageUrl,
-          tradeOfferId: item.tradeOfferId,
-        })),
+        tradeOffer: {
+          collectionId: tradeOffer.collection[0].id,
+          comicId: tradeOffer.collection[0].comicId,
+          title: tradeOffer.collection[0].title,
+          imageUrl: tradeOffer.collection[0].imageUrl,
+          tradeOfferId: tradeOffer.collection[0].tradeOfferId,
+        },
       },
     });
   } catch (error) {
@@ -314,13 +314,13 @@ export async function viewTradeOffers(req: Request, res: Response) {
             email: tradeOffer.email,
             phoneNumber: tradeOffer.phoneNumber,
           },
-          tradeOffer: tradeOffer.collection.map((item: any) => ({
-            collectionId: item.id,
-            comicId: item.comicId,
-            title: item.title,
-            imageUrl: item.imageUrl,
-            tradeOfferId: item.tradeOfferId,
-          })),
+          tradeOffer: {
+            collectionId: tradeOffer.collection[0].id,
+            comicId: tradeOffer.collection[0].comicId,
+            title: tradeOffer.collection[0].title,
+            imageUrl: tradeOffer.collection[0].imageUrl,
+            tradeOfferId: tradeOffer.collection[0].tradeOfferId,
+          },
         })),
       },
     });
@@ -329,4 +329,3 @@ export async function viewTradeOffers(req: Request, res: Response) {
     res.status(500).send('Error fetching trade offers');
   }
 }
-
