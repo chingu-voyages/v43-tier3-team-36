@@ -56,7 +56,7 @@ const NewTradeOffer: React.FC<Props> = ({ comic, onClose }) => {
       title="Create Trade Offer"
       description="Fill in the details to create a listing for this comic"
       open
-      onClose={onClose}
+      onUnmount={onClose}
     >
       <div className="relative max-w-full mx-auto w-28 sm:w-36 md:w-44 lg:w-56 h-36 sm:h-44 md:h-48 lg:h-64">
         <Image src={comic.imageUrl || COMIC_FALLBACK} alt="" fill priority />
