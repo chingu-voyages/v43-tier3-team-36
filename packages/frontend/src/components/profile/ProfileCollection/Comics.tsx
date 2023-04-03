@@ -11,6 +11,7 @@ const COMIC_FALLBACK = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/
 type Props = {
   userId: string;
   isEdit: boolean;
+  onRemoveComic: (id: number) => void;
 };
 
 const Comics: React.FC<Props> = ({ userId, isEdit }) => {
@@ -21,14 +22,6 @@ const Comics: React.FC<Props> = ({ userId, isEdit }) => {
   } = useQuery(['user-comics'], {
     queryFn: () => getComicBookCollector(userId),
   });
-  // const mutation = useMutation(...);
-
-  const removeComicHandler = (id: number) => {
-    console.log(id);
-    // mutation.mutate(id, {
-    // mutateFn: deleteComicFromUserCollection(id)
-    // });
-  };
 
   if (isLoading) {
     // TODO: Replace with loader component
@@ -58,7 +51,7 @@ const Comics: React.FC<Props> = ({ userId, isEdit }) => {
             <button
               className="absolute top-3 right-2"
               type="button"
-              onClick={() => removeComicHandler(id)}
+              onClick={() => onRemoveComic(id)}
             >
               <Trash2 />
             </button>

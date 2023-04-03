@@ -43,6 +43,7 @@
     "cypress": "^12.8.1",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
+    "tailwind-merge": "^1.11.0",
     "typescript": "^5.0.2"
   }
 }

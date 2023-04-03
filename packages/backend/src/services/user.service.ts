@@ -52,6 +52,7 @@ export const findUserById = async (payload: UserPartial) => {
     where: {
       id: payload.id,
     },
+    include: { collection: true, tradeOffers: true },
   });
 
   return user;

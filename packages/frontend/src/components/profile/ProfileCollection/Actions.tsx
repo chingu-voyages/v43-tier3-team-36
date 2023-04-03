@@ -5,14 +5,16 @@ import { Button } from '@/components/ui';
 
 type Props = {
   onEdit: () => void;
+  disabled: boolean;
 };
 
-const Actions: React.FC<Props> = ({ onEdit }) => (
+const Actions: React.FC<Props> = ({ onEdit, disabled }) => (
   <div className="flex gap-x-2">
     <Button
       className="flex-row-reverse"
       variant="outlined"
       icon={<Edit2 />}
+      disabled={disabled}
       onClick={onEdit}
     >
       Edit
