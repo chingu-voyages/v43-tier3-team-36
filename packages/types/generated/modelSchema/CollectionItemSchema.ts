@@ -10,6 +10,7 @@ export const CollectionItemSchema = z.object({
   title: z.string(),
   imageUrl: z.string(),
   userId: z.string().nullable(),
+  tradeOfferId: z.string().nullable(),
 });
 
 export type CollectionItem = z.infer<typeof CollectionItemSchema>;

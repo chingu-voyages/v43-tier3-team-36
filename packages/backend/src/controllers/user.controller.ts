@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
-import { User, UserOptionalDefaults } from '@marvel-collector/types/generated/';
+import {
+  User,
+  UserOptionalDefaults,
+} from '@marvel-collector/types/generated/modelSchema/UserSchema';
 import {
   createUser,
   findUserByEmail,
