@@ -4,6 +4,7 @@ import { InputField } from '@/components/ui';
 import { NextPageWithLayout } from '../_app';
 import AuthLayout from '@/layouts/AuthLayout';
 import OfferList from '@/components/ui/OfferList/OfferList';
+import ExploreLayout from '@/layouts/ExploreLayout';
 
 const Offers: NextPageWithLayout = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,7 +34,9 @@ Offers.getLayout = function getLayout(page: ReactElement) {
         },
       }}
     >
-      {page}
+      <ExploreLayout>{page}</ExploreLayout>
     </AuthLayout>
   );
 };
+
+export default Offers;
