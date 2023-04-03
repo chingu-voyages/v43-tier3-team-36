@@ -329,3 +329,4 @@ export async function viewTradeOffers(req: Request, res: Response) {
     res.status(500).send('Error fetching trade offers');
   }
 }
+
