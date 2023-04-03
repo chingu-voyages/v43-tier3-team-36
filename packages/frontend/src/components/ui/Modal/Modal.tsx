@@ -26,19 +26,38 @@ export interface ModalProps {
    * CSS Classes
    */
   className?: string;
+  /**
+   * Callback after component has been unmounted
+   */
+  onUnmount?: () => void;
 }
 
 export const Modal: ForwardRefExoticComponent<
-ModalProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
+ModalProps &
+Omit<DialogProps<'div'>, 'onClose'> &
+RefAttributes<HTMLDivElement>
 > = forwardRef(
   ({
-    children, title, description, open, className, ...rest
+    children, title, description, className, onUnmount, ...rest
   }, ref) => {
-    const [isOpen, setIsOpen] = useState(open);
+    const [isOpen, setIsOpen] = useState(true);
 
     return (
-      <Transition.Root show={open} as={Fragment}>
-        <Dialog ref={ref} open={isOpen} className="relative z-10" {...rest}>
+      <Transition.Root show={isOpen} as={Fragment}>
+        {/* @ts-ignore */}
+        <Dialog
+          ref={ref}
+          className="relative z-10"
+          unmount={isOpen}
+          static
+          onClose={() => {
+            setIsOpen(false);
+            if (typeof onUnmount === 'function') {
+              onUnmount();
+            }
+          }}
+          {...rest}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -48,12 +67,12 @@ ModalProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" />
+            <div className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-75" />
           </Transition.Child>
 
           <div className="fixed inset-0 z-10 overflow-y-auto">
             <div
-              className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+              className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0"
               onClick={() => setIsOpen(false)}
             >
               <Transition.Child
@@ -73,7 +92,7 @@ ModalProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
                     className,
                   )}
                 >
-                  <div className="relative bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="relative px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
                     <button
                       className="absolute top-3 right-4"
                       type="button"
@@ -85,13 +104,13 @@ ModalProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <Dialog.Title
                           as="h3"
-                          className="font-bold tracking-tight text-black-900 text-2xl"
+                          className="text-2xl font-bold tracking-tight text-black-900"
                         >
                           {title}
                         </Dialog.Title>
                         {description ? (
                           <div className="mt-2">
-                            <p className="text-md text-gray-500">
+                            <p className="text-gray-500 text-md">
                               {description}
                             </p>
                           </div>
@@ -99,7 +118,7 @@ ModalProps & DialogProps<'div'> & RefAttributes<HTMLDivElement>
                       </div>
                     </div>
                   </div>
-                  <div className="py-0 px-4">{children}</div>
+                  <div className="px-4 py-0">{children}</div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
