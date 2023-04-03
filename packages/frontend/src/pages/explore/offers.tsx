@@ -1,27 +1,10 @@
-import { ReactElement, useState } from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { InputField } from '@/components/ui';
+import { ReactElement } from 'react';
 import { NextPageWithLayout } from '../_app';
 import AuthLayout from '@/layouts/AuthLayout';
-import OfferList from '@/components/ui/OfferList/OfferList';
 import ExploreLayout from '@/layouts/ExploreLayout';
+import ExploreOffers from '@/components/explore/ExploreCollectors/ExploreOffers';
 
-const Offers: NextPageWithLayout = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const handleChange = (inputValue: string) => setSearchQuery(inputValue);
-  return (
-    <section className="my-6 md:my-8">
-      <InputField
-        placeholder="Search for a comic book offer"
-        Icon={<MagnifyingGlassIcon className="h-5 w-5 text-grey-800" />}
-        fullWidth
-        value={searchQuery}
-        onChange={handleChange}
-      />
-      <OfferList />
-    </section>
-  );
-};
+const Offers: NextPageWithLayout = () => <ExploreOffers />;
 
 Offers.getLayout = function getLayout(page: ReactElement) {
   return (
