@@ -6,12 +6,13 @@ import { useForm } from 'react-hook-form';
 
 import { ReactElement } from 'react';
 import { Button } from '@/components/ui';
-import FormField from '@/components/auth/FormField/FormField';
+import FormField from '@/components/common/FormField/FormField';
 import { login } from '@/api';
 import UseAlertStore from '@/store/store';
 import { NextPageWithLayout } from './_app';
 import Layout from '@/layouts/Layout';
 
+// TODO: Refactor page + components
 const Login: NextPageWithLayout = () => {
   const setAlert = UseAlertStore((state: any) => state.setAlert);
 
@@ -21,7 +22,12 @@ const Login: NextPageWithLayout = () => {
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
 
   const LogUserMutation = useMutation({
     mutationFn: login,
@@ -44,7 +50,7 @@ const Login: NextPageWithLayout = () => {
   };
 
   return (
-    <section className="h-screen px-4 flex flex-col justify-center items-center">
+    <section className="flex flex-col items-center justify-center h-screen px-4">
       <article className="w-full max-w-[500px] mx-auto p-10 border-[1px] rounded-lg text-sm">
         <div className="mb-8">
           <h1 className="text-2xl font-bold">Log in</h1>
@@ -62,7 +68,7 @@ const Login: NextPageWithLayout = () => {
                 message: 'Username should be more than 1 character',
               },
             }}
-            error={errors}
+            error={errors.username}
           />
           <FormField
             id="password"
@@ -77,7 +83,7 @@ const Login: NextPageWithLayout = () => {
                 message: 'Password should be at-least 6 characters.',
               },
             }}
-            error={errors}
+            error={errors.password}
           />
           <Button
             className="w-full py-4 my-8 text-base font-normal"

@@ -1,4 +1,8 @@
-import type { User, CollectionItemPartial } from '@marvel-collector/types';
+import type {
+  User,
+  CollectionItemPartial,
+  TradeOfferPartial,
+} from '@marvel-collector/types';
 
 import type TComicType from '@/types/comic';
 
@@ -136,10 +140,28 @@ export const getComicBookCollectors = async (
 };
 
 export const getComicBookCollector = async (id: string): Promise<User> => {
-  const response = await fetch(`${SERVER_URL}/api/v1/collectors/${id}`, {
+  const response = await fetch(`${SERVER_URL}/api/v1/user/${id}/collection`, {
     method: 'GET',
     credentials: 'include',
   });
   const json = await response.json();
-  return json.data.users;
+  return json.data;
+};
+
+export const createTradeOffer = async (
+  data: TradeOfferPartial,
+): Promise<string> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/user/trade-offer`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json();
+
+  if (json.error) throw new Error(json.error);
+
+  return json.message;
 };

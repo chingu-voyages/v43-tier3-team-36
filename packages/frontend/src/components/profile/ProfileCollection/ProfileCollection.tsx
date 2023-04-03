@@ -1,8 +1,10 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import type { CollectionItemPartial } from '@marvel-collector/types';
 
 import Comics from './Comics';
-import Actions from './Actions';
+import CollectionActions from './CollectionActions';
+import NewTradeOffer from './NewTradeOffer';
 import UseAlertStore from '@/store/store';
 import { getCurrentUserDetails, removeComic } from '@/api';
 
@@ -28,13 +30,25 @@ const ProfileCollection: React.FC = () => {
     },
   });
   const [isEdit, setIsEdit] = useState(false);
+  const [isTrade, setIsTrade] = useState(false);
+  const [activeComic, setActiveComic] = useState<CollectionItemPartial | null>(
+    null,
+  );
 
   const removeComicHandler = (id: number) => {
     removeComicMutation.mutate(id);
   };
 
+  const pickComicHandler = (pickedComic: CollectionItemPartial) => {
+    setActiveComic(pickedComic);
+  };
+
   const toggleEditHandler = () => {
     setIsEdit((prevState) => !prevState);
+  };
+
+  const toggleTradeHandler = () => {
+    setIsTrade((prevState) => !prevState);
   };
 
   if (isLoading) {
@@ -50,16 +64,36 @@ const ProfileCollection: React.FC = () => {
   const disableActions = removeComicMutation.isLoading;
 
   return (
-    <section>
-      <h2 className="font-bold">Your Collection</h2>
-      {/* @ts-ignore */}
-      <Comics
-        userId={userData.userId}
-        isEdit={isEdit}
-        onRemoveComic={removeComicHandler}
-      />
-      <Actions disabled={disableActions} onEdit={toggleEditHandler} />
-    </section>
+    <>
+      <section>
+        <h2 className="flex flex-col mb-8 font-bold">Your Collection</h2>
+        {isTrade && (
+          <p className="mb-3 text-center md:text-left">
+            Please select a comic below
+          </p>
+        )}
+        <Comics
+          // @ts-ignore
+          userId={userData?.userId}
+          isEdit={isEdit}
+          isPick={isTrade}
+          onRemoveComic={removeComicHandler}
+          onPickComic={pickComicHandler}
+        />
+        <CollectionActions
+          disabled={disableActions}
+          onEdit={toggleEditHandler}
+          onTrade={toggleTradeHandler}
+        />
+      </section>
+      {activeComic ? (
+        <NewTradeOffer
+          key={activeComic.id}
+          comic={activeComic}
+          onClose={() => setActiveComic(null)}
+        />
+      ) : null}
+    </>
   );
 };
 
