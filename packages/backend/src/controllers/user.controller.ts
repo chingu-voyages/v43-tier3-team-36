@@ -95,13 +95,13 @@ export const currentUser = async (req: Request, res: Response) => {
             email: tradeOffer.email,
             phoneNumber: tradeOffer.phoneNumber,
           },
-          tradeOfferItems: tradeOffer.collection.map((item: any) => ({
-            collectionId: item.id,
-            comicId: item.comicId,
-            title: item.title,
-            imageUrl: item.imageUrl,
-            tradeOfferId: item.tradeOfferId,
-          })),
+          tradeOfferItems: {
+            collectionId: tradeOffer.collection[0].id,
+            comicId: tradeOffer.collection[0].comicId,
+            title: tradeOffer.collection[0].title,
+            imageUrl: tradeOffer.collection[0].imageUrl,
+            tradeOfferId: tradeOffer.collection[0].tradeOfferId,
+          },
         })),
       },
     });

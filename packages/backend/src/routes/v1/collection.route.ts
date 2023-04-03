@@ -15,6 +15,7 @@ import {
 } from '../../utils/customValidation';
 
 const router = Router();
+
 router.post(
   '/user/collection',
   isLoggedIn,
