@@ -6088,6 +6088,7 @@ __metadata:
     react-dom: 18.2.0
     react-hook-form: ^7.43.7
     string-to-color: ^2.2.2
+    tailwind-merge: ^1.11.0
     tailwindcss: ^3.2.7
     typescript: ^5.0.2
     zod: ^3.21.4
@@ -12000,6 +12001,13 @@ __metadata:
     "@pkgr/utils": ^2.3.1
     tslib: ^2.5.0
   checksum: 8a9560e5d8f3d94dc3cf5f7b9c83490ffa30d320093560a37b88f59483040771fd1750e76b9939abfbb1b5a23fd6dfbae77f6b338abffe7cae7329cd9b9bb86b
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "tailwind-merge@npm:1.11.0"
+  checksum: f106dad1c05c51bb0f884bef297d5796820ca905369f0b365c478da7bc773fb85f00f84ff1587ab49eb33ec507d9009b81c49ca19d00e887028dc64548c31296
   languageName: node
   linkType: hard
 

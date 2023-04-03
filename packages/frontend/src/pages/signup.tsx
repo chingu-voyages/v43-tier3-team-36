@@ -13,8 +13,7 @@ import { NextPageWithLayout } from './_app';
 import Layout from '@/layouts/Layout';
 
 const Signup: NextPageWithLayout = () => {
-  const setAlert = UseAlertStore((state: any) => state.setAlert);
-  const resetAlert = UseAlertStore((state: any) => state.resetAlert);
+  const setAlert = UseAlertStore((state) => state.setAlert);
 
   const router = useRouter();
 
@@ -39,7 +38,6 @@ const Signup: NextPageWithLayout = () => {
   });
 
   const onSubmit = async (data: any) => {
-    resetAlert();
     if (isValid) {
       NewUserMutation.mutate(data);
     }
@@ -141,16 +139,16 @@ const Signup: NextPageWithLayout = () => {
 
 Signup.getLayout = function getLayout(page: ReactElement) {
   return (
-    <Layout seo={{
-      title: 'Profile',
-      meta: {
-        description:
-          'A profile of your recent activity and trades, and as well as your current digital comics collection',
-      },
-    }}
+    <Layout
+      seo={{
+        title: 'Profile',
+        meta: {
+          description:
+            'A profile of your recent activity and trades, and as well as your current digital comics collection',
+        },
+      }}
     >
       {page}
-
     </Layout>
   );
 };
