@@ -1,61 +1,82 @@
-import { OfferItem, IOfferList } from '@/components/ui/OfferItem/OfferItem';
+import { OfferItem, IOfferItem } from '@/components/ui/OfferItem/OfferItem';
 
-const DUMMY_OFFERS: IOfferList[] = [
+const DUMMY_OFFERS: IOfferItem[] = [
   {
-    comicId: 'marv-58',
-    comicName: 'Marvel Wolverine',
-    imageUrl:
-      'https://cdn.marvel.com/u/prod/marvel/i/mg/3/60/6227804f029af/clean.jpg',
-    issue: 7,
-    createdBy: 'yourstruly',
-    createdOn: '15/04/23',
-    type: 'exg',
+    type: 'BUY',
+    status: 'pending',
+    price: 405,
+    createdAt: '15/03/23',
+    createdBy: {
+      userId: 'aibds-52nsio-78',
+      username: 'yourstruly',
+    },
+    tradeOffer: {
+      comicId: 'marv-wyu-90-rs89',
+      title: 'Marvel Wolverine',
+    },
   },
   {
-    comicId: 'marv-22',
-    comicName: 'Marvel Wolverine',
-    imageUrl:
-      'https://cdn.marvel.com/u/prod/marvel/i/mg/3/60/6227804f029af/clean.jpg',
-    issue: 7,
-    createdBy: 'yourstruly',
-    createdOn: '15/04/23',
-    type: 'exg',
+    type: 'EXCHANGE',
+    status: 'pending',
+    price: 45,
+    createdAt: '16/03/23',
+    createdBy: {
+      userId: 'aibds-52nsio-78',
+      username: 'yourstruly',
+    },
+    tradeOffer: {
+      comicId: 'marv-hav-76-ky78',
+      title: 'Marvel Wolverine',
+    },
   },
   {
-    comicId: 'marv-76',
-    comicName: 'Marvel Wolverine',
-    imageUrl:
-      'https://cdn.marvel.com/u/prod/marvel/i/mg/3/60/6227804f029af/clean.jpg',
-    issue: 7,
-    createdBy: 'yourstruly',
-    createdOn: '15/04/23',
-    type: 'sell',
+    type: 'EXCHANGE',
+    status: 'pending',
+    price: 725,
+    createdAt: '01/02/23',
+    createdBy: {
+      userId: 'aibds-52nsio-78',
+      username: 'yourstruly',
+    },
+    tradeOffer: {
+      comicId: 'marv-hav-30-cy42',
+      title: 'Marvel Wolverine',
+    },
   },
   {
-    comicId: 'marv-50',
-    comicName: 'Marvel Wolverine',
-    imageUrl:
-      'https://cdn.marvel.com/u/prod/marvel/i/mg/3/60/6227804f029af/clean.jpg',
-    issue: 7,
-    createdBy: 'yourstruly',
-    createdOn: '15/04/23',
-    type: 'exg',
+    type: 'BUY',
+    status: 'pending',
+    price: 315,
+    createdAt: '25/01/23',
+    createdBy: {
+      userId: 'aibds-52nsio-78',
+      username: 'yourstruly',
+    },
+    tradeOffer: {
+      comicId: 'marv-hav-15-fz44',
+      title: 'Marvel Wolverine',
+    },
   },
   {
-    comicId: 'marv-5',
-    comicName: 'Marvel Wolverine',
-    imageUrl:
-      'https://cdn.marvel.com/u/prod/marvel/i/mg/3/60/6227804f029af/clean.jpg',
-    issue: 7,
-    createdBy: 'yourstruly',
-    createdOn: '15/04/23',
-    type: 'sell',
+    type: 'BUY',
+    status: 'pending',
+    price: 20,
+    createdAt: '12/02/23',
+    createdBy: {
+      userId: 'aibds-52nsio-78',
+      username: 'yourstruly',
+    },
+    tradeOffer: {
+      comicId: 'marv-hav-94-nx93',
+      title: 'Marvel Wolverine',
+    },
   },
 ];
 
 const HEADINGS = [
   '#',
   'comic book',
+  'price',
   'comic issue',
   'created time',
   'collector',
@@ -63,7 +84,7 @@ const HEADINGS = [
 ];
 
 const OfferListHeadings = () => (
-  <div className="hidden md:grid md:grid-cols-[minmax(0,_50px)_4fr_minmax(0,_2fr)_minmax(0,_2fr)_minmax(0,_2fr)_minmax(0,_1fr)] px-4 md:px-6 ">
+  <div className="hidden md:grid md:grid-cols-[minmax(0,_50px)_4fr_minmax(0,_2fr)_minmax(0,_2fr)_minmax(0,_2fr)_minmax(0,_2fr)_minmax(0,_1fr)] px-4 md:px-6 ">
     {HEADINGS.map((heading, index) => (
       <span
         key={`heading-${index + 1}`}
@@ -81,13 +102,12 @@ const OfferList = () => (
     {DUMMY_OFFERS.map((offer, index) => (
       <OfferItem
         index={index + 1}
-        key={offer.comicId}
-        comicName={offer.comicName}
-        imageUrl={offer.imageUrl}
-        issue={offer.issue}
-        createdBy={offer.createdBy}
-        createdOn={offer.createdOn}
+        key={offer.tradeOffer.comicId}
         type={offer.type}
+        price={offer.price}
+        tradeOffer={offer.tradeOffer}
+        createdBy={offer.createdBy}
+        createdAt={offer.createdAt}
       />
     ))}
   </section>
