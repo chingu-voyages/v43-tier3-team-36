@@ -52,7 +52,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "CollectionItem_comicId_key" ON "CollectionItem"("comicId");
+CREATE UNIQUE INDEX "CollectionItem_comicId_userId_key" ON "CollectionItem"("comicId", "userId");
 
 -- AddForeignKey
 ALTER TABLE "CollectionItem" ADD CONSTRAINT "CollectionItem_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

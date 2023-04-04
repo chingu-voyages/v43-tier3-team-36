@@ -6,10 +6,12 @@ export const ComicList = ({
   comics,
   isLoading,
   onAddComic,
+  onViewComic,
 }: {
   comics: TComicItem[];
   isLoading: boolean;
   onAddComic: (comic: TComicItem) => void;
+  onViewComic: (comic: TComicItem) => void;
 }) => {
   const addComicHandler = (comic: TComicItem) => {
     onAddComic(comic);
@@ -31,6 +33,7 @@ export const ComicList = ({
           }}
           withBorder
           onAddComic={() => addComicHandler(comic)}
+          onViewComic={() => onViewComic?.(comic)}
         />
       ))}
     </div>

@@ -8,6 +8,7 @@ import {
   findUserByEmail,
   findUserById,
   findUserByUsername,
+  findUsersWithComic,
 } from '../services/user.service';
 import { hashPassword } from '../utils/hashPassword';
 import { viewUserTradeOffers } from '../services/collection.service';
@@ -17,9 +18,7 @@ export const register = async (
   res: Response,
 ) => {
   try {
-    const {
-      username, password, firstName, email, lastName,
-    } = req.body;
+    const { username, password, firstName, email, lastName } = req.body;
     const findUser = await findUserByUsername({ username });
     if (findUser) {
       return res.status(400).json({ message: 'username already taken' });
@@ -52,7 +51,8 @@ export const register = async (
 
 // eslint-disable-next-line max-len
 
-export const login = async (req: Request, res: Response) => res.status(200).json({ message: 'Login successful' });
+export const login = async (req: Request, res: Response) =>
+  res.status(200).json({ message: 'Login successful' });
 
 export const logout = async (req: Request, res: Response) => {
   req.logOut((error) => {
@@ -160,4 +160,11 @@ export const fetchUser = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(400).json(error);
   }
+};
+
+export const getUsersWithComicId = async (req: Request, res: Response) => {
+  const { comicId } = req.params;
+  const usersWithComic = await findUsersWithComic(Number(comicId));
+
+  res.status(200).send(usersWithComic || []);
 };

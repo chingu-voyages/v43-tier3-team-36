@@ -170,9 +170,7 @@ export async function editByDeletingUserComic(req: Request, res: Response) {
 // Creating trade offers
 
 export async function createTradeOffers(req: Request, res: Response) {
-  const {
-    type, comicId, phoneNumber, email, price, message,
-  } = req.body;
+  const { type, comicId, phoneNumber, email, price, message } = req.body;
   const { id } = req.user as User;
 
   try {

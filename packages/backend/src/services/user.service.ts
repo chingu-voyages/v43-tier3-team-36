@@ -11,15 +11,16 @@ export const createUser = (
   username: string,
   password: string,
   email: string,
-) => prisma.user.create({
-  data: {
-    firstName,
-    lastName,
-    username,
-    password,
-    email,
-  },
-});
+) =>
+  prisma.user.create({
+    data: {
+      firstName,
+      lastName,
+      username,
+      password,
+      email,
+    },
+  });
 
 export const findUserByUsername = async (payload: UserPartial) => {
   const user = await prisma.user.findUnique({
@@ -56,4 +57,15 @@ export const findUserById = async (payload: UserPartial) => {
   });
 
   return user;
+};
+
+export const findUsersWithComic = async (comicId: number) => {
+  const users = await prisma.collectionItem.findMany({
+    where: {
+      comicId,
+    },
+    include: { user: true },
+  });
+
+  return users;
 };

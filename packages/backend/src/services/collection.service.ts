@@ -11,8 +11,8 @@ export const createCollectionItem = async (
   comicId: number,
   title: string,
   imageUrl: string,
-) =>
-  prisma.collectionItem.create({
+) => {
+  return prisma.collectionItem.create({
     data: {
       comicId,
       title,
@@ -22,6 +22,7 @@ export const createCollectionItem = async (
       },
     },
   });
+};
 
 export const existingComicInCollection = async (
   comicId: number,
@@ -123,7 +124,6 @@ export const deleteTradeOfferByTradeOfferId = async (tradeOfferId: string) =>
   prisma.tradeOffer.delete({
     where: { id: tradeOfferId },
   });
-
 
 export const viewUserTradeOffers = async (id: string) =>
   prisma.tradeOffer.findMany({

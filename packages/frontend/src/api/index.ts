@@ -2,6 +2,7 @@ import type {
   User,
   CollectionItemPartial,
   TradeOfferPartial,
+  CollectionItem,
 } from '@marvel-collector/types';
 
 import type TComicType from '@/types/comic';
@@ -164,4 +165,10 @@ export const createTradeOffer = async (
   if (json.error) throw new Error(json.error);
 
   return json.message;
+};
+
+export const getUsersWithComic = async (comicId: number) => {
+  const res = await fetch(`${SERVER_URL}/api/v1/users/comic/${comicId}`);
+  const json: Array<CollectionItem & { user: User }> = await res.json();
+  return json;
 };
