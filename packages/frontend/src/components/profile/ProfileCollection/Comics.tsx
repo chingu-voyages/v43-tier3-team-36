@@ -1,52 +1,73 @@
-/* eslint-disable arrow-body-style */
 import Image from 'next/image';
+import { useQuery } from '@tanstack/react-query';
+import clsx from 'clsx';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { twMerge } from 'tailwind-merge';
 import { Trash2 } from 'lucide-react';
+import type { CollectionItemPartial } from '@marvel-collector/types';
 
-type Comic = {
-  comicId: string;
-  title: string;
-  imageUrl: string;
-};
-
-const DUMMY_COMICS: Comic[] = [
-  {
-    comicId: '32',
-    title: 'Spiderman',
-    imageUrl:
-      'https://imgs.search.brave.com/5wkHrmwhzbfOupHFbhzMRPyHl5-VMi_D2aFV-HCE3Jo/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly9pLmFu/bmloaWwudXMvdS9w/cm9kL21hcnZlbC9p/L21nLzMvNjAvNTdl/OTY0MjJiMzRhMy9j/bGVhbi5qcGc',
-  },
-];
+import { getComicBookCollector } from '@/api';
+import { COMIC_FALLBACK } from '@/data/constants';
 
 type Props = {
+  userId: string;
   isEdit: boolean;
+  isPick: boolean;
+  onRemoveComic: (id: number) => void;
+  onPickComic: (comic: CollectionItemPartial) => void;
 };
 
-const Comics: React.FC<Props> = ({ isEdit }) => {
-  // const {data: comicsData} = useQuery(...);
-  // const mutation = useMutation(...);
+const Comics: React.FC<Props> = ({
+  userId,
+  isEdit,
+  isPick,
+  onRemoveComic,
+  onPickComic,
+}) => {
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery(['user-comics', userId], {
+    queryFn: () => getComicBookCollector(userId),
+    enabled: !!userId,
+  });
 
-  const removeComicHandler = (id: string) => {
-    // mutation.mutate(id, {
-    // mutateFn: deleteComicFromUserCollection(id)
-    // });
-  };
+  if (isLoading) {
+    // TODO: Replace with loader component
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    // TODO: Replace with alert/error component
+    return <span>Failed to retrieve comics!</span>;
+  }
 
   return (
-    <div>
-      {DUMMY_COMICS.map(({ comicId, imageUrl }) => (
-        <div className="relative max-width-full w-max">
+    <div className="grid grid-cols-3 px-2 py-5 mb-6 overflow-x-auto border lg:grid-cols-none lg:grid-flow-col justify-items-center gap-y-5 lg:gap-x-2 md:py-11 md:px-8 bg-neutral-100 border-zinc-200 rounded-xl">
+      {/* @ts-ignore */}
+      {userData?.collection.map((comic: CollectionItemPartial) => (
+        <div
+          key={comic.id}
+          className={twMerge(
+            clsx(
+              'relative w-28 sm:w-36 md:w-44 lg:w-56 h-36 sm:h-44 md:h-48 lg:h-64 max-w-full',
+              { 'hover:ring-4': isPick },
+            ),
+          )}
+        >
           <Image
-            className={isEdit ? 'opacity-75' : ''}
-            src={imageUrl}
+            className={clsx({ 'opacity-75': isEdit })}
+            src={comic.imageUrl || COMIC_FALLBACK}
             alt=""
-            width={320}
-            height={520}
+            fill
+            onClick={isPick ? () => onPickComic(comic) : undefined}
           />
           {isEdit && (
             <button
               className="absolute top-3 right-2"
               type="button"
-              onClick={() => removeComicHandler(comicId)}
+              onClick={() => onRemoveComic(comic.comicId as number)}
             >
               <Trash2 />
             </button>

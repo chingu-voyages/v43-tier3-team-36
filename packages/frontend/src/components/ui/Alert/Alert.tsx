@@ -1,27 +1,18 @@
-export interface IAlert {
-  type: string;
-  message: string;
-}
+import { TAlertType } from '@/store/store';
 
 type AlertProps = {
-  type: string;
+  type: TAlertType;
   message: string;
   icon?: React.ReactNode;
 };
 
-type AlertVariants = {
-  [type: string]: string;
-  error: string;
-  success: string;
-};
-
-const variants: AlertVariants = {
+const variants: { [key in TAlertType]: string } = {
   error: 'border-red-700 bg-red-200',
   success: 'border-green-700 bg-green-200',
 };
 
 export const Alert = ({ type, message, icon }: AlertProps) => (
-  <section className="absolute top-8 left-0 w-full flex justify-center animate-slide-in">
+  <section className="w-full flex justify-center animate-slide-in">
     <article
       className={`${variants[type]} flex items-center px-3 py-2 rounded-lg border-2 absolute 3em`}
     >
@@ -36,3 +27,5 @@ export const Alert = ({ type, message, icon }: AlertProps) => (
     </article>
   </section>
 );
+
+export default Alert;

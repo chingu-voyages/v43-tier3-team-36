@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const ExploreNavbar: React.FC = () => {
+const Navigation: React.FC = () => {
   const { pathname } = useRouter();
 
   return (
@@ -44,4 +44,4 @@ const ExploreNavbar: React.FC = () => {
   );
 };
 
-export default ExploreNavbar;
+export default Navigation;

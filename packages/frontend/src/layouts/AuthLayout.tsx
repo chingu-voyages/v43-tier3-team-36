@@ -83,7 +83,7 @@ const Navigation: React.FC = () => {
 const AuthLayout: React.FC<LayoutProps> = ({ children, seo }) => (
   <>
     <SEO {...seo} />
-    <div className="relative min-h-screen">
+    <div className="h-full min-h-screen">
       <AlertPopup />
       <Navigation />
       {children}
