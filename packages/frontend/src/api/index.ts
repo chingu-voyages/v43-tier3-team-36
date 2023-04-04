@@ -165,3 +165,17 @@ export const createTradeOffer = async (
 
   return json.message;
 };
+
+export const getTradeOffers = async () => {
+  const res = await fetch(`${SERVER_URL}/api/vi/trade-offers`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error();
+  }
+
+  const data = await res.json();
+  return data.data.tradeOffers;
+};
