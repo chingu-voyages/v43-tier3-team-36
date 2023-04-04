@@ -12,7 +12,7 @@ const variants: { [key in TAlertType]: string } = {
 };
 
 export const Alert = ({ type, message, icon }: AlertProps) => (
-  <section className="absolute top-8 left-0 w-full flex justify-center animate-slide-in">
+  <section className="w-full flex justify-center animate-slide-in">
     <article
       className={`${variants[type]} flex items-center px-3 py-2 rounded-lg border-2 absolute 3em`}
     >
