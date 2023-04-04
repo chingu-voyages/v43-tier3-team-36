@@ -107,6 +107,8 @@ const Offers = ({ onProfile }: Props) => {
     queryFn: getTradeOffers,
   });
 
+  // handle loading states w ui
+
   return (
     <section className="my-8">
       {onProfile ? null : <OfferListHeadings />}
