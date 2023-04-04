@@ -32,6 +32,14 @@ module.exports = {
             transform: 'translateY(-100%)',
           },
         },
+        'loading-spin': {
+          '0%': { strokeDashoffset: '306' },
+          '50%': { strokeDasharray: '40, 134' },
+          '100%': {
+            strokeDasharray: '1, 174',
+            strokeDashoffset: '132',
+          },
+        },
       },
     },
   },

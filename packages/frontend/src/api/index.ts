@@ -172,3 +172,17 @@ export const getUsersWithComic = async (comicId: number) => {
   const json: Array<CollectionItem & { user: User }> = await res.json();
   return json;
 };
+
+export const getTradeOffers = async () => {
+  const res = await fetch(`${SERVER_URL}/api/vi/trade-offers`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error();
+  }
+
+  const data = await res.json();
+  return data.data.tradeOffers;
+};
