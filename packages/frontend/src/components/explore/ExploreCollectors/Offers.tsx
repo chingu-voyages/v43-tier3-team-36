@@ -1,82 +1,10 @@
+import { useQuery } from '@tanstack/react-query';
+import { getTradeOffers } from '@/api';
 import { IOfferItem, OfferItem } from '@/components/common/OfferItem/OfferItem';
 
 type Props = {
-  offers?: IOfferItem[];
   onProfile?: boolean;
 };
-
-const DUMMY_OFFERS: IOfferItem[] = [
-  {
-    type: 'BUY',
-    status: 'pending',
-    price: 405,
-    createdAt: '15/03/23',
-    createdBy: {
-      userId: 'aibds-52nsio-78',
-      username: 'yourstruly',
-    },
-    tradeOffer: {
-      comicId: 'marv-wyu-90-rs89',
-      title: 'Marvel Wolverine',
-    },
-  },
-  {
-    type: 'EXCHANGE',
-    status: 'pending',
-    price: 45,
-    createdAt: '16/03/23',
-    createdBy: {
-      userId: 'aibds-52nsio-78',
-      username: 'yourstruly',
-    },
-    tradeOffer: {
-      comicId: 'marv-hav-76-ky78',
-      title: 'Marvel Wolverine',
-    },
-  },
-  {
-    type: 'EXCHANGE',
-    status: 'pending',
-    price: 725,
-    createdAt: '01/02/23',
-    createdBy: {
-      userId: 'aibds-52nsio-78',
-      username: 'yourstruly',
-    },
-    tradeOffer: {
-      comicId: 'marv-hav-30-cy42',
-      title: 'Marvel Wolverine',
-    },
-  },
-  {
-    type: 'BUY',
-    status: 'pending',
-    price: 315,
-    createdAt: '25/01/23',
-    createdBy: {
-      userId: 'aibds-52nsio-78',
-      username: 'yourstruly',
-    },
-    tradeOffer: {
-      comicId: 'marv-hav-15-fz44',
-      title: 'Marvel Wolverine',
-    },
-  },
-  {
-    type: 'BUY',
-    status: 'pending',
-    price: 20,
-    createdAt: '12/02/23',
-    createdBy: {
-      userId: 'aibds-52nsio-78',
-      username: 'yourstruly',
-    },
-    tradeOffer: {
-      comicId: 'marv-hav-94-nx93',
-      title: 'Marvel Wolverine',
-    },
-  },
-];
 
 const HEADINGS = [
   '#',
@@ -101,15 +29,19 @@ const OfferListHeadings = () => (
   </div>
 );
 
-const Offers = ({ offers, onProfile }: Props) => {
-  const offersData = offers || DUMMY_OFFERS;
+const Offers = ({ onProfile }: Props) => {
+  const { data } = useQuery(['trade-offers'], {
+    queryFn: getTradeOffers,
+  });
+
+  // handle loading states w ui
 
   return (
     <section className="my-8">
       {onProfile ? null : <OfferListHeadings />}
 
       {/* map dummy offers for now */}
-      {offersData.map((offer, index) => (
+      {data.map((offer: IOfferItem, index: number) => (
         <OfferItem
           index={index + 1}
           key={offer.tradeOffer.comicId}
