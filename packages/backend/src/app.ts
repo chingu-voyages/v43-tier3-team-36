@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/no-extraneous-dependencies */
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
@@ -5,6 +7,7 @@ import passport from 'passport';
 import session from 'express-session';
 import * as dotenv from 'dotenv';
 import morgan from 'morgan';
+import Pusher from 'pusher';
 import API from './routes';
 import usePassportLocal from './utils/passportLocal';
 
@@ -21,6 +24,16 @@ app.use(
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   }),
 );
+
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID || '',
+  key: process.env.PUSHER_APP_KEY || '',
+  secret: process.env.PUSHER_APP_SECRET || '',
+  cluster: process.env.PUSHER_APP_CLUSTER || '',
+  useTLS: true,
+});
+
+export { pusher };
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

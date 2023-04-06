@@ -61,3 +61,18 @@ export const TradeOfferSchema = z.object({
     message: z.string().optional(),
   }),
 });
+
+export const TradeRequestSchema = z.object({
+  body: z.object({
+    receiverComicId: z
+      .number({
+        required_error: 'ComicId is required',
+        invalid_type_error: 'ComicId must be a number',
+      })
+      .optional(),
+    tradeOfferId: z.string({
+      required_error: 'tradeOfferId is required',
+      invalid_type_error: 'tradeOfferId must be a string',
+    }),
+  }),
+});
