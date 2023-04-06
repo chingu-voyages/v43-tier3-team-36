@@ -2,7 +2,15 @@ import { Switch } from '@headlessui/react';
 import clsx from 'clsx';
 
 export interface SwitchProps {
+  /**
+   * the boolean state the switch is controlling
+   */
   ctrlState: boolean;
+
+  /**
+   *
+   * @returns nth; the function that changes the ctrl state
+   */
   setCtrlState: () => void;
   srLabel: string;
 }
