@@ -26,3 +26,24 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
 import '@testing-library/cypress/add-commands';
+
+Cypress.Commands.add('login', (username, password) => {
+  cy.session(
+    [username, password],
+    () => {
+      cy.request({
+        method: 'POST',
+        url: `${Cypress.env('serverUrl')}/api/v1/login`,
+        body: {
+          username,
+          password,
+        },
+      });
+    },
+    {
+      validate() {
+        cy.visit('/profile');
+      },
+    },
+  );
+});
