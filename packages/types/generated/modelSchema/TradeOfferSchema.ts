@@ -15,6 +15,7 @@ export const TradeOfferSchema = z.object({
   phoneNumber: z.string().nullable(),
   email: z.string().nullable(),
   message: z.string().nullable(),
+  wantedComicId: z.number().int().nullable(),
   createdAt: z.coerce.date(),
 });
 

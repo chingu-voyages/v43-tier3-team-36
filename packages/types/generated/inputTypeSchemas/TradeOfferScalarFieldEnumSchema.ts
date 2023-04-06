@@ -9,6 +9,7 @@ export const TradeOfferScalarFieldEnumSchema = z.enum([
   'phoneNumber',
   'email',
   'message',
+  'wantedComicId',
   'createdAt',
 ]);
 
