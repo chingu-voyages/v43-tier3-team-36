@@ -59,17 +59,26 @@ export const queryCollectors = async (username: string, location: string) =>
   });
 
 export const findCollectionItemByComicId = async (
-  comicId: number,
+  comicId: any,
   userId: string,
 ) =>
   prisma.collectionItem.findUnique({
-    where: { comicId },
-    select: { userId: true },
+    where: {
+      comicId_userId: {
+        comicId,
+        userId,
+      },
+    },
   });
 
-export const deleteCollectionItem = async (comicId: number) =>
+export const deleteCollectionItem = async (comicId: number, userId: string) =>
   prisma.collectionItem.delete({
-    where: { comicId },
+    where: {
+      comicId_userId: {
+        comicId,
+        userId,
+      },
+    },
   });
 
 export const getUserComic = async (userId: string, comicId: number) =>
@@ -88,17 +97,19 @@ export const createOffer = async (
   email: string,
   price: number,
   message: string,
+  wantedComicId: number,
 ) =>
   prisma.tradeOffer.create({
     data: {
       type,
       status: 'PENDING',
       createdBy: { connect: { id } },
-      collection: { connect: { comicId: userComic.comicId } },
+      collection: { connect: { id: userComic.id } },
       phoneNumber,
       email,
       price,
       message,
+      wantedComicId,
     },
     include: { createdBy: true, collection: true },
   });
@@ -119,11 +130,15 @@ export const getTradeOfferByTradeOfferId = async (id: string, userId: string) =>
     where: { id, createdBy: { id: userId } },
   });
 
+export const getTradeOffer = async (tradeOfferId: string) =>
+  prisma.tradeOffer.findUnique({
+    where: { id: tradeOfferId },
+  });
+
 export const deleteTradeOfferByTradeOfferId = async (tradeOfferId: string) =>
   prisma.tradeOffer.delete({
     where: { id: tradeOfferId },
   });
-
 
 export const viewUserTradeOffers = async (id: string) =>
   prisma.tradeOffer.findMany({
@@ -151,4 +166,17 @@ export const queryTradeOffers = async (location: string) =>
       },
     },
     include: { createdBy: true, collection: true },
+  });
+
+export const createTradeRequestService = async (
+  receiverId: string,
+  tradeOfferId: string,
+  receiverComicId: number,
+) =>
+  prisma.tradeRequest.create({
+    data: {
+      receiverId,
+      tradeOfferId,
+      receiverComicId,
+    },
   });
