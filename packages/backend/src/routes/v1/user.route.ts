@@ -1,18 +1,12 @@
 import { Router } from 'express';
 import {
-  UserSchema,
-  UserOptionalDefaultsSchema,
-} from '@marvel-collector/types/generated/modelSchema';
-import prisma from '../../database/PrismaClient';
-import {
   register,
   logout,
   currentUser,
-  login,
   fetchUser,
   getUsersWithComicId,
 } from '../../controllers/user.controller';
-import { RegisterSchema, LoginSchema } from '../../utils/customValidation';
+import { RegisterSchema } from '../../utils/customValidation';
 import {
   authPassportLocal,
   isLoggedIn,

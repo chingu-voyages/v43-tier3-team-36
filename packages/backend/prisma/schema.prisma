@@ -35,7 +35,7 @@ model User {
 
 model CollectionItem {
   id           String      @id @default(uuid())
-  comicId      Int
+  comicId      Int         @unique
   title        String
   imageUrl     String
   user         User?       @relation(fields: [userId], references: [id])
