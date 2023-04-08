@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {
+  User,
   UserOptionalDefaults,
   UserPartial,
 } from '@marvel-collector/types/generated/';
@@ -67,5 +68,17 @@ export const findUsersWithComic = async (comicId: number) => {
     include: { user: true },
   });
 
-  return users;
+  const filtered = users.reduce(
+    (a: {}[], b) => [
+      ...a,
+      {
+        username: b.user?.username,
+        location: b.user?.location,
+        profileImage: b.user?.profileImage,
+      },
+    ],
+    [],
+  );
+
+  return filtered;
 };

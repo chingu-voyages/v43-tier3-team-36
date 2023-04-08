@@ -169,7 +169,8 @@ export const createTradeOffer = async (
 
 export const getUsersWithComic = async (comicId: number) => {
   const res = await fetch(`${SERVER_URL}/api/v1/users/comic/${comicId}`);
-  const json: Array<CollectionItem & { user: User }> = await res.json();
+  const json: Array<Pick<User, 'username' | 'location' | 'profileImage'>> =
+    await res.json();
   return json;
 };
 

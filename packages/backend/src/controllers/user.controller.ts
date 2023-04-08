@@ -166,5 +166,5 @@ export const getUsersWithComicId = async (req: Request, res: Response) => {
   const { comicId } = req.params;
   const usersWithComic = await findUsersWithComic(Number(comicId));
 
-  res.status(200).send(usersWithComic || []);
+  res.status(200).send({ username: usersWithComic } || []);
 };
