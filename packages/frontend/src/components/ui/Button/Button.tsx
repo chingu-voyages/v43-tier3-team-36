@@ -6,6 +6,8 @@ import type {
 } from 'react';
 import { forwardRef } from 'react';
 import clsx from 'clsx';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { twMerge } from 'tailwind-merge';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -37,10 +39,8 @@ ButtonProps & RefAttributes<HTMLButtonElement>
     },
     ref,
   ) => {
-    const buttonClassNames = clsx(
-      styles.base,
-      styles.variant[variant],
-      className,
+    const buttonClassNames = twMerge(
+      clsx(styles.base, styles.variant[variant], className),
     );
 
     return (

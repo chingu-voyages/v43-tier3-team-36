@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { Request, Response } from 'express';
 import { string } from 'zod';
 import {
@@ -8,11 +9,13 @@ import {
   checkTradedOffer,
   createCollectionItem,
   createOffer,
+  createTradeRequestService,
   deleteCollectionItem,
   deleteTradeOfferByTradeOfferId,
   existingComicInCollection,
   findCollectionItemByComicId,
   findUniqueId,
+  getTradeOffer,
   getTradeOfferByTradeOfferId,
   getUserComic,
   queryCollectors,
@@ -20,7 +23,7 @@ import {
   viewCollections,
   viewComicBookOffers,
 } from '../services/collection.service';
-import prisma from '../database/PrismaClient';
+import { pusher } from '../app';
 
 // Assigning Comics to a User collection
 
@@ -155,7 +158,7 @@ export async function editByDeletingUserComic(req: Request, res: Response) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    await deleteCollectionItem(Number(comicId));
+    await deleteCollectionItem(Number(comicId), id);
 
     return res.status(200).json({
       status: 'success',
@@ -170,7 +173,8 @@ export async function editByDeletingUserComic(req: Request, res: Response) {
 // Creating trade offers
 
 export async function createTradeOffers(req: Request, res: Response) {
-  const { type, comicId, phoneNumber, email, price, message } = req.body;
+  const { type, comicId, phoneNumber, email, price, message, wantedComicId } =
+    req.body;
   const { id } = req.user as User;
 
   try {
@@ -202,6 +206,7 @@ export async function createTradeOffers(req: Request, res: Response) {
       email,
       price,
       message,
+      wantedComicId,
     );
     return res.status(201).json({
       status: 'Success',
@@ -211,6 +216,7 @@ export async function createTradeOffers(req: Request, res: Response) {
         status: tradeOffer.status,
         message: tradeOffer.message,
         price: tradeOffer.price,
+        wantedComicId: tradeOffer.wantedComicId,
         createdAt: tradeOffer.createdAt,
         createdBy: {
           userId: tradeOffer.createdBy.id,
@@ -325,5 +331,58 @@ export async function viewTradeOffers(req: Request, res: Response) {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching trade offers');
+  }
+}
+
+export async function createTradeRequest(req: Request, res: Response) {
+  const { id } = req.user as User;
+  const { tradeOfferId, receiverComicId } = req.body;
+
+  try {
+    const receiver = await findUniqueId(id);
+
+    if (!receiver) {
+      return res.status(400).send({ message: 'User/Receiver not found' });
+    }
+
+    const tradeOffer = await getTradeOffer(tradeOfferId);
+
+    if (!tradeOffer) {
+      return res.status(400).send({ message: 'Trade offer not found' });
+    }
+    const comicId = tradeOffer?.wantedComicId;
+    const collectionItem = await findCollectionItemByComicId(comicId, id);
+
+    // Checking if collecion item exists
+
+    if (!collectionItem) {
+      return res.status(404).send({
+        message: `Receiver does not have comic ${tradeOffer.wantedComicId}`,
+      });
+    }
+
+    const tradeRequest = await createTradeRequestService(
+      id,
+      tradeOfferId,
+      receiverComicId,
+    );
+
+    // send notification to trade offer owner using Pusher
+    pusher.trigger(tradeOffer.createdById, 'trade-request', {
+      message: `
+      ${receiver.username} requested to ${
+        tradeOffer.type === 'EXCHANGE' ? 'exchange' : 'buy'
+      } a comic from / with you. `.trim(),
+    });
+
+    return res.status(201).json({
+      status: 'success',
+      data: {
+        tradeRequest,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error creating trade requests');
   }
 }

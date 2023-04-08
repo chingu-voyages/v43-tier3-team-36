@@ -173,16 +173,29 @@ export const getUsersWithComic = async (comicId: number) => {
   return json;
 };
 
-export const getTradeOffers = async () => {
-  const res = await fetch(`${SERVER_URL}/api/vi/trade-offers`, {
+export type TTradeOfferQuery = Partial<{
+  comic: string;
+  location: string;
+}>;
+
+// TODO: Add type for the response of this service
+export const getTradeOffers = async (
+  query?: TTradeOfferQuery,
+): Promise<any[]> => {
+  const url = new URL('/api/v1/trade-offers', SERVER_URL);
+  if (query && Object.keys(query).length > 0) {
+    url.search = new URLSearchParams(query).toString();
+  }
+
+  const response = await fetch(url.toString(), {
     method: 'GET',
     credentials: 'include',
   });
+  const json = await response.json();
 
-  if (!res.ok) {
-    throw new Error();
+  if (!response.ok) {
+    throw new Error(json.error);
   }
 
-  const data = await res.json();
-  return data.data.tradeOffers;
+  return json.data.tradeOffers;
 };

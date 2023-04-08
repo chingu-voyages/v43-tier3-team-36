@@ -1,7 +1,9 @@
+/* eslint-disable import/no-cycle */
 import { Router } from 'express';
 import {
   addCollectionItemToUser,
   createTradeOffers,
+  createTradeRequest,
   deleteTradeOffer,
   editByDeletingUserComic,
   queryCollectorsByUsernameAndLocation,
@@ -12,6 +14,7 @@ import { isLoggedIn, validateSchema } from '../../middleware';
 import {
   AssignComicSchema,
   TradeOfferSchema,
+  TradeRequestSchema,
 } from '../../utils/customValidation';
 
 const router = Router();
@@ -38,5 +41,12 @@ router.post(
 router.delete('/user/trade-offer/:tradeOfferId', isLoggedIn, deleteTradeOffer);
 
 router.get('/trade-offers', viewTradeOffers);
+
+router.post(
+  '/trade-offer-request',
+  validateSchema(TradeRequestSchema),
+  isLoggedIn,
+  createTradeRequest,
+);
 
 export default router;
