@@ -192,3 +192,29 @@ export const getTradeOffers = async (
 
   return json.data.tradeOffers;
 };
+
+export type TRequestTradeOfferBody = {
+  tradeOfferId: string;
+  receiverComicId: number;
+};
+
+export const requestTradeOffer = async (
+  data: TRequestTradeOfferBody,
+): Promise<any> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/trade-offer-request`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`${json.error} (${res.status})`);
+  }
+
+  return json.message;
+};
