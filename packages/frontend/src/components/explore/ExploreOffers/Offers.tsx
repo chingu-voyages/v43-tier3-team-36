@@ -1,4 +1,14 @@
-import { OfferItem, IOfferItem } from '@/components/common/OfferItem/OfferItem';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+
+import {
+  OfferItem,
+  type IOfferItem,
+} from '@/components/common/OfferItem/OfferItem';
+import TradeOfferDialog from './TradeOfferDialog';
+import useAlertStore from '@/store/store';
+import { requestTradeOffer } from '@/api';
+import { DELAY_CLOSE_MS } from '@/data/constants';
 
 const HEADINGS = [
   '#',
@@ -24,26 +34,59 @@ const OfferListHeadings = () => (
 );
 
 type Props = {
-  offers: IOfferItem[];
+  offers: any[];
   onProfile?: boolean;
 };
 
-const Offers: React.FC<Props> = ({ offers, onProfile }) => (
-  <section className="my-8">
-    {onProfile ? null : <OfferListHeadings />}
-    {offers.map((offer, idx) => (
-      <OfferItem
-        key={offer.tradeOffer.comicId}
-        index={idx + 1}
-        type={offer.type}
-        price={offer.price}
-        tradeOffer={offer.tradeOffer}
-        createdBy={offer.createdBy}
-        createdAt={offer.createdAt}
-        onProfile={onProfile}
-      />
-    ))}
-  </section>
-);
+const Offers: React.FC<Props> = ({ offers, onProfile }) => {
+  const setAlert = useAlertStore((state) => state.setAlert);
+  const [activeOffer, setActiveOffer] = useState<any>(null);
+  const requestTradeMutation = useMutation({
+    mutationFn: requestTradeOffer,
+    onSuccess: (message) => {
+      setAlert({ type: 'success', message });
+      setTimeout(() => setActiveOffer(null), DELAY_CLOSE_MS);
+    },
+    onError: (err) => {
+      setAlert({
+        type: 'error',
+        message: err as string,
+      });
+    },
+  });
+
+  const viewTradeHandler = (offer: IOfferItem) => {
+    setActiveOffer(offer);
+  };
+
+  return (
+    <section className="my-8">
+      {activeOffer ? (
+        <TradeOfferDialog
+          type={activeOffer.type}
+          onRequest={() => requestTradeMutation.mutate({
+            tradeOfferId: activeOffer.tradeOfferId,
+            receiverComicId: activeOffer.tradeOffer.comicId,
+          })}
+          onClose={() => setActiveOffer(null)}
+        />
+      ) : null}
+      {onProfile ? null : <OfferListHeadings />}
+      {offers.map((offer, idx) => (
+        <OfferItem
+          key={offer.tradeOffer.comicId}
+          index={idx + 1}
+          type={offer.type}
+          price={offer.price}
+          tradeOffer={offer.tradeOffer}
+          createdBy={offer.createdBy}
+          createdAt={offer.createdAt}
+          onProfile={onProfile}
+          onTrade={() => viewTradeHandler(offer)}
+        />
+      ))}
+    </section>
+  );
+};
 
 export default Offers;
