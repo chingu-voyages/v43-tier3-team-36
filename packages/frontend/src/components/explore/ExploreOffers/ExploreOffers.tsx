@@ -14,10 +14,12 @@ const ExploreOffers: React.FC = () => {
   const { data: offersData, isLoading } = useQuery(['offers'], {
     queryFn: () => getTradeOffers(query),
     onError: (err) => {
-      setAlert({
-        type: 'error',
-        message: err as string,
-      });
+      if (err instanceof Error) {
+        setAlert({
+          type: 'error',
+          message: err.message,
+        });
+      }
     },
   });
 
@@ -43,7 +45,7 @@ const ExploreOffers: React.FC = () => {
               onUpdate={(loc) => searchInputBlurHandler({ location: loc })}
             />
           </div>
-          {offersData ? (
+          {offersData && offersData?.length > 0 ? (
             <Offers offers={offersData} />
           ) : (
             <span>No Trade Offers Available</span>

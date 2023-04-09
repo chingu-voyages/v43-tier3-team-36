@@ -20,6 +20,7 @@ export interface IOfferItem {
 interface IOfferItemProps extends IOfferItem {
   index: number;
   onProfile?: boolean;
+  onTrade?: () => void;
 }
 
 export const OfferItem: React.FC<IOfferItemProps> = ({
@@ -31,6 +32,7 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
   createdBy,
   tradeOffer,
   onProfile,
+  onTrade,
 }) => {
   const DUMMY_COMIC_DETAILS = {
     issue: 8,
@@ -52,7 +54,7 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
         },
       )}
     >
-      <div className="md:hidden text-sm flex justify-between">
+      <div className="flex justify-between text-sm md:hidden">
         <div className="flex items-center ">
           <span className="block mr-4">
             <img
@@ -72,16 +74,16 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
             </span>
           </div>
         </div>
-        <div className="text-sm flex self-start">
+        <div className="flex self-start text-sm">
           {type === 'EXCHANGE' && (
-            <Button className="w-fit ml-auto md:ml-0 uppercase">exg</Button>
+            <Button className="ml-auto uppercase w-fit md:ml-0">exg</Button>
           )}
           {type === 'BUY' && (
-            <Button className="w-fit ml-auto md:ml-0 uppercase">buy</Button>
+            <Button className="ml-auto uppercase w-fit md:ml-0">buy</Button>
           )}
         </div>
       </div>
-      <div className="md:hidden mt-4 flex flex-shrink-0 justify-between">
+      <div className="flex justify-between flex-shrink-0 mt-4 md:hidden">
         <div>
           <span className="text-xs text-gray-500">Price</span>
           <div>
@@ -93,13 +95,13 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
           <span className="text-xs text-gray-500">Issue</span>
           <div>
             <Chip
-              className="w-fit text-xs text-darkgrey font-light bg-red-200 border border-red-600"
+              className="text-xs font-light bg-red-200 border border-red-600 w-fit text-darkgrey"
               label={`Issue #${DUMMY_COMIC_DETAILS.issue}`}
             />
           </div>
         </div>
       </div>
-      <div className="hidden md:block text-gray-500">{index}</div>
+      <div className="hidden text-gray-500 md:block">{index}</div>
       <div className="hidden md:flex md:items-center">
         <img
           className="w-12 h-12 rounded-lg"
@@ -118,7 +120,7 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
       </div>
       <div className="hidden md:block">
         <Chip
-          className="w-fit text-xs font-light bg-red-200 border border-red-600 text-darkgrey"
+          className="text-xs font-light bg-red-200 border border-red-600 w-fit text-darkgrey"
           label={`Issue #${DUMMY_COMIC_DETAILS.issue}`}
         />
       </div>
@@ -128,12 +130,16 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
       <div className={clsx('hidden md:block', { 'md:hidden': onProfile })}>
         <span className="font-medium text-gray-500">{`@${createdBy.username}`}</span>
       </div>
-      <div className="hidden md:flex mt-4 md:mt-0 text-sm ">
+      <div className="hidden mt-4 text-sm md:flex md:mt-0">
         {type === 'EXCHANGE' && (
-          <Button className="w-fit ml-auto md:ml-0 uppercase">exg</Button>
+          <Button className="ml-auto uppercase w-fit md:ml-0" onClick={onTrade}>
+            exg
+          </Button>
         )}
-        {type === 'BUY' && (
-          <Button className="w-fit ml-auto md:ml-0 uppercase">buy</Button>
+        {type === 'SELL' && (
+          <Button className="ml-auto uppercase w-fit md:ml-0" onClick={onTrade}>
+            buy
+          </Button>
         )}
       </div>
     </article>
