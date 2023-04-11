@@ -4,6 +4,7 @@ export const PushNotificationScalarFieldEnumSchema = z.enum([
   'id',
   'userId',
   'message',
+  'isRead',
   'createdAt',
 ]);
 
