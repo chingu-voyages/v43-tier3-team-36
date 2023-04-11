@@ -5,9 +5,10 @@ import { z } from 'zod';
 /////////////////////////////////////////
 
 export const PushNotificationSchema = z.object({
-  id: z.number().int(),
+  id: z.string().uuid(),
   userId: z.string(),
   message: z.string(),
+  isRead: z.boolean(),
   createdAt: z.coerce.date(),
 });
 
@@ -30,7 +31,8 @@ export type PushNotificationPartial = z.infer<
 export const PushNotificationOptionalDefaultsSchema =
   PushNotificationSchema.merge(
     z.object({
-      id: z.number().int().optional(),
+      id: z.string().uuid().optional(),
+      isRead: z.boolean().optional(),
       createdAt: z.coerce.date().optional(),
     }),
   );

@@ -63,9 +63,10 @@ CREATE TABLE "TradeRequest" (
 
 -- CreateTable
 CREATE TABLE "PushNotification" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "message" TEXT NOT NULL,
+    "isRead" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "PushNotification_pkey" PRIMARY KEY ("id")

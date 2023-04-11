@@ -25,6 +25,7 @@ import {
   storePushNotification,
   updateByDeletingCreatorComic,
   updateCreatorCollection,
+  updateNotification,
   updateReceiverCollection,
   updateTradeOfferStatus,
   updateTradeRequestStatus,
@@ -260,8 +261,6 @@ export async function deleteTradeOffer(req: Request, res: Response) {
   const { tradeOfferId } = req.params;
   const { id } = req.user as User;
 
-  console.log(tradeOfferId);
-
   try {
     // Get a tradeOffer by tradeOfferId
 
@@ -355,7 +354,6 @@ export async function createTradeRequest(req: Request, res: Response) {
     }
 
     const tradeOffer = await getTradeOffer(tradeOfferId);
-    console.log(tradeOffer, 'tradeOffer');
     if (!tradeOffer) {
       return res.status(400).send({ message: 'Trade offer not found' });
     }
@@ -501,5 +499,24 @@ export async function pushNotifications(req: Request, res: Response) {
   } catch (error) {
     console.error(error);
     res.status(404).send('User has no notification');
+  }
+}
+
+// update notification status endpoint
+
+export async function updatePushNotifications(req: Request, res: Response) {
+  try {
+    const { notificationId } = req.params;
+    const notification = await updateNotification(notificationId);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        notification,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error updating notification status.' });
   }
 }

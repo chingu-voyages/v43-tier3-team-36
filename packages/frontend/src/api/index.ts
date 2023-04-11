@@ -113,7 +113,13 @@ export const removeComic = async (comicId: number) => {
     throw new Error(res.error);
   }
 
-  return res.json();
+  const json = await res.json();
+
+  if (json.error) {
+    throw new Error(json.error);
+  }
+
+  return json.data.message;
 };
 
 export function logout() {}
@@ -166,16 +172,55 @@ export const createTradeOffer = async (
   return json.message;
 };
 
-export const getTradeOffers = async () => {
-  const res = await fetch(`${SERVER_URL}/api/vi/trade-offers`, {
+export type TTradeOfferQuery = Partial<{
+  comic: string;
+  location: string;
+}>;
+
+// TODO: Add type for the response of this service
+export const getTradeOffers = async (
+  query?: TTradeOfferQuery,
+): Promise<any[]> => {
+  const url = new URL('/api/v1/trade-offers', SERVER_URL);
+  if (query && Object.keys(query).length > 0) {
+    url.search = new URLSearchParams(query).toString();
+  }
+
+  const response = await fetch(url.toString(), {
     method: 'GET',
     credentials: 'include',
   });
+  const json = await response.json();
 
-  if (!res.ok) {
-    throw new Error();
+  if (!response.ok) {
+    throw new Error(json.error);
   }
 
-  const data = await res.json();
-  return data.data.tradeOffers;
+  return json.data.tradeOffers;
+};
+
+export type TRequestTradeOfferBody = {
+  tradeOfferId: string;
+  receiverComicId: number;
+};
+
+export const requestTradeOffer = async (
+  data: TRequestTradeOfferBody,
+): Promise<any> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/trade-offer-request`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`${json.error} (${res.status})`);
+  }
+
+  return json.message;
 };
