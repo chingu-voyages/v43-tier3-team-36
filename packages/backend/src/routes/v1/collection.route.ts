@@ -6,9 +6,11 @@ import {
   createTradeRequest,
   deleteTradeOffer,
   editByDeletingUserComic,
+  tradeComics,
   queryCollectorsByUsernameAndLocation,
   viewComicBookCollector,
   viewTradeOffers,
+  pushNotifications,
 } from '../../controllers/collection.controller';
 import { isLoggedIn, validateSchema } from '../../middleware';
 import {
@@ -48,5 +50,9 @@ router.post(
   isLoggedIn,
   createTradeRequest,
 );
+
+router.patch('/trade/:tradeRequestId', isLoggedIn, tradeComics);
+
+router.get('/notifications', isLoggedIn, pushNotifications);
 
 export default router;
