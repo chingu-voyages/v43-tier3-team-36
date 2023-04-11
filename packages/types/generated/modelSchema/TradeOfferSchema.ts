@@ -21,15 +21,17 @@ export const TradeOfferSchema = z.object({
 
 export type TradeOffer = z.infer<typeof TradeOfferSchema>;
 
+/////////////////////////////////////////
 // TRADE OFFER PARTIAL SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const TradeOfferPartialSchema = TradeOfferSchema.partial();
 
 export type TradeOfferPartial = z.infer<typeof TradeOfferPartialSchema>;
 
+/////////////////////////////////////////
 // TRADE OFFER OPTIONAL DEFAULTS SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const TradeOfferOptionalDefaultsSchema = TradeOfferSchema.merge(
   z.object({
