@@ -32,6 +32,7 @@ model User {
   collection    CollectionItem[]
   tradeOffers   TradeOffer[]
   TradeRequests TradeRequest[]
+  pushNotification PushNotification[]
 }
 
 model CollectionItem {
@@ -72,6 +73,14 @@ model TradeRequest {
   status          TradeRequestStatus @default(PENDING)
   createdAt       DateTime           @default(now())
   TradeOffer      TradeOffer         @relation(fields: [tradeOfferId], references: [id])
+}
+
+model PushNotification {
+  id        String      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  message   String
+  createdAt DateTime @default(now())
 }
 
 enum TradeOfferType {
