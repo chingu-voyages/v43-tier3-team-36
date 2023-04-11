@@ -84,7 +84,7 @@ export const currentUser = async (req: Request, res: Response) => {
           title: item.title,
           imageUrl: item.imageUrl,
         })),
-        tradeOfferDetail: userTradeOffers.map((tradeOffer: any) => ({
+        tradeOfferDetail: userTradeOffers?.map((tradeOffer: any) => ({
           tradeOfferId: tradeOffer.id,
           type: tradeOffer.type,
           status: tradeOffer.status,
@@ -96,11 +96,11 @@ export const currentUser = async (req: Request, res: Response) => {
             phoneNumber: tradeOffer.phoneNumber,
           },
           tradeOfferItems: {
-            collectionId: tradeOffer.collection[0].id,
-            comicId: tradeOffer.collection[0].comicId,
-            title: tradeOffer.collection[0].title,
-            imageUrl: tradeOffer.collection[0].imageUrl,
-            tradeOfferId: tradeOffer.collection[0].tradeOfferId,
+            collectionId: tradeOffer.collection[0]?.id,
+            comicId: tradeOffer.collection[0]?.comicId,
+            title: tradeOffer.collection[0]?.title,
+            imageUrl: tradeOffer.collection[0]?.imageUrl,
+            tradeOfferId: tradeOffer.collection[0]?.tradeOfferId,
           },
         })),
       },
