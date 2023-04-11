@@ -1,4 +1,5 @@
 export { CollectionItemScalarFieldEnumSchema } from './CollectionItemScalarFieldEnumSchema';
+export { PushNotificationScalarFieldEnumSchema } from './PushNotificationScalarFieldEnumSchema';
 export { QueryModeSchema } from './QueryModeSchema';
 export { SortOrderSchema } from './SortOrderSchema';
 export { TradeOfferScalarFieldEnumSchema } from './TradeOfferScalarFieldEnumSchema';
