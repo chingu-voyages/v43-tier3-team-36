@@ -279,3 +279,9 @@ export const findPushNotification = async (id: string) =>
       createdAt: 'desc',
     },
   });
+
+export const updateNotification = async (notificationId: string) =>
+  await prisma.pushNotification.update({
+    where: { id: notificationId },
+    data: { isRead: true },
+  });
