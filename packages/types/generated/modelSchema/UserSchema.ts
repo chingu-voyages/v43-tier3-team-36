@@ -17,15 +17,17 @@ export const UserSchema = z.object({
 
 export type User = z.infer<typeof UserSchema>;
 
+/////////////////////////////////////////
 // USER PARTIAL SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const UserPartialSchema = UserSchema.partial();
 
 export type UserPartial = z.infer<typeof UserPartialSchema>;
 
+/////////////////////////////////////////
 // USER OPTIONAL DEFAULTS SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const UserOptionalDefaultsSchema = UserSchema.merge(
   z.object({

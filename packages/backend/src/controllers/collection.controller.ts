@@ -14,12 +14,21 @@ import {
   deleteTradeOfferByTradeOfferId,
   existingComicInCollection,
   findCollectionItemByComicId,
+  findPushNotification,
+  findTradeRequest,
   findUniqueId,
   getTradeOffer,
   getTradeOfferByTradeOfferId,
   getUserComic,
   queryCollectors,
   queryTradeOffers,
+  storePushNotification,
+  updateByDeletingCreatorComic,
+  updateCreatorCollection,
+  updateNotification,
+  updateReceiverCollection,
+  updateTradeOfferStatus,
+  updateTradeRequestStatus,
   viewCollections,
   viewComicBookOffers,
 } from '../services/collection.service';
@@ -252,8 +261,6 @@ export async function deleteTradeOffer(req: Request, res: Response) {
   const { tradeOfferId } = req.params;
   const { id } = req.user as User;
 
-  console.log(tradeOfferId);
-
   try {
     // Get a tradeOffer by tradeOfferId
 
@@ -347,21 +354,21 @@ export async function createTradeRequest(req: Request, res: Response) {
     }
 
     const tradeOffer = await getTradeOffer(tradeOfferId);
-
     if (!tradeOffer) {
       return res.status(400).send({ message: 'Trade offer not found' });
     }
-    const comicId = tradeOffer?.wantedComicId;
-    const collectionItem = await findCollectionItemByComicId(comicId, id);
 
-    // Checking if collecion item exists
+    if (tradeOffer.type === 'EXCHANGE') {
+      const comicId = tradeOffer?.wantedComicId;
+      const collectionItem = await findCollectionItemByComicId(comicId, id);
 
-    if (!collectionItem) {
-      return res
-        .status(404)
-        .send({
+      // Checking if collecion item exists
+
+      if (!collectionItem) {
+        return res.status(404).send({
           message: `Receiver does not have comic ${tradeOffer.wantedComicId}`,
         });
+      }
     }
 
     const tradeRequest = await createTradeRequestService(
@@ -378,6 +385,9 @@ export async function createTradeRequest(req: Request, res: Response) {
 } a comic from / with you. `.trim(),
     });
 
+    // store pusher notification in the database
+    await storePushNotification(tradeOffer, receiver);
+
     return res.status(201).json({
       status: 'success',
       data: {
@@ -387,5 +397,126 @@ export async function createTradeRequest(req: Request, res: Response) {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error creating trade requests');
+  }
+}
+
+// EXCHANGE/SELL COMICS
+
+export async function tradeComics(req: Request, res: Response) {
+  const { id } = req.user as User;
+  const { tradeRequestId } = req.params;
+  const { status } = req.body;
+
+  const tradeRequest = await findTradeRequest(tradeRequestId);
+
+  if (!tradeRequest) {
+    return res.status(404).json({ error: 'Trade request not found' });
+  }
+
+  if (status === 'ACCEPTED') {
+    const { TradeOffer, receiverComicId, receiverId } = tradeRequest;
+    const { createdById, collection } = TradeOffer;
+    const creatorId = createdById;
+
+    if (creatorId !== id) {
+      return res
+        .status(401)
+        .json({ error: 'You are not authorized to perform this action' });
+    }
+
+    if (TradeOffer.type === 'EXCHANGE') {
+      const receiverComic = await findCollectionItemByComicId(
+        receiverComicId,
+        receiverId,
+      );
+
+      const creatorComic = collection.find(
+        (comic: any) => comic.comicId === TradeOffer.collection[0].comicId,
+      );
+
+      if (!receiverComic || !creatorComic) {
+        return res.status(404).json({ error: 'Comic not found' });
+      }
+
+      const { id: receiverItemId } = receiverComic;
+      const { id: creatorItemId } = creatorComic;
+
+      await updateReceiverCollection(receiverItemId, creatorComic);
+
+      await updateCreatorCollection(
+        creatorItemId,
+        receiverComicId,
+        receiverComic,
+      );
+
+      await updateTradeOfferStatus(TradeOffer.id, status);
+
+      await updateTradeRequestStatus(tradeRequestId, status);
+
+      return res.status(200).json({ message: 'Exchange successful' });
+    }
+
+    const creatorComic = collection.find(
+      (comic: any) => comic.comicId === TradeOffer.collection[0].comicId,
+    );
+
+    if (!creatorComic) {
+      return res.status(404).json({ error: 'Comic not found' });
+    }
+
+    await updateByDeletingCreatorComic(tradeRequest, TradeOffer);
+
+    await updateTradeOfferStatus(TradeOffer.id, status);
+
+    await updateTradeRequestStatus(tradeRequestId, status);
+
+    return res
+      .status(200)
+      .json({ message: 'Comic has been successfully purchased' });
+  }
+  if (status === 'DECLINED') {
+    await updateTradeRequestStatus(tradeRequestId, status);
+    return res.status(400).json({ message: 'Trade request declined' });
+  }
+  await updateTradeRequestStatus(tradeRequestId, status);
+  return res.status(400).json({ message: 'Invalid status' });
+}
+
+// Fetch notifications
+
+export async function pushNotifications(req: Request, res: Response) {
+  const { id } = req.user as User;
+
+  try {
+    const notification = await findPushNotification(id);
+
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        notification,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(404).send('User has no notification');
+  }
+}
+
+// update notification status endpoint
+
+export async function updatePushNotifications(req: Request, res: Response) {
+  try {
+    const { notificationId } = req.params;
+    const notification = await updateNotification(notificationId);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        notification,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error updating notification status.' });
   }
 }
