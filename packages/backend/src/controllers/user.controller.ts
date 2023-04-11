@@ -8,6 +8,7 @@ import {
   findUserByEmail,
   findUserById,
   findUserByUsername,
+  updateUserDetail,
 } from '../services/user.service';
 import { hashPassword } from '../utils/hashPassword';
 import { viewUserTradeOffers } from '../services/collection.service';
@@ -43,6 +44,49 @@ export const register = async (
         firstName,
         email,
         lastName,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
+
+// Update user details/Profile
+
+export const updateUser = async (
+  req: Request<{}, {}, UserOptionalDefaults>,
+  res: Response,
+) => {
+  const { id } = req.user as User;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    username,
+    profileImage,
+    location,
+  } = req.body;
+
+  const dataToUpdate: any = {};
+  if (firstName) dataToUpdate.firstName = firstName;
+  if (lastName) dataToUpdate.lastName = lastName;
+  if (email) dataToUpdate.email = email;
+  if (password) {
+    const hashedPassword = await hashPassword(password);
+    dataToUpdate.password = hashedPassword;
+  }
+  if (username) dataToUpdate.username = username;
+  if (profileImage) dataToUpdate.profileImage = profileImage;
+  if (location) dataToUpdate.location = location;
+
+  try {
+    const updatedUser = await updateUserDetail(id, dataToUpdate);
+
+    return res.status(200).json({
+      message: 'user profile successfully updated',
+      data: {
+        updatedUser,
       },
     });
   } catch (error) {
