@@ -1067,7 +1067,7 @@ paths:
         - trade requests
       operationId: tradeRequestStatus
       summary: Accept/Decline trade requests
-      description: ACCEPT/DECLINE trade request
+      description: Accept/Decline trade requests
       parameters:
         - in: path
           name: tradeRequestId
