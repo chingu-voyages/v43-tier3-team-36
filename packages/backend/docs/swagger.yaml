@@ -997,7 +997,7 @@ paths:
       tags:
         - trade requests
       operationId: tradeRequest
-      summary: tradeRequest
+      summary: trade request
       description: Make a trade request
       requestBody:
         description: Make a trade request
@@ -1065,8 +1065,8 @@ paths:
     patch:
       tags:
         - trade requests
-      operationId: ACCEPT/DECLINE trade request
-      summary: ACCEPT/DECLINE trade request
+      operationId: tradeRequestStatus
+      summary: Accept/Decline trade requests
       description: ACCEPT/DECLINE trade request
       parameters:
         - in: path
