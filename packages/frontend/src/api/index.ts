@@ -209,7 +209,7 @@ export const getTradeOffers = async (
 
 export type TRequestTradeOfferBody = {
   tradeOfferId: string;
-  receiverComicId: number;
+  receiverComicId?: number;
 };
 
 export const requestTradeOffer = async (
