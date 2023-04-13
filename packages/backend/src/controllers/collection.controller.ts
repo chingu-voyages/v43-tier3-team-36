@@ -306,6 +306,7 @@ export async function viewTradeOffers(req: Request, res: Response) {
           status: tradeOffer.status,
           message: tradeOffer.message,
           price: tradeOffer.price,
+          wantedComicId: tradeOffer.wantedComicId,
           createdAt: tradeOffer.createdAt,
           createdBy: {
             userId: tradeOffer.createdBy.id,
@@ -357,11 +358,9 @@ export async function createTradeRequest(req: Request, res: Response) {
     // Checking if collecion item exists
 
     if (!collectionItem) {
-      return res
-        .status(404)
-        .send({
-          message: `Receiver does not have comic ${tradeOffer.wantedComicId}`,
-        });
+      return res.status(404).send({
+        message: `Receiver does not have comic ${tradeOffer.wantedComicId}`,
+      });
     }
 
     const tradeRequest = await createTradeRequestService(
