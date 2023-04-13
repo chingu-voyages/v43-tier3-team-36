@@ -23,30 +23,30 @@ import {
 const router = Router();
 
 router.post(
-  '/user/collection',
+  '/collection',
   isLoggedIn,
   validateSchema(AssignComicSchema),
   addCollectionItemToUser,
 );
-router.delete('/user/collection/:comicId', isLoggedIn, editByDeletingUserComic);
+router.delete('/collection/:comicId', isLoggedIn, editByDeletingUserComic);
 
-router.get('/user/:id/collection', isLoggedIn, viewComicBookCollector);
+router.get('/collection/:userId', isLoggedIn, viewComicBookCollector);
 
 router.get('/collectors', isLoggedIn, queryCollectorsByUsernameAndLocation);
 
 router.post(
-  '/user/trade-offer',
+  '/trade-offer',
   isLoggedIn,
   validateSchema(TradeOfferSchema),
   createTradeOffers,
 );
 
-router.delete('/user/trade-offer/:tradeOfferId', isLoggedIn, deleteTradeOffer);
+router.delete('/trade-offer/:tradeOfferId', isLoggedIn, deleteTradeOffer);
 
 router.get('/trade-offers', viewTradeOffers);
 
 router.post(
-  '/trade-offer-request',
+  '/trade-request',
   validateSchema(TradeRequestSchema),
   isLoggedIn,
   createTradeRequest,
