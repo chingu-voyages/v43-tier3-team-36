@@ -70,7 +70,7 @@ export async function login(data: LoginOptions) {
 }
 
 export const getCurrentUserDetails = async (): Promise<User> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/users/current-user`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/current-user`, {
     method: 'GET',
     credentials: 'include',
   });
@@ -86,7 +86,7 @@ export const getCurrentUserDetails = async (): Promise<User> => {
 export const addComic = async (
   data: CollectionItemPartial,
 ): Promise<string> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/user/collection`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/collection`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -102,7 +102,7 @@ export const addComic = async (
 };
 
 export const removeComic = async (comicId: number) => {
-  const res = await fetch(`${SERVER_URL}/api/v1/user/collection/${comicId}`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/collection/${comicId}`, {
     method: 'DELETE',
     credentials: 'include',
   });
@@ -145,8 +145,8 @@ export const getComicBookCollectors = async (
   return json.data.users;
 };
 
-export const getComicBookCollector = async (id: string): Promise<User> => {
-  const response = await fetch(`${SERVER_URL}/api/v1/user/${id}/collection`, {
+export const getComicBookCollector = async (userId: string): Promise<User> => {
+  const response = await fetch(`${SERVER_URL}/api/v1/collection/${userId}`, {
     method: 'GET',
     credentials: 'include',
   });
@@ -157,7 +157,7 @@ export const getComicBookCollector = async (id: string): Promise<User> => {
 export const createTradeOffer = async (
   data: TradeOfferPartial,
 ): Promise<string> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/user/trade-offer`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/trade-offer`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -207,7 +207,7 @@ export type TRequestTradeOfferBody = {
 export const requestTradeOffer = async (
   data: TRequestTradeOfferBody,
 ): Promise<any> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/trade-offer-request`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/trade-request`, {
     method: 'POST',
     credentials: 'include',
     headers: {
