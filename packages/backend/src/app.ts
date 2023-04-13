@@ -8,19 +8,12 @@ import session from 'express-session';
 import * as dotenv from 'dotenv';
 import morgan from 'morgan';
 import Pusher from 'pusher';
-import swaggerUI from 'swagger-ui-express';
-import YAML from 'yaml';
-import fs from 'fs';
 import API from './routes';
 import usePassportLocal from './utils/passportLocal';
 
 dotenv.config();
 
-const file = fs.readFileSync('./docs/swagger.yaml', 'utf8');
-const swaggerDocument = YAML.parse(file);
-
 const app = express();
-
 app.use(
   cors({
     origin:
@@ -52,7 +45,7 @@ app.use(
     saveUninitialized: false,
   }),
 );
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
 app.use(passport.initialize());
 app.use(passport.session());
 usePassportLocal(passport);
