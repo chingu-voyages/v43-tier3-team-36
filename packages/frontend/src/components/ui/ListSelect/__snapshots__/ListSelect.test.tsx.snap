@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ListSelect /> Snapshots should match snapshot 1`] = `
+<div>
+  <article
+    class="relative w-full bg-white"
+    data-headlessui-state=""
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      class="w-full p-4 border rounded-md"
+      data-headlessui-state=""
+      id="headlessui-listbox-button-:r0:"
+      type="button"
+    />
+  </article>
+</div>
+`;
