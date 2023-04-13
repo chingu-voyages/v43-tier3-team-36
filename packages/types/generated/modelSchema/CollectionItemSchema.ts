@@ -15,15 +15,17 @@ export const CollectionItemSchema = z.object({
 
 export type CollectionItem = z.infer<typeof CollectionItemSchema>;
 
+/////////////////////////////////////////
 // COLLECTION ITEM PARTIAL SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const CollectionItemPartialSchema = CollectionItemSchema.partial();
 
 export type CollectionItemPartial = z.infer<typeof CollectionItemPartialSchema>;
 
+/////////////////////////////////////////
 // COLLECTION ITEM OPTIONAL DEFAULTS SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const CollectionItemOptionalDefaultsSchema = CollectionItemSchema.merge(
   z.object({

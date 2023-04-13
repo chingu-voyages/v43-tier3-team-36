@@ -10,8 +10,13 @@ import {
   currentUser,
   login,
   fetchUser,
+  updateUser,
 } from '../../controllers/user.controller';
-import { RegisterSchema, LoginSchema } from '../../utils/customValidation';
+import {
+  RegisterSchema,
+  LoginSchema,
+  updateUserSchema,
+} from '../../utils/customValidation';
 import {
   authPassportLocal,
   isLoggedIn,
@@ -22,7 +27,13 @@ const router = Router();
 router.post('/register', validateSchema(RegisterSchema), register);
 router.post('/login', authPassportLocal);
 router.post('/logout', logout);
-router.get('/users/current-user', isLoggedIn, currentUser);
+router.get('/current-user', isLoggedIn, currentUser);
 router.get('/user/:id', isLoggedIn, fetchUser);
+router.patch(
+  '/profile',
+  validateSchema(updateUserSchema),
+  isLoggedIn,
+  updateUser,
+);
 
 export default router;

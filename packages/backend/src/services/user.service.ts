@@ -57,3 +57,17 @@ export const findUserById = async (payload: UserPartial) => {
 
   return user;
 };
+
+export const updateUserDetail = async (id: string, dataToUpdate: any) => prisma.user.update({
+  where: { id },
+  data: dataToUpdate,
+  select: {
+    id: true,
+    firstName: true,
+    lastName: true,
+    email: true,
+    username: true,
+    profileImage: true,
+    location: true,
+  },
+});

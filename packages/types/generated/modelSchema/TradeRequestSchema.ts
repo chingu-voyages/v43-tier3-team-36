@@ -16,15 +16,17 @@ export const TradeRequestSchema = z.object({
 
 export type TradeRequest = z.infer<typeof TradeRequestSchema>;
 
+/////////////////////////////////////////
 // TRADE REQUEST PARTIAL SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const TradeRequestPartialSchema = TradeRequestSchema.partial();
 
 export type TradeRequestPartial = z.infer<typeof TradeRequestPartialSchema>;
 
+/////////////////////////////////////////
 // TRADE REQUEST OPTIONAL DEFAULTS SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const TradeRequestOptionalDefaultsSchema = TradeRequestSchema.merge(
   z.object({
