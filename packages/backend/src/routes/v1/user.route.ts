@@ -27,7 +27,7 @@ const router = Router();
 router.post('/register', validateSchema(RegisterSchema), register);
 router.post('/login', authPassportLocal);
 router.post('/logout', logout);
-router.get('/current-user', isLoggedIn, currentUser);
+router.get('/users/current-user', isLoggedIn, currentUser);
 router.get('/user/:id', isLoggedIn, fetchUser);
 router.patch(
   '/profile',

@@ -72,10 +72,10 @@ export async function addCollectionItemToUser(req: Request, res: Response) {
 // Endpoint for viewing comic book collector
 
 export async function viewComicBookCollector(req: Request, res: Response) {
-  const { userId } = req.params;
+  const { id } = req.params;
 
   try {
-    const user = await viewCollections(userId);
+    const user = await viewCollections(id);
 
     // Check if user has any collections
 
@@ -304,7 +304,7 @@ export async function viewTradeOffers(req: Request, res: Response) {
         .json({ error: 'There are currently no trade offers' });
     }
 
-    return res.status(200).json({
+    return res.status(201).json({
       status: 'Success',
       data: {
         tradeOffers: tradeOffers.map((tradeOffer: any) => ({
