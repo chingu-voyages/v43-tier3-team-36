@@ -1,0 +1,1241 @@
+openapi: 3.0.0
+info:
+  title: Marvel Collection
+  description: An API for trading marvel comics amongst users.
+  version: 1.0.0
+servers:
+  - url: https://marvel-collector-backend.onrender.com/api/v1
+    description: Main (production) server
+  - url: http://localhost:5000/api/v1
+    description: Internal development server for local testing
+tags:
+  - name: user
+    description: Operations about users
+  - name: collection
+    description: Access to collection items(comics)
+  - name: trade offers
+    description: Operations about trade offers
+  - name: trade requests
+    description: Operations about trade requests
+  - name: notifications
+    description: Operations on notifications
+paths:
+  /register:
+    post:
+      tags:
+        - user
+      operationId: registerUser
+      summary: Create new user
+      description: Create a new user
+      requestBody:
+        description: Create a new user in Marvel Collection
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  description: user first name
+                  example: Pearl
+                lastName:
+                  type: string
+                  description: user last name
+                  example: Obi
+                password:
+                  type: string
+                  description: user password
+                  example: wert563402er
+                email:
+                  type: string
+                  description: user email
+                  format: email
+                  example: pearlobi@gmail.com
+                username:
+                  type: string
+                  description: user name
+                  example: pearlobi
+      responses:
+        '201':
+          description: A successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      message:
+                        type: string
+                        description: message
+                        example: User created successfully
+                      username:
+                        type: string
+                        description: user name
+                        example: pearlobi
+                      firstName:
+                        type: string
+                        description: user first name
+                        example: Pearl
+                      email:
+                        type: string
+                        description: user email
+                        format: email
+                        example: pearlobi@gmail.com
+                      lastName:
+                        type: string
+                        description: user last name
+                        example: Obi
+      security:
+        - cookieAuth: []
+  /login:
+    post:
+      tags:
+        - user
+      operationId: signinUser
+      summary: Sign in a user
+      description: Sign in a user
+      requestBody:
+        description: Sign in a new user in Marvel Collection
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: username
+                  example: pearlobi
+                password:
+                  type: string
+                  description: user password
+                  example: wert563402er
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: true
+                  message:
+                    type: string
+                    description: message
+                    example: Login successful
+  /current-user:
+    get:
+      tags:
+        - user
+      operationId: getLoggedInUser
+      summary: Checking the details of the loggedIn user
+      description: Checking the details of the loggedIn user
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    description: user
+                    properties:
+                      userId:
+                        type: string
+                        description: user id
+                        example: 1232323nsdsdsd2i323112qndsdassa
+                      firstName:
+                        type: string
+                        description: user first name
+                        example: Pearl
+                      lastName:
+                        type: string
+                        description: user last name
+                        example: Obi
+                      email:
+                        type: string
+                        description: user email
+                        format: email
+                        example: pearlobi@gmail.com
+                      username:
+                        type: string
+                        description: user name
+                        example: pearlobi
+                      profileImage:
+                        type: string
+                        description: image
+                        example: www.image.com/profileimage
+                      location:
+                        type: string
+                        description: user location
+                        example: Lagos state
+                      collection:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                              description: collectionId
+                              example: we342dwsd3e2dwdsdedwue2oe2dda
+                            comicId:
+                              type: number
+                              description: id of comicId
+                              example: 1
+                            title:
+                              type: string
+                              description: comic title
+                              example: Batman Origins
+                            imageUrl:
+                              type: string
+                              description: comic images
+                              example: www.image.com/batmanorigins
+                      tradeOfferDetails:
+                        type: array
+                        items:
+                          properties:
+                            tradeOfferId:
+                              type: string
+                              description: trade offer Id
+                              example: 121212erwewew232323fwdsdsd
+                            type:
+                              type: string
+                              description: trade offer type
+                              example: SELL/EXCHANGE
+                            status:
+                              type: string
+                              description: trade offer status
+                              example: ACCEPTED/DECLINED/PENDING
+                            message:
+                              type: string
+                              description: messaging detailing what they want in return
+                              example: I want batman comics in return
+                            price:
+                              type: number
+                              description: price of comic
+                              example: 70.0
+                            createdAt:
+                              type: string
+                              description: time trade offer was created
+                              example: 2023-04-10T08:52:14.731Z
+                            contactDetails:
+                              type: object
+                              description: contact details
+                              properties:
+                                email:
+                                  type: string
+                                  description: email
+                                  example: example@gmail.com
+                                phoneNumber:
+                                  type: string
+                                  description: user phone number
+                                  example: +1-1212-1212-2323
+                            tradeOfferItems:
+                              type: object
+                              description: comics used in trade offer
+                              properties:
+                                collectionId:
+                                  type: string
+                                  description: collection Id
+                                  example: 121h21h2k12k12h12h12
+                                comicId:
+                                  type: number
+                                  description: comic Id
+                                  example: 1
+                                title:
+                                  type: string
+                                  description: comic title
+                                  example: Batman Origins
+                                imageUrl:
+                                  type: string
+                                  description: comic images
+                                  example: www.image.com/batmanorigins
+                                tradeOfferId:
+                                  type: string
+                                  description: trade offer Id
+                                  example: 12121gjghkkk212128y821
+  /profile:
+    patch:
+      tags:
+        - user
+      operationId: update user profile details
+      summary: update user profile details
+      description: update user profile details
+      requestBody:
+        description: Update user profile details in Marvel Collection
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  description: user first name
+                  example: Pearl
+                lastName:
+                  type: string
+                  description: user last name
+                  example: Obi
+                password:
+                  type: string
+                  description: user password
+                  example: wert563402er
+                email:
+                  type: string
+                  description: user email
+                  format: email
+                  example: pearlobi@gmail.com
+                username:
+                  type: string
+                  description: user name
+                  example: pearlobi
+                location:
+                  type: string
+                  description: user location
+                  example: Lagos state
+                profileImage:
+                  type: string
+                  description: user profile image
+                  example: www.image.com/profileimage
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: success
+                    example: user created successfully
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      updatedUser:
+                        type: object
+                        description: updated user
+                        properties:
+                          id:
+                            type: string
+                            description: update id
+                            example: 1245wirito4606063jkkfjfjf
+                          firstName:
+                            type: string
+                            description: user first name
+                            example: Pearl
+                          lastName:
+                            type: string
+                            description: user last name
+                            example: Obi
+                          email:
+                            type: string
+                            description: user email
+                            format: email
+                            example: pearlobi@gmail.com
+                          username:
+                            type: string
+                            description: user name
+                            example: pearlobi
+                          profileImage:
+                            type: string
+                            description: user profile image
+                            example: www.image.com/profileimage
+                          location:
+                            type: string
+                            description: user location
+                            example: Lagon State
+                          collection:
+                            type: array
+                            items:
+                              properties:
+                                id:
+                                  type: string
+                                  description: collectionId
+                                  example: we342dwsd3e2dwdsdedwue2oe2dda
+                                comicId:
+                                  type: number
+                                  description: id of comicId
+                                  example: 1
+                                title:
+                                  type: string
+                                  description: comic title
+                                  example: Batman Origins
+                                imageUrl:
+                                  type: string
+                                  description: comic images
+                                  example: www.image.com/batmanorigins
+                          tradeOffer:
+                            type: array
+                            items:
+                              properties:
+                                id:
+                                  type: string
+                                  description: trade offer Id
+                                  example: 121212erwewew232323fwdsdsd
+                                type:
+                                  type: string
+                                  description: trade offer type
+                                  example: SELL/EXCHANGE
+                                status:
+                                  type: string
+                                  description: trade offer status
+                                  example: ACCEPTED/DECLINED/PENDING
+                                createdById:
+                                  type: string
+                                  description: user Id
+                                  example: wwr28320132fsdsds2312313
+                                message:
+                                  type: string
+                                  description: messaging detailing what they want in return
+                                  example: I want batman comics in return
+                                price:
+                                  type: number
+                                  description: price of comic
+                                  example: 70.0
+                                phoneNumber:
+                                  type: string
+                                  description: user phone number
+                                  example: +1-1212-1212-2323
+                                email:
+                                  type: string
+                                  description: user email
+                                  format: email
+                                  example: example@gmail.com
+                                wantedComicId:
+                                  type: number
+                                  description: comic Id
+                                  example: 2
+                                createdAt:
+                                  type: string
+                                  description: time trade offer was created
+                                  example: 2023-04-10T08:52:14.731Z
+  /collection:
+    post:
+      tags:
+        - collection
+      operationId: assignComic
+      summary: Assign comic to user collection
+      description: assign comic to user collection
+      requestBody:
+        description: Assign comic to user collection
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comicId:
+                  type: string
+                  description: comic id
+                  example: 1
+                title:
+                  type: string
+                  description: comic title
+                  example: Batman Returns
+                imageUrl:
+                  type: string
+                  description: image url
+                  example: www.image.com/batmanreturns
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: success
+                    example: Collection item added to user collection successfully
+                  collection:
+                    type: object
+                    description: data
+                    properties:
+                      id:
+                        type: string
+                        description: collection Id
+                        example: we342dwsd3e2dwdsdedwue2oe2dda
+                      comicId:
+                        type: number
+                        description: comic Id
+                        example: 2
+                      title:
+                        type: string
+                        description: comic title
+                        example: Superman Origins
+                      imageUrl:
+                        type: string
+                        description: comic image urls
+                        example: www.image.com/supermanorigins
+                      userId:
+                        type: string
+                        description: user id
+                        example: we342dwsd3e2dwdsdedwue2oe2dda
+                      tradeOfferId:
+                        type: string
+                        description: trade offer Id
+                        example: null
+  /collection/{userId}:
+    get:
+      tags:
+        - collection
+      operationId: fetch user collection
+      summary: fetch user collection
+      description: fecth user collection
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: userId
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      id:
+                        type: string
+                        description: user id
+                        example: 1245wirito4606063jkkfjfjf
+                      firstName:
+                        type: string
+                        description: user first name
+                        example: Pearl
+                      lastName:
+                        type: string
+                        description: user last name
+                        example: Obi
+                      username:
+                        type: string
+                        description: user name
+                        example: pearlobi
+                      profileImage:
+                        type: string
+                        description: user profile image
+                        example: www.image.com/profileimage
+                      location:
+                        type: string
+                        description: user location
+                        example: Lagon State
+                      collection:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                              description: collectionId
+                              example: we342dwsd3e2dwdsdedwue2oe2dda
+                            comicId:
+                              type: number
+                              description: id of comicId
+                              example: 1
+                            title:
+                              type: string
+                              description: comic title
+                              example: Batman Origins
+                            imageUrl:
+                              type: string
+                              description: comic images
+                              example: www.image.com/batmanorigins
+  /collectors/query:
+    get:
+      tags:
+        - collection
+      operationId: Query collectors by location and/or username
+      summary: Query collectors by location and/or username
+      description: Query collectors by location and/or username
+      parameters:
+        - in: query
+          name: location
+          schema:
+            type: string
+          required: true
+          description: user location
+        - in: query
+          name: username
+          schema:
+            type: string
+          required: true
+          description: username
+      responses:
+        '200':
+          description: Successfully querying collectors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: Data for querying an article tags
+                    properties:
+                      user:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                              description: user id
+                              example: 1245wirito4606063jkkfjfjf
+                            firstName:
+                              type: string
+                              description: user first name
+                              example: Pearl
+                            lastName:
+                              type: string
+                              description: user last name
+                              example: Obi
+                            username:
+                              type: string
+                              description: user name
+                              example: pearlobi
+                            profileImage:
+                              type: string
+                              description: user profile image
+                              example: www.image.com/profileimage
+                            location:
+                              type: string
+                              description: user location
+                              example: Lagon State
+                            collection:
+                              type: array
+                              items:
+                                properties:
+                                  id:
+                                    type: string
+                                    description: collectionId
+                                    example: we342dwsd3e2dwdsdedwue2oe2dda
+                                  comicId:
+                                    type: number
+                                    description: id of comicId
+                                    example: 1
+                                  title:
+                                    type: string
+                                    description: comic title
+                                    example: Batman Origins
+                                  imageUrl:
+                                    type: string
+                                    description: comic images
+                                    example: www.image.com/batmanorigins
+  /collection/{comicId}:
+    delete:
+      tags:
+        - collection
+      operationId: Delete a comic
+      summary: Delete a comic
+      description: Delete a comic
+      parameters:
+        - in: path
+          name: comicId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the comic to get
+      responses:
+        '200':
+          description: Successfully deleting a comic
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful deleting a comic
+                    example: success
+                  data:
+                    type: object
+                    description: Data for deleting a comic
+                    properties:
+                      message:
+                        type: string
+                        description: Comic has been successfully deleted
+                        example: Comic has been successfully deleted
+      security:
+        - cookieAuth: []
+  /trade-offer:
+    post:
+      tags:
+        - trade offers
+      operationId: createTradeOffers
+      summary: Create trade offers
+      description: Create trade offers
+      requestBody:
+        description: Create trade offers
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: type of trade offer
+                  example: SELL/EXCHANGE
+                comicId:
+                  type: number
+                  description: comic id
+                  example: 1
+                phoneNumber:
+                  type: string
+                  description: user phone number
+                  example: +1-1212-1212-2323
+                email:
+                  type: string
+                  description: user email
+                  format: email
+                  example: example@gmail.com
+                message:
+                  type: string
+                  description: message
+                  example: I want batman comics in return
+                wantedComicId:
+                  type: number
+                  description: comic the user wants in return
+                  example: 2
+      responses:
+        '201':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      tradeOfferId:
+                        type: string
+                        description: trade offer id
+                        example: 10
+                      type:
+                        type: string
+                        description: trade offer type
+                        example: SELL/EXCHANGE
+                      status:
+                        type: string
+                        description: trade offer status
+                        example: PENDING
+                      message:
+                        type: string
+                        description: message
+                        example: I want batman comics in return
+                      price:
+                        type: number
+                        description: comic price
+                        example: 40
+                      wantedComicId:
+                        type: number
+                        description: comic Id
+                        example: 2
+                      createdAt:
+                        type: string
+                        description: time at which the trade offer was created
+                        example: 2023-04-11T17:26:14.462Z
+                      createdBy:
+                        type: object
+                        description: user
+                        properties:
+                          userId:
+                            type: string
+                            description: user id
+                            example: 1245wirito4606063jkkfjfjf
+                          firstName:
+                            type: string
+                            description: user first name
+                            example: Pearl
+                          lastName:
+                            type: string
+                            description: user last name
+                            example: Obi
+                          username:
+                            type: string
+                            description: user name
+                            example: pearlobi
+                          profileImage:
+                            type: string
+                            description: user profile image
+                            example: www.image.com/profileimage
+                          location:
+                            type: string
+                            description: user location
+                            example: Lagon State
+                          contactDetails:
+                            type: object
+                            description: contact details
+                            properties:
+                              email:
+                                type: string
+                                description: email
+                                example: example@gmail.com
+                              phoneNumber:
+                                type: string
+                                description: user phone number
+                                example: +1-1212-1212-2323
+                          tradeOffer:
+                            type: object
+                            description: comics used in trade offer
+                            properties:
+                              collectionId:
+                                type: string
+                                description: collection Id
+                                example: 121h21h2k12k12h12h12
+                              comicId:
+                                type: number
+                                description: comic Id
+                                example: 1
+                              title:
+                                type: string
+                                description: comic title
+                                example: Batman Origins
+                              imageUrl:
+                                type: string
+                                description: comic images
+                                example: www.image.com/batmanorigins
+                              tradeOfferId:
+                                type: string
+                                description: trade offer Id
+                                example: 12121gjghkkk212128y821
+  /trade-offer/{tradeOfferId}:
+    delete:
+      tags:
+        - trade offers
+      operationId: Delete a trade offer
+      summary: Delete a trade offer
+      description: Delete a offer
+      parameters:
+        - in: path
+          name: tradeOfferId
+          schema:
+            type: string
+          required: true
+          description: trade offer id
+      responses:
+        '200':
+          description: Successfully deleting a trade offer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful deleting a trade offer
+                    example: success
+                  data:
+                    type: object
+                    description: Data for deleting a trade offer
+                    properties:
+                      message:
+                        type: string
+                        description: Trade Offer with id a3bafcce-3be3-456a-af4a-6e6e6d582425 successfully deleted
+                        example: Trade Offer with id a3bafcce-3be3-456a-af4a-6e6e6d582425 successfully deleted
+      security:
+        - cookieAuth: []
+  /tradeOffers/query:
+    get:
+      tags:
+        - trade offers
+      operationId: Query trade offers by location
+      summary: Query trade offers by location
+      description: Query trade offers by location
+      parameters:
+        - in: query
+          name: location
+          schema:
+            type: string
+          required: true
+          description: user location
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      tradeOffers:
+                        type: array
+                        items:
+                          properties:
+                            tradeOfferId:
+                              type: string
+                              description: trade offer id
+                              example: 10
+                            type:
+                              type: string
+                              description: trade offer type
+                              example: SELL/EXCHANGE
+                            status:
+                              type: string
+                              description: trade offer status
+                              example: PENDING
+                            message:
+                              type: string
+                              description: message
+                              example: I want batman comics in return
+                            price:
+                              type: number
+                              description: comic price
+                              example: 40
+                            wantedComicId:
+                              type: number
+                              description: comic Id
+                              example: 2
+                            createdAt:
+                              type: string
+                              description: time at which the trade offer was created
+                              example: 2023-04-11T17:26:14.462Z
+                            createdBy:
+                              type: object
+                              description: user
+                              properties:
+                                userId:
+                                  type: string
+                                  description: user id
+                                  example: 1245wirito4606063jkkfjfjf
+                                firstName:
+                                  type: string
+                                  description: user first name
+                                  example: Pearl
+                                lastName:
+                                  type: string
+                                  description: user last name
+                                  example: Obi
+                                username:
+                                  type: string
+                                  description: user name
+                                  example: pearlobi
+                                profileImage:
+                                  type: string
+                                  description: user profile image
+                                  example: www.image.com/profileimage
+                                location:
+                                  type: string
+                                  description: user location
+                                  example: Lagon State
+                            contactDetails:
+                              type: object
+                              description: contact details
+                              properties:
+                                email:
+                                  type: string
+                                  description: email
+                                  example: example@gmail.com
+                                phoneNumber:
+                                  type: string
+                                  description: user phone number
+                                  example: +1-1212-1212-2323
+                            tradeOffer:
+                              type: object
+                              description: comics used in trade offer
+                              properties:
+                                collectionId:
+                                  type: string
+                                  description: collection Id
+                                  example: 121h21h2k12k12h12h12
+                                comicId:
+                                  type: number
+                                  description: comic Id
+                                  example: 1
+                                title:
+                                  type: string
+                                  description: comic title
+                                  example: Batman Origins
+                                imageUrl:
+                                  type: string
+                                  description: comic images
+                                  example: www.image.com/batmanorigins
+                                tradeOfferId:
+                                  type: string
+                                  description: trade offer Id
+                                  example: 12121gjghkkk212128y821
+      security:
+        - cookieAuth: []
+  /trade-request:
+    post:
+      tags:
+        - trade requests
+      operationId: tradeRequest
+      summary: tradeRequest
+      description: Make a trade request
+      requestBody:
+        description: Make a trade request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tradeOfferId:
+                  type: string
+                  description: Trade offer id
+                  example: 53d26fcf-234d-4555-b0d5-a5dfc91caa7e
+                receiverComicId:
+                  type: number
+                  description: Comic id
+                  example: 2
+      responses:
+        '201':
+          description: A Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: successfully creating a trade request
+                    properties:
+                      trade-request:
+                        type: object
+                        description: trade request
+                        properties:
+                          id:
+                            type: string
+                            description: trade request Id
+                            example: d4cd859d-e090-4638-9efd-353fa986a8f6
+                          receiverId:
+                            type: string
+                            description: user Id
+                            example: f54886b0-cba4-438f-a3c2-425dc438182d
+                          tradeOfferId:
+                            type: string
+                            description: trade offer Id
+                            example: 53d26fcf-234d-4555-b0d5-a5dfc91caa7e
+                          receiverComicId:
+                            type: number
+                            description: comic Id
+                            example: 2
+                          status:
+                            type: string
+                            description: trade request status
+                            example: PENDING
+                          createdAt:
+                            type: string
+                            description: created at time
+                            format: datetime
+                            example: 2023-04-13T09:05:39.946Z
+      security:
+        - cookieAuth: []
+  /trade/{tradeRequestId}:
+    patch:
+      tags:
+        - trade requests
+      operationId: ACCEPT/DECLINE trade request
+      summary: ACCEPT/DECLINE trade request
+      description: ACCEPT/DECLINE trade request
+      parameters:
+        - in: path
+          name: tradeRequestId
+          schema:
+            type: string
+          required: true
+          description: Trade request id
+      requestBody:
+        description: Update trade status
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: accept/decline trade request
+                  example: ACCEPTED/DECLINED
+      responses:
+        '200':
+          description: Exchange/Sale successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Exchange successful / Comic has been successfully purchased
+                    example: success
+      security:
+        - cookieAuth: []
+  /notifications:
+    get:
+      tags:
+        - notifications
+      operationId: Fetch all user notifications
+      summary: Fetch all user notifications
+      description: Fetch all user notifications
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful fetching user notifications
+                    example: success
+                  data:
+                    type: object
+                    description: successful fetching user notifications
+                    properties:
+                      notification:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                              description: Notification Id
+                              example: dfe224a5-642c-41a6-8e79-254a7bf04112
+                            userId:
+                              type: string
+                              description: user id
+                              example: dfe224a5-642c-41a6-8e79-254a7bf04112
+                            message:
+                              type: string
+                              description: message from receiver to creator
+                              example: PeterObi requested to exchange a comic from / with you
+                            isRead:
+                              type: boolean
+                              description: checking if notification is read or not
+                              example: False
+                            createdAt:
+                              type: string
+                              description: created at time
+                              example: 2023-04-13T09:05:40.039Z
+      security:
+        - cookieAuth: []
+  /notifications/{notificationId}:
+    patch:
+      tags:
+        - notifications
+      operationId: update the notification isRead status
+      summary: update the notification isRead status
+      description: update the notification isRead status
+      parameters:
+        - in: path
+          name: notificationId
+          schema:
+            type: string
+          required: true
+          description: notification id
+      requestBody:
+        description: update the notification isRead status
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isRead:
+                  type: boolean
+                  description: true/false
+                  example: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful fetching user notifications
+                    example: success
+                  data:
+                    type: object
+                    description: successful fetching user notifications
+                    properties:
+                      notification:
+                        type: object
+                        description: notification isRead status
+                        properties:
+                          id:
+                            type: string
+                            description: Notification Id
+                            example: dfe224a5-642c-41a6-8e79-254a7bf04112
+                          userId:
+                            type: string
+                            description: user id
+                            example: dfe224a5-642c-41a6-8e79-254a7bf04112
+                          message:
+                            type: string
+                            description: message from receiver to creator
+                            example: PeterObi requested to exchange a comic from / with you
+                          isRead:
+                            type: boolean
+                            description: checking if notification is read or not
+                            example: True
+                          createdAt:
+                            type: string
+                            description: created at time
+                            example: 2023-04-13T09:05:40.039Z
+      security:
+        - cookieAuth: []
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        # firstName:
+        #   type: string
+        #   description: First Name
+        #   example: Jones
+        # lastName:
+        #   type: string
+        #   description: Last Name
+        #   example: Azeez
+        email:
+          type: string
+          example: jones@gmail.com
+          format: email
+  securitySchemes:
+    cookieAuth: # arbitrary name for the security scheme; will be used in the "security" key later
+      type: apiKey
+      in: cookie
+      name: JSESSIONID
