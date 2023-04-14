@@ -1,3 +1,4 @@
+import NewUserForm from './NewUserForm';
 import AuthSignup from './AuthSignup';
 
-export default AuthSignup;
+export { NewUserForm, AuthSignup };
