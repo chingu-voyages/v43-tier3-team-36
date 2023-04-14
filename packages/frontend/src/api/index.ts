@@ -20,6 +20,14 @@ export const searchComics = async (
   return json.data.results;
 };
 
+export const getComic = async (comicId: number): Promise<TComicType> => {
+  const response = await fetch(
+    `${MARVEL_API_URL}/comics/${comicId}?apikey=${MARVEL_API_KEY}`,
+  );
+  const json = await response.json();
+  return json.data.results[0];
+};
+
 export type SignupOptions = {
   firstName: string;
   lastName: string;
@@ -201,7 +209,7 @@ export const getTradeOffers = async (
 
 export type TRequestTradeOfferBody = {
   tradeOfferId: string;
-  receiverComicId: number;
+  receiverComicId?: number;
 };
 
 export const requestTradeOffer = async (

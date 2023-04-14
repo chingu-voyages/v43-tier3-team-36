@@ -1,21 +1,21 @@
+import React, { useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import clsx from 'clsx';
-import React, { useState } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { twMerge } from 'tailwind-merge';
 
-export type ListData = {
-  [currValue: string]: string;
-}[];
+export type ListObject = {
+  [key: string]: string | number;
+};
 
 export type ListSelectProps = {
-  data: ListData;
+  data: ListObject[];
   /**
-   *currValue - value in the <Listbox.Button /> which will show the default or curr selected value
+   * Value in list data to label the
    */
-  currValue: string;
+  labelKey: string;
   /**
-   *btnStyles, allows you to style the <Listbox.Button />
+   * Allows you to style the <Listbox.Button />
    */
   btnStyles: string;
   children: React.ReactNode;
@@ -23,22 +23,23 @@ export type ListSelectProps = {
 
 export const ListSelect = ({
   data,
-  currValue,
+  labelKey,
   btnStyles,
   children,
 }: ListSelectProps) => {
   const [selectedOption, setSelectedOption] = useState(data[0]);
+
   return (
     <Listbox
       as="article"
-      className="w-full relative bg-white"
+      className="relative w-full bg-white"
       value={selectedOption}
       onChange={setSelectedOption}
     >
       <Listbox.Button
         className={twMerge(clsx('w-full p-4 border rounded-md', btnStyles))}
       >
-        {selectedOption[currValue]}
+        {selectedOption[labelKey]}
       </Listbox.Button>
       <Transition
         enter="transition duration-100 ease-out"
@@ -55,3 +56,5 @@ export const ListSelect = ({
     </Listbox>
   );
 };
+
+export const ListSelectOption = Listbox.Option;

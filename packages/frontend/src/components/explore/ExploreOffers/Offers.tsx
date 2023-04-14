@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   OfferItem,
   type IOfferItem,
 } from '@/components/common/OfferItem/OfferItem';
 import TradeOfferDialog from './TradeOfferDialog';
+import { TTradeOfferQuery, getTradeOffers } from '@/api';
 import useAlertStore from '@/store/store';
-import { requestTradeOffer } from '@/api';
-import { DELAY_CLOSE_MS } from '@/data/constants';
+import Loader from '@/components/common/Loader';
 
 const HEADINGS = [
   '#',
@@ -34,58 +34,69 @@ const OfferListHeadings = () => (
 );
 
 type Props = {
-  offers: any[];
+  query: TTradeOfferQuery;
   onProfile?: boolean;
 };
 
-const Offers: React.FC<Props> = ({ offers, onProfile }) => {
+const Offers: React.FC<Props> = ({ query, onProfile }) => {
   const setAlert = useAlertStore((state) => state.setAlert);
-  const [activeOffer, setActiveOffer] = useState<any>(null);
-  const requestTradeMutation = useMutation({
-    mutationFn: requestTradeOffer,
-    onSuccess: (message) => {
-      setAlert({ type: 'success', message });
-      setTimeout(() => setActiveOffer(null), DELAY_CLOSE_MS);
-    },
+  const { data: offersData, isLoading } = useQuery(['offers'], {
+    queryFn: () => getTradeOffers(query),
     onError: (err) => {
-      setAlert({
-        type: 'error',
-        message: err as string,
-      });
+      if (err instanceof Error) {
+        setAlert({
+          type: 'error',
+          message: err.message,
+        });
+      }
     },
   });
+  const [activeOffer, setActiveOffer] = useState<any>(null);
 
   const viewTradeHandler = (offer: IOfferItem) => {
     setActiveOffer(offer);
   };
 
+  if (isLoading) {
+    return <Loader label="Loading Offers..." />;
+  }
+
   return (
-    <section className="my-8">
+    <>
       {activeOffer ? (
         <TradeOfferDialog
-          type={activeOffer.type}
-          onRequest={() => requestTradeMutation.mutate({
-            tradeOfferId: activeOffer.tradeOfferId,
-            receiverComicId: activeOffer.tradeOffer.comicId,
-          })}
+          key={activeOffer.id}
+          offer={{
+            type: activeOffer.type,
+            wantedComicId: activeOffer.wantedComicId,
+            ...activeOffer.tradeOffer,
+          }}
           onClose={() => setActiveOffer(null)}
         />
       ) : null}
-      {onProfile ? null : <OfferListHeadings />}
-      {offers.map((offer, idx) => (
-        <OfferItem
-          key={offer.tradeOffer.comicId}
-          index={idx + 1}
-          type={offer.type}
-          price={offer.price}
-          tradeOffer={offer.tradeOffer}
-          createdBy={offer.createdBy}
-          createdAt={offer.createdAt}
-          onProfile={onProfile}
-          onTrade={() => viewTradeHandler(offer)}
-        />
-      ))}
-    </section>
+      <div>
+        {onProfile ? null : <OfferListHeadings />}
+        {offersData && offersData.length > 0 ? (
+          <ul className="my-8">
+            {offersData.map((offer, idx) => (
+              <OfferItem
+                key={offer.tradeOffer.comicId}
+                index={idx + 1}
+                type={offer.type}
+                price={offer.price}
+                tradeOffer={offer.tradeOffer}
+                createdBy={offer.createdBy}
+                createdAt={offer.createdAt}
+                onProfile={onProfile}
+                onTrade={() => viewTradeHandler(offer)}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-12 text-center">No Trade Offers Available..</p>
+        )}
+      </div>
+    </>
   );
 };
 

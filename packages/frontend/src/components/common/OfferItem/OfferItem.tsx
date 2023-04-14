@@ -1,10 +1,13 @@
+import Image from 'next/image';
 import clsx from 'clsx';
 import { Chip } from '@/components/ui/Chip';
 import { Button } from '@/components/ui/Button';
 
+import { COMIC_FALLBACK } from '@/data/constants';
+
 export interface IOfferItem {
   type: string;
-  status?: string;
+  // status?: string;
   price: number;
   createdAt: string;
   createdBy: {
@@ -14,6 +17,7 @@ export interface IOfferItem {
   tradeOffer: {
     comicId: string;
     title: string;
+    imageUrl?: string;
   };
 }
 
@@ -25,7 +29,6 @@ interface IOfferItemProps extends IOfferItem {
 
 export const OfferItem: React.FC<IOfferItemProps> = ({
   index,
-  status,
   type,
   price,
   createdAt,
@@ -34,15 +37,7 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
   onProfile,
   onTrade,
 }) => {
-  const DUMMY_COMIC_DETAILS = {
-    issue: 8,
-    imageUrl:
-      'https://cdn.marvel.com/u/prod/marvel/i/mg/3/60/6227804f029af/clean.jpg',
-  };
-
-  if (status === 'fulfilled') {
-    return null;
-  }
+  const { title, imageUrl } = tradeOffer;
 
   return (
     <article
@@ -56,15 +51,16 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
     >
       <div className="flex justify-between text-sm md:hidden">
         <div className="flex items-center ">
-          <span className="block mr-4">
-            <img
+          <div className="relative max-w-full mr-4">
+            <Image
               className="w-16 h-16 rounded-lg"
-              src={DUMMY_COMIC_DETAILS.imageUrl}
+              src={imageUrl || COMIC_FALLBACK}
               alt=""
+              fill
             />
-          </span>
+          </div>
           <div className="flex flex-col">
-            <span className="text-lg font-bold">{tradeOffer.title}</span>
+            <span className="text-lg font-bold">{title}</span>
             <span
               className={clsx('font-medium text-gray-500', {
                 hidden: onProfile,
@@ -76,10 +72,20 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
         </div>
         <div className="flex self-start text-sm">
           {type === 'EXCHANGE' && (
-            <Button className="ml-auto uppercase w-fit md:ml-0">exg</Button>
+            <Button
+              className="ml-auto uppercase w-fit md:ml-0"
+              onClick={onTrade}
+            >
+              exg
+            </Button>
           )}
           {type === 'BUY' && (
-            <Button className="ml-auto uppercase w-fit md:ml-0">buy</Button>
+            <Button
+              className="ml-auto uppercase w-fit md:ml-0"
+              onClick={onTrade}
+            >
+              buy
+            </Button>
           )}
         </div>
       </div>
@@ -94,21 +100,23 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
         <div className="flex flex-col justify-between">
           <span className="text-xs text-gray-500">Issue</span>
           <div>
+            {/* NOTE: Need to get issue number of comic from backend */}
             <Chip
               className="text-xs font-light bg-red-200 border border-red-600 w-fit text-darkgrey"
-              label={`Issue #${DUMMY_COMIC_DETAILS.issue}`}
+              label={`Issue #${8}`}
             />
           </div>
         </div>
       </div>
       <div className="hidden text-gray-500 md:block">{index}</div>
-      <div className="hidden md:flex md:items-center">
-        <img
+      <div className="relative hidden max-w-full md:flex md:items-center">
+        <Image
           className="w-12 h-12 rounded-lg"
-          src={DUMMY_COMIC_DETAILS.imageUrl}
+          src={imageUrl || COMIC_FALLBACK}
           alt=""
+          fill
         />
-        <span className="ml-4 text-lg font-bold">{tradeOffer.title}</span>
+        <span className="ml-4 text-lg font-bold">{title}</span>
       </div>
       <div className="hidden md:block">
         <div>
@@ -119,10 +127,11 @@ export const OfferItem: React.FC<IOfferItemProps> = ({
         </div>
       </div>
       <div className="hidden md:block">
-        <Chip
+        {/* NOTE: Need to get issue number of comic from backend */}
+        {/* <Chip
           className="text-xs font-light bg-red-200 border border-red-600 w-fit text-darkgrey"
-          label={`Issue #${DUMMY_COMIC_DETAILS.issue}`}
-        />
+          label={`Issue #${tradeOffer.issue}`}
+        /> */}
       </div>
       <div className="hidden md:block">
         <span>{createdAt}</span>

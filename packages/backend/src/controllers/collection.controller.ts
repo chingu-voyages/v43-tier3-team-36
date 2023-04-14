@@ -313,6 +313,7 @@ export async function viewTradeOffers(req: Request, res: Response) {
           status: tradeOffer.status,
           message: tradeOffer.message,
           price: tradeOffer.price,
+          wantedComicId: tradeOffer.wantedComicId,
           createdAt: tradeOffer.createdAt,
           createdBy: {
             userId: tradeOffer.createdBy.id,
