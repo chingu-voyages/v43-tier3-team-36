@@ -8,6 +8,7 @@ import {
   findUserByEmail,
   findUserById,
   findUserByUsername,
+  updateUserDetail,
 } from '../services/user.service';
 import { hashPassword } from '../utils/hashPassword';
 import { viewUserTradeOffers } from '../services/collection.service';
@@ -50,6 +51,49 @@ export const register = async (
   }
 };
 
+// Update user details/Profile
+
+export const updateUser = async (
+  req: Request<{}, {}, UserOptionalDefaults>,
+  res: Response,
+) => {
+  const { id } = req.user as User;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    username,
+    profileImage,
+    location,
+  } = req.body;
+
+  const dataToUpdate: any = {};
+  if (firstName) dataToUpdate.firstName = firstName;
+  if (lastName) dataToUpdate.lastName = lastName;
+  if (email) dataToUpdate.email = email;
+  if (password) {
+    const hashedPassword = await hashPassword(password);
+    dataToUpdate.password = hashedPassword;
+  }
+  if (username) dataToUpdate.username = username;
+  if (profileImage) dataToUpdate.profileImage = profileImage;
+  if (location) dataToUpdate.location = location;
+
+  try {
+    const updatedUser = await updateUserDetail(id, dataToUpdate);
+
+    return res.status(200).json({
+      message: 'user profile successfully updated',
+      data: {
+        updatedUser,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
+
 // eslint-disable-next-line max-len
 
 export const login = async (req: Request, res: Response) => res.status(200).json({ message: 'Login successful' });
@@ -84,7 +128,7 @@ export const currentUser = async (req: Request, res: Response) => {
           title: item.title,
           imageUrl: item.imageUrl,
         })),
-        tradeOfferDetail: userTradeOffers.map((tradeOffer: any) => ({
+        tradeOfferDetail: userTradeOffers?.map((tradeOffer: any) => ({
           tradeOfferId: tradeOffer.id,
           type: tradeOffer.type,
           status: tradeOffer.status,
@@ -96,11 +140,11 @@ export const currentUser = async (req: Request, res: Response) => {
             phoneNumber: tradeOffer.phoneNumber,
           },
           tradeOfferItems: {
-            collectionId: tradeOffer.collection[0].id,
-            comicId: tradeOffer.collection[0].comicId,
-            title: tradeOffer.collection[0].title,
-            imageUrl: tradeOffer.collection[0].imageUrl,
-            tradeOfferId: tradeOffer.collection[0].tradeOfferId,
+            collectionId: tradeOffer.collection[0]?.id,
+            comicId: tradeOffer.collection[0]?.comicId,
+            title: tradeOffer.collection[0]?.title,
+            imageUrl: tradeOffer.collection[0]?.imageUrl,
+            tradeOfferId: tradeOffer.collection[0]?.tradeOfferId,
           },
         })),
       },

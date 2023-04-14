@@ -76,3 +76,16 @@ export const TradeRequestSchema = z.object({
     }),
   }),
 });
+
+export const updateUserSchema = z.object({
+  // In this example we will only validate the body for user update.
+  body: z.object({
+    email: z.string().email().optional(),
+    password: z.string().min(6).optional(),
+    firstName: z.string().min(2).max(20).optional(),
+    lastName: z.string().min(2).max(20).optional(),
+    username: z.string().min(2).max(20).optional(),
+    location: z.string().min(2).max(30).optional(),
+    profileImage: z.string().min(2).optional(),
+  }),
+});
