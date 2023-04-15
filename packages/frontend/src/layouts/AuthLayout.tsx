@@ -138,12 +138,13 @@ const Notifications: React.FC<NotificationsProps> = ({ onClose }) => {
             Clear all
           </button>
           <ul className="grid max-h-full p-4 overflow-auto auto-rows-auto gap-y-5 mt-7">
-            {UnreadNotifications.map(({ id, message }) => (
+            {/* @ts-ignore */}
+            {UnreadNotifications.map(({ id, message, profileImage }) => (
               <li
                 key={id}
                 className="grid grid-cols-[max-content_minmax(0,1fr)_min-content] items-center px-3 pt-3 pb-3 border rounded-lg gap-x-4 border-neutral-200"
               >
-                <Avatar src={PROFILE_AVATAR_FALLBACK} alt="" />
+                <Avatar src={profileImage || PROFILE_AVATAR_FALLBACK} alt="" />
                 <p className="text-sm grow max-w-[65ch]">{message}</p>
                 <button
                   type="button"

@@ -529,6 +529,7 @@ export async function pushNotifications(req: Request, res: Response) {
             username: notification[0].user.username,
             city: notification[0].user.city,
             country: notification[0].user.country,
+            profileImage: notification[0].user.profileImage,
             bannerImage: notification[0].user.bannerImage,
           },
         },
