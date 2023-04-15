@@ -28,7 +28,9 @@ model User {
   password      String
   username      String           @unique
   profileImage  String?
-  location      String?
+  city          String
+  country       String
+  bannerImage   String
   collection    CollectionItem[]
   tradeOffers   TradeOffer[]
   TradeRequests TradeRequest[]
@@ -40,6 +42,7 @@ model CollectionItem {
   comicId      Int
   title        String
   imageUrl     String
+  issueNumber  Int
   user         User?       @relation(fields: [userId], references: [id])
   userId       String?
   TradeOffer   TradeOffer? @relation(fields: [tradeOfferId], references: [id])
