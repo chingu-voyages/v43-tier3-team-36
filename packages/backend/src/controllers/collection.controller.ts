@@ -403,8 +403,7 @@ export async function createTradeRequest(req: Request, res: Response) {
     });
 
     // store pusher notification in the database
-    const chelsea = await storePushNotification(tradeOffer, receiver);
-    console.log(chelsea, 'aaaaaaaaaaaaaaaa');
+    await storePushNotification(tradeOffer, receiver);
 
     return res.status(201).json({
       status: 'success',
