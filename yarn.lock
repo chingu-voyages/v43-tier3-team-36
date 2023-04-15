@@ -731,6 +731,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@harelpls/use-pusher@npm:^7.2.1":
+  version: 7.2.1
+  resolution: "@harelpls/use-pusher@npm:7.2.1"
+  dependencies:
+    dequal: ^2.0.1
+    invariant: ^2.2.4
+    pusher-js: ^7.0.0
+  peerDependencies:
+    react: ^16.9.0
+  checksum: 3684a6e084b2deecb83ae2735c079c3456a349f0aa4735f7467cba16202c0f50eeaf39c58f235b63c39fff8307108dc6058d7c7a8c682600fc0f4205de8581a1
+  languageName: node
+  linkType: hard
+
 "@headlessui/react@npm:^1.7.13":
   version: 1.7.13
   resolution: "@headlessui/react@npm:1.7.13"
@@ -4941,6 +4954,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dequal@npm:^2.0.1":
+  version: 2.0.3
+  resolution: "dequal@npm:2.0.3"
+  checksum: 8679b850e1a3d0ebbc46ee780d5df7b478c23f335887464023a631d1b9af051ad4a6595a44220f9ff8ff95a8ddccf019b5ad778a976fd7bbf77383d36f412f90
+  languageName: node
+  linkType: hard
+
 "destroy@npm:1.2.0":
   version: 1.2.0
   resolution: "destroy@npm:1.2.0"
@@ -6336,6 +6356,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "frontend@workspace:packages/frontend"
   dependencies:
+    "@harelpls/use-pusher": ^7.2.1
     "@headlessui/react": ^1.7.13
     "@heroicons/react": ^2.0.16
     "@hookform/resolvers": ^3.0.0
@@ -7397,6 +7418,15 @@ __metadata:
     has: ^1.0.3
     side-channel: ^1.0.4
   checksum: 97e84046bf9e7574d0956bd98d7162313ce7057883b6db6c5c7b5e5f05688864b0978ba07610c726d15d66544ffe4b1050107d93f8a39ebc59b15d8b429b497a
+  languageName: node
+  linkType: hard
+
+"invariant@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "invariant@npm:2.2.4"
+  dependencies:
+    loose-envify: ^1.0.0
+  checksum: cc3182d793aad82a8d1f0af697b462939cb46066ec48bbf1707c150ad5fad6406137e91a262022c269702e01621f35ef60269f6c0d7fd178487959809acdfb14
   languageName: node
   linkType: hard
 
@@ -9142,7 +9172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -11391,6 +11421,17 @@ __metadata:
     "@types/node": ^14.14.31
     tweetnacl: ^1.0.3
   checksum: 80b9c209a9db7b51f5edb9c03dc3075d759960644b12ac60e4e22b8e335bedfb69c16381ef7454b37dd3858c7c6e684b96fba368d3fc9f97ef63dfa6c37fb7ee
+  languageName: node
+  linkType: hard
+
+"pusher-js@npm:^7.0.0":
+  version: 7.6.0
+  resolution: "pusher-js@npm:7.6.0"
+  dependencies:
+    "@types/express-serve-static-core": 4.17.28
+    "@types/node": ^14.14.31
+    tweetnacl: ^1.0.3
+  checksum: 6859d714ce8392f50cebc71ad8dde1a6ffc129e3cd797a443a17706d5c4fe57942573d0bdc31a6cb317934e9b49d479c0d3e4c36bee8be191b78f3dbf582743e
   languageName: node
   linkType: hard
 

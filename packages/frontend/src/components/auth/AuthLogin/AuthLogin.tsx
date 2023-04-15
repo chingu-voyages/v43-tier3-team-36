@@ -1,18 +1,23 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import ExistingUserForm, { type TFormSchema } from './ExistingUserForm';
 import UseAlertStore from '@/store/store';
-import { login } from '@/api';
+import { getCurrentUserDetails, login } from '@/api';
 
 const AuthLogin: React.FC = () => {
   const setAlert = UseAlertStore((state) => state.setAlert);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const LogUserMutation = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      await queryClient.prefetchQuery({
+        queryKey: ['user'],
+        queryFn: getCurrentUserDetails,
+      });
       setAlert({ type: 'success', message: data.message });
       router.replace('/profile');
     },
