@@ -37,8 +37,6 @@ export const register = async (
     ): string => faker.image.abstract(width, height, randomize);
 
     const bannerImage: string = image(1290, 300, false);
-    console.log(bannerImage, 'bbbbbbbbbbbbbbbbbbbbb');
-    console.log('name');
 
     const newUser = await createUser(
       firstName,
