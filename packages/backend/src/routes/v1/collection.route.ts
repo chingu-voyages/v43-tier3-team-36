@@ -7,11 +7,11 @@ import {
   deleteTradeOffer,
   editByDeletingUserComic,
   tradeComics,
-  queryCollectorsByUsernameAndLocation,
   viewComicBookCollector,
   viewTradeOffers,
   pushNotifications,
   updatePushNotifications,
+  queryCollectorsByUsernameAndCountry,
 } from '../../controllers/collection.controller';
 import { isLoggedIn, validateSchema } from '../../middleware';
 import {
@@ -23,36 +23,36 @@ import {
 const router = Router();
 
 router.post(
-  '/collection',
+  '/collections',
   isLoggedIn,
   validateSchema(AssignComicSchema),
   addCollectionItemToUser,
 );
-router.delete('/collection/:comicId', isLoggedIn, editByDeletingUserComic);
+router.delete('/collections/:comicId', isLoggedIn, editByDeletingUserComic);
 
-router.get('/collection/:userId', isLoggedIn, viewComicBookCollector);
+router.get('/collections/:userId', isLoggedIn, viewComicBookCollector);
 
-router.get('/collectors', isLoggedIn, queryCollectorsByUsernameAndLocation);
+router.get('/collectors', isLoggedIn, queryCollectorsByUsernameAndCountry);
 
 router.post(
-  '/trade-offer',
+  '/trade-offers',
   isLoggedIn,
   validateSchema(TradeOfferSchema),
   createTradeOffers,
 );
 
-router.delete('/trade-offer/:tradeOfferId', isLoggedIn, deleteTradeOffer);
+router.delete('/trade-offers/:tradeOfferId', isLoggedIn, deleteTradeOffer);
 
 router.get('/trade-offers', viewTradeOffers);
 
 router.post(
-  '/trade-request',
+  '/trade-requests',
   validateSchema(TradeRequestSchema),
   isLoggedIn,
   createTradeRequest,
 );
 
-router.patch('/trade/:tradeRequestId', isLoggedIn, tradeComics);
+router.patch('/trades/:tradeRequestId', isLoggedIn, tradeComics);
 
 router.get('/notifications', isLoggedIn, pushNotifications);
 
