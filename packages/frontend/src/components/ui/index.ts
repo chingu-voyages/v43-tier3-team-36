@@ -7,3 +7,4 @@ export * from './Modal';
 export * from './DropdownMenu';
 export * from './SwitchToggle';
 export * from './ListSelect';
+export * from './AutoComplete';
