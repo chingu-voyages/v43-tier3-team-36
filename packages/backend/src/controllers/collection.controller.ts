@@ -14,6 +14,7 @@ import {
   deleteTradeOfferByTradeOfferId,
   existingComicInCollection,
   findCollectionItemByComicId,
+  findNotification,
   findPushNotification,
   findTradeRequest,
   findUniqueId,
@@ -38,7 +39,9 @@ import { pusher } from '../app';
 
 export async function addCollectionItemToUser(req: Request, res: Response) {
   const { id } = req.user as User;
-  const { comicId, title, imageUrl } = req.body;
+  const {
+    comicId, title, imageUrl, issueNumber,
+  } = req.body;
 
   try {
     // Check if the user exists
@@ -57,7 +60,13 @@ export async function addCollectionItemToUser(req: Request, res: Response) {
     }
 
     // Create a new collection item
-    const collection = await createCollectionItem(id, comicId, title, imageUrl);
+    const collection = await createCollectionItem(
+      id,
+      comicId,
+      title,
+      imageUrl,
+      issueNumber,
+    );
 
     return res.status(200).json({
       message: 'Collection item added to user collection successfully',
@@ -92,12 +101,14 @@ export async function viewComicBookCollector(req: Request, res: Response) {
         lastName: user.lastName,
         username: user.username,
         profileImage: user.profileImage,
-        location: user.location,
+        city: user.city,
+        country: user.country,
         collection: user.collection.map((item: any) => ({
           id: item.id,
           comicId: item.comicId,
           title: item.title,
           imageUrl: item.imageUrl,
+          issueNumber: item.issueNumber,
         })),
       },
     });
@@ -107,18 +118,18 @@ export async function viewComicBookCollector(req: Request, res: Response) {
   }
 }
 
-export async function queryCollectorsByUsernameAndLocation(
+export async function queryCollectorsByUsernameAndCountry(
   req: Request,
   res: Response,
 ) {
-  const { username, location } = req.query as Record<string, string>;
+  const { username, country } = req.query as Record<string, string>;
 
   try {
-    const collectors = await queryCollectors(username, location);
+    const collectors = await queryCollectors(username, country);
     if (!collectors.length) {
       return res
         .status(404)
-        .json({ error: `No user by ${username} and/or ${location} exists` });
+        .json({ error: `No user by ${username} and/or ${country} exists` });
     }
     return res.status(200).json({
       status: 'success',
@@ -129,12 +140,14 @@ export async function queryCollectorsByUsernameAndLocation(
           lastName: collector.lastName,
           username: collector.username,
           profileImage: collector.profileImage,
-          location: collector.location,
+          city: collector.city,
+          country: collector.country,
           collection: collector.collection.map((item: any) => ({
             id: item.id,
             comicId: item.comicId,
             title: item.title,
             imageUrl: item.imageUrl,
+            issueNumber: item.issueNumber,
           })),
         })),
       },
@@ -152,10 +165,7 @@ export async function editByDeletingUserComic(req: Request, res: Response) {
   const { id } = req.user as User;
 
   try {
-    const collectionItem = await findCollectionItemByComicId(
-      Number(comicId),
-      id,
-    );
+    const collectionItem = await findCollectionItemByComicId(comicId, id);
 
     // Checking if collecion item exists
 
@@ -234,7 +244,9 @@ export async function createTradeOffers(req: Request, res: Response) {
           lastName: tradeOffer.createdBy.lastName,
           username: tradeOffer.createdBy.username,
           profileImage: tradeOffer.createdBy.profileImage,
-          location: tradeOffer.createdBy.location,
+          city: tradeOffer.createdBy.city,
+          country: tradeOffer.createdBy.country,
+          bannerImage: tradeOffer.createdBy.bannerImage,
         },
         contactDetails: {
           email: tradeOffer.email,
@@ -245,6 +257,7 @@ export async function createTradeOffers(req: Request, res: Response) {
           comicId: tradeOffer.collection[0].comicId,
           title: tradeOffer.collection[0].title,
           imageUrl: tradeOffer.collection[0].imageUrl,
+          issueNumber: tradeOffer.collection[0].issueNumber,
           tradeOfferId: tradeOffer.collection[0].tradeOfferId,
         },
       },
@@ -288,12 +301,12 @@ export async function deleteTradeOffer(req: Request, res: Response) {
 // View Comic Book Offers
 
 export async function viewTradeOffers(req: Request, res: Response) {
-  const { location } = req.query as Record<string, string>;
+  const { country } = req.query as Record<string, string>;
   try {
     let tradeOffers;
 
-    if (location) {
-      tradeOffers = await queryTradeOffers(location);
+    if (country) {
+      tradeOffers = await queryTradeOffers(country);
     } else {
       tradeOffers = await viewComicBookOffers();
     }
@@ -321,7 +334,9 @@ export async function viewTradeOffers(req: Request, res: Response) {
             lastName: tradeOffer.createdBy.lastName,
             username: tradeOffer.createdBy.username,
             profileImage: tradeOffer.createdBy.profileImage,
-            location: tradeOffer.createdBy.location,
+            city: tradeOffer.createdBy.city,
+            country: tradeOffer.createdBy.country,
+            bannerImage: tradeOffer.createdBy.bannerImage,
           },
           contactDetails: {
             email: tradeOffer.email,
@@ -332,6 +347,7 @@ export async function viewTradeOffers(req: Request, res: Response) {
             comicId: tradeOffer.collection[0].comicId,
             title: tradeOffer.collection[0].title,
             imageUrl: tradeOffer.collection[0].imageUrl,
+            issueNumber: tradeOffer.collection[0].issueNumber,
             tradeOfferId: tradeOffer.collection[0].tradeOfferId,
           },
         })),
@@ -387,7 +403,8 @@ export async function createTradeRequest(req: Request, res: Response) {
     });
 
     // store pusher notification in the database
-    await storePushNotification(tradeOffer, receiver);
+    const chelsea = await storePushNotification(tradeOffer, receiver);
+    console.log(chelsea, 'aaaaaaaaaaaaaaaa');
 
     return res.status(201).json({
       status: 'success',
@@ -491,10 +508,31 @@ export async function pushNotifications(req: Request, res: Response) {
   try {
     const notification = await findPushNotification(id);
 
+    if (notification.length === 0) {
+      res.status(404).json({
+        message: 'User has no notifications',
+      });
+    }
+
     return res.status(200).json({
       status: 'success',
       data: {
-        notification,
+        notification: {
+          notificationId: notification[0].id,
+          message: notification[0].message,
+          isRead: notification[0].isRead,
+          createdAt: notification[0].createdAt,
+          user: {
+            userId: notification[0].user.id,
+            firstName: notification[0].user.firstName,
+            lastName: notification[0].user.lastName,
+            email: notification[0].user.email,
+            username: notification[0].user.username,
+            city: notification[0].user.city,
+            country: notification[0].user.country,
+            bannerImage: notification[0].user.bannerImage,
+          },
+        },
       },
     });
   } catch (error) {
@@ -508,6 +546,13 @@ export async function pushNotifications(req: Request, res: Response) {
 export async function updatePushNotifications(req: Request, res: Response) {
   try {
     const { notificationId } = req.params;
+    const findNotificationId = await findNotification(notificationId);
+
+    if (findNotificationId.length === 0) {
+      res.status(404).json({
+        message: `${notificationId} does not exist`,
+      });
+    }
     const notification = await updateNotification(notificationId);
 
     res.status(200).json({
