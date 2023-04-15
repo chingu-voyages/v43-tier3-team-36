@@ -499,7 +499,7 @@ export async function pushNotifications(req: Request, res: Response) {
     });
   } catch (error) {
     console.error(error);
-    res.status(404).send('User has no notification');
+    res.status(404).send({ error: 'User has no notification' });
   }
 }
 
