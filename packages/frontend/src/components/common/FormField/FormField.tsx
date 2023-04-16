@@ -4,9 +4,12 @@ import type { FieldError } from 'react-hook-form';
 
 type Props = HTMLAttributes<HTMLInputElement> & {
   id: string;
+  name?: any;
+  value?: any;
   label: string;
-  register: any;
-  type?: 'text' | 'password' | 'number' | 'email' | 'tel';
+  register?: any;
+  accept?: any;
+  type?: 'text' | 'password' | 'number' | 'email' | 'tel' | 'file';
   options?: any;
   error?: FieldError;
 };
@@ -21,7 +24,7 @@ const FormField: React.FC<Props> = ({
   ...rest
 }) => (
   <div className="flex flex-col my-5">
-    <label className="mb-1.5" htmlFor={id}>
+    <label className="mb-1.5 capitalize" htmlFor={id}>
       {label}
     </label>
     <input
