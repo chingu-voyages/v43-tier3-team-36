@@ -130,7 +130,20 @@ export const removeComic = async (comicId: number) => {
   return json.data.message;
 };
 
-export function logout() {}
+export const logout = async () => {
+  const res = await fetch(`${SERVER_URL}/api/v1/logout`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error();
+  }
+
+  const result = await res.json();
+  console.log(result);
+  return result;
+};
 
 export type TComicBookCollectorQuery = Partial<{
   username: string;
