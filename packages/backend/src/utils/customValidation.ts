@@ -8,6 +8,8 @@ export const RegisterSchema = z.object({
     firstName: z.string().min(2).max(20),
     lastName: z.string().min(2).max(20),
     username: z.string().min(2).max(20),
+    city: z.string().min(1).max(40),
+    country: z.string().min(1).max(40),
   }),
 });
 
@@ -85,7 +87,9 @@ export const updateUserSchema = z.object({
     firstName: z.string().min(2).max(20).optional(),
     lastName: z.string().min(2).max(20).optional(),
     username: z.string().min(2).max(20).optional(),
-    location: z.string().min(2).max(30).optional(),
+    city: z.string().min(2).max(40).optional(),
+    country: z.string().min(2).max(40).optional(),
     profileImage: z.string().min(2).optional(),
+    bannerImage: z.string().min(2).max(30).optional(),
   }),
 });

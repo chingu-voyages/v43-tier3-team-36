@@ -16,7 +16,9 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "profileImage" TEXT,
-    "location" TEXT,
+    "city" TEXT NOT NULL,
+    "country" TEXT NOT NULL,
+    "bannerImage" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -27,6 +29,7 @@ CREATE TABLE "CollectionItem" (
     "comicId" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
+    "issueNumber" INTEGER NOT NULL,
     "userId" TEXT,
     "tradeOfferId" TEXT,
 

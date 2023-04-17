@@ -11,6 +11,9 @@ export const createUser = (
   username: string,
   password: string,
   email: string,
+  city: string,
+  country: string,
+  bannerImage: string,
 ) => prisma.user.create({
   data: {
     firstName,
@@ -18,6 +21,9 @@ export const createUser = (
     username,
     password,
     email,
+    city,
+    country,
+    bannerImage,
   },
 });
 
@@ -68,6 +74,8 @@ export const updateUserDetail = async (id: string, dataToUpdate: any) => prisma.
     email: true,
     username: true,
     profileImage: true,
-    location: true,
+    city: true,
+    country: true,
+    bannerImage: true,
   },
 });

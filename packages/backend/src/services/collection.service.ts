@@ -11,12 +11,14 @@ export const createCollectionItem = async (
   comicId: number,
   title: string,
   imageUrl: string,
+  issueNumber: number,
 ) =>
   prisma.collectionItem.create({
     data: {
       comicId,
       title,
       imageUrl,
+      issueNumber,
       user: {
         connect: { id: userId },
       },
@@ -40,7 +42,7 @@ export const viewCollections = async (userId: string) =>
     include: { collection: true },
   });
 
-export const queryCollectors = async (username: string, location: string) =>
+export const queryCollectors = async (username: string, country: string) =>
   prisma.user.findMany({
     where: {
       AND: [
@@ -48,9 +50,7 @@ export const queryCollectors = async (username: string, location: string) =>
         username
           ? { username: { contains: username, mode: 'insensitive' } }
           : {}, // Filter by username if provided
-        location
-          ? { location: { contains: location, mode: 'insensitive' } }
-          : {}, // Filter by location if provided
+        country ? { country: { contains: country, mode: 'insensitive' } } : {}, // Filter by country if provided
       ],
     },
     include: {
@@ -159,13 +159,13 @@ export const viewComicBookOffers = async () =>
     include: { createdBy: true, collection: true },
   });
 
-export const queryTradeOffers = async (location: string) =>
+export const queryTradeOffers = async (country: string) =>
   prisma.tradeOffer.findMany({
     where: {
       status: 'PENDING',
       createdBy: {
-        location: {
-          equals: location,
+        country: {
+          equals: country,
           mode: 'insensitive',
         },
       },
@@ -227,6 +227,7 @@ export const updateCreatorCollection = async (
       comicId: receiverComicId,
       title: receiverComic.title,
       imageUrl: receiverComic.imageUrl,
+      issueNumber: receiverComic.issueNumber,
     },
   });
 
@@ -277,6 +278,14 @@ export const findPushNotification = async (id: string) =>
     },
     orderBy: {
       createdAt: 'desc',
+    },
+    include: { user: true },
+  });
+
+export const findNotification = async (id: string) =>
+  prisma.pushNotification.findMany({
+    where: {
+      id,
     },
   });
 

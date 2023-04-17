@@ -55,6 +55,14 @@ paths:
                   type: string
                   description: user name
                   example: pearlobi
+                city:
+                  type: string
+                  description: city
+                  example: Lagos
+                country:
+                  type: string
+                  description: Nigeria
+                  example: string
       responses:
         '201':
           description: A successful operation
@@ -92,6 +100,18 @@ paths:
                         type: string
                         description: user last name
                         example: Obi
+                      city:
+                        type: string
+                        description: city
+                        example: Lagos
+                      country:
+                        type: string
+                        description: Nigeria
+                        example: string
+                      bannerImage:
+                        type: string
+                        description: string
+                        example: string
       security:
         - cookieAuth: []
   /login:
@@ -176,10 +196,18 @@ paths:
                         type: string
                         description: image
                         example: www.image.com/profileimage
-                      location:
+                      city:
                         type: string
-                        description: user location
-                        example: Lagos state
+                        description: city
+                        example: Lagos
+                      country:
+                        type: string
+                        description: Nigeria
+                        example: string
+                      bannerImage:
+                        type: string
+                        description: string
+                        example: string
                       collection:
                         type: array
                         items:
@@ -200,6 +228,10 @@ paths:
                               type: string
                               description: comic images
                               example: www.image.com/batmanorigins
+                            issueNumber:
+                              type: number
+                              description: issue number
+                              example: 001
                       tradeOfferDetails:
                         type: array
                         items:
@@ -260,6 +292,165 @@ paths:
                                   type: string
                                   description: comic images
                                   example: www.image.com/batmanorigins
+                                issueNumber:
+                                  type: number
+                                  description: issue number
+                                  example: 100
+                                tradeOfferId:
+                                  type: string
+                                  description: trade offer Id
+                                  example: 12121gjghkkk212128y821
+  /users/{id}:
+    get:
+      tags:
+        - user
+      operationId: getLoggedInUser
+      summary: Checking the details of the loggedIn user
+      description: Checking the details of the loggedIn user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: userId
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    description: user
+                    properties:
+                      userId:
+                        type: string
+                        description: user id
+                        example: 1232323nsdsdsd2i323112qndsdassa
+                      firstName:
+                        type: string
+                        description: user first name
+                        example: Pearl
+                      lastName:
+                        type: string
+                        description: user last name
+                        example: Obi
+                      email:
+                        type: string
+                        description: user email
+                        format: email
+                        example: pearlobi@gmail.com
+                      username:
+                        type: string
+                        description: user name
+                        example: pearlobi
+                      profileImage:
+                        type: string
+                        description: image
+                        example: www.image.com/profileimage
+                      city:
+                        type: string
+                        description: city
+                        example: Lagos
+                      country:
+                        type: string
+                        description: Nigeria
+                        example: string
+                      bannerImage:
+                        type: string
+                        description: string
+                        example: string
+                      collection:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                              description: collectionId
+                              example: we342dwsd3e2dwdsdedwue2oe2dda
+                            comicId:
+                              type: number
+                              description: id of comicId
+                              example: 1
+                            title:
+                              type: string
+                              description: comic title
+                              example: Batman Origins
+                            imageUrl:
+                              type: string
+                              description: comic images
+                              example: www.image.com/batmanorigins
+                            issueNumber:
+                              type: number
+                              description: issue number
+                              example: 001
+                      tradeOfferDetails:
+                        type: array
+                        items:
+                          properties:
+                            tradeOfferId:
+                              type: string
+                              description: trade offer Id
+                              example: 121212erwewew232323fwdsdsd
+                            type:
+                              type: string
+                              description: trade offer type
+                              example: SELL/EXCHANGE
+                            status:
+                              type: string
+                              description: trade offer status
+                              example: ACCEPTED/DECLINED/PENDING
+                            message:
+                              type: string
+                              description: messaging detailing what they want in return
+                              example: I want batman comics in return
+                            price:
+                              type: number
+                              description: price of comic
+                              example: 70.0
+                            createdAt:
+                              type: string
+                              description: time trade offer was created
+                              example: 2023-04-10T08:52:14.731Z
+                            contactDetails:
+                              type: object
+                              description: contact details
+                              properties:
+                                email:
+                                  type: string
+                                  description: email
+                                  example: example@gmail.com
+                                phoneNumber:
+                                  type: string
+                                  description: user phone number
+                                  example: +1-1212-1212-2323
+                            tradeOfferItems:
+                              type: object
+                              description: comics used in trade offer
+                              properties:
+                                collectionId:
+                                  type: string
+                                  description: collection Id
+                                  example: 121h21h2k12k12h12h12
+                                comicId:
+                                  type: number
+                                  description: comic Id
+                                  example: 1
+                                title:
+                                  type: string
+                                  description: comic title
+                                  example: Batman Origins
+                                imageUrl:
+                                  type: string
+                                  description: comic images
+                                  example: www.image.com/batmanorigins
+                                issueNumber:
+                                  type: number
+                                  description: issue number
+                                  example: 100
                                 tradeOfferId:
                                   type: string
                                   description: trade offer Id
@@ -299,10 +490,18 @@ paths:
                   type: string
                   description: user name
                   example: pearlobi
-                location:
+                city:
                   type: string
-                  description: user location
-                  example: Lagos state
+                  description: city
+                  example: Lagos
+                country:
+                  type: string
+                  description: Nigeria
+                  example: string
+                bannerImage:
+                  type: string
+                  description: string
+                  example: string
                 profileImage:
                   type: string
                   description: user profile image
@@ -352,10 +551,18 @@ paths:
                             type: string
                             description: user profile image
                             example: www.image.com/profileimage
-                          location:
+                          city:
                             type: string
-                            description: user location
-                            example: Lagon State
+                            description: city
+                            example: Lagos
+                          country:
+                            type: string
+                            description: Nigeria
+                            example: string
+                          bannerImage:
+                            type: string
+                            description: string
+                            example: string
                           collection:
                             type: array
                             items:
@@ -376,6 +583,10 @@ paths:
                                   type: string
                                   description: comic images
                                   example: www.image.com/batmanorigins
+                                issueNumber:
+                                  type: number
+                                  description: issue number
+                                  example: 100
                           tradeOffer:
                             type: array
                             items:
@@ -421,7 +632,7 @@ paths:
                                   type: string
                                   description: time trade offer was created
                                   example: 2023-04-10T08:52:14.731Z
-  /collection:
+  /collections:
     post:
       tags:
         - collection
@@ -447,6 +658,10 @@ paths:
                   type: string
                   description: image url
                   example: www.image.com/batmanreturns
+                issueNumber:
+                  type: number
+                  description: issue number
+                  example: 100
       responses:
         '200':
           description: A successful Operation
@@ -479,6 +694,10 @@ paths:
                         type: string
                         description: comic image urls
                         example: www.image.com/supermanorigins
+                      issueNumber:
+                        type: number
+                        description: issue number
+                        example: 100
                       userId:
                         type: string
                         description: user id
@@ -487,7 +706,7 @@ paths:
                         type: string
                         description: trade offer Id
                         example: null
-  /collection/{userId}:
+  /collections/{userId}:
     get:
       tags:
         - collection
@@ -537,10 +756,18 @@ paths:
                         type: string
                         description: user profile image
                         example: www.image.com/profileimage
-                      location:
+                      city:
                         type: string
-                        description: user location
-                        example: Lagon State
+                        description: city
+                        example: Lagos
+                      country:
+                        type: string
+                        description: Nigeria
+                        example: string
+                      bannerImage:
+                        type: string
+                        description: string
+                        example: string
                       collection:
                         type: array
                         items:
@@ -561,20 +788,24 @@ paths:
                               type: string
                               description: comic images
                               example: www.image.com/batmanorigins
+                            issueNumber:
+                              type: number
+                              description: issue number
+                              example: 100
   /collectors/query:
     get:
       tags:
         - collection
-      operationId: Query collectors by location and/or username
-      summary: Query collectors by location and/or username
-      description: Query collectors by location and/or username
+      operationId: Query collectors by country and/or username
+      summary: Query collectors by country and/or username
+      description: Query collectors by country and/or username
       parameters:
         - in: query
-          name: location
+          name: country
           schema:
             type: string
           required: true
-          description: user location
+          description: user country
         - in: query
           name: username
           schema:
@@ -621,10 +852,18 @@ paths:
                               type: string
                               description: user profile image
                               example: www.image.com/profileimage
-                            location:
+                            city:
                               type: string
-                              description: user location
-                              example: Lagon State
+                              description: city
+                              example: Lagos
+                            country:
+                              type: string
+                              description: Nigeria
+                              example: string
+                            bannerImage:
+                              type: string
+                              description: string
+                              example: string
                             collection:
                               type: array
                               items:
@@ -645,7 +884,11 @@ paths:
                                     type: string
                                     description: comic images
                                     example: www.image.com/batmanorigins
-  /collection/{comicId}:
+                                  issueNumber:
+                                    type: number
+                                    description: issue number
+                                    example: 100
+  /collections/{comicId}:
     delete:
       tags:
         - collection
@@ -681,7 +924,7 @@ paths:
                         example: Comic has been successfully deleted
       security:
         - cookieAuth: []
-  /trade-offer:
+  /trade-offers:
     post:
       tags:
         - trade offers
@@ -788,10 +1031,18 @@ paths:
                             type: string
                             description: user profile image
                             example: www.image.com/profileimage
-                          location:
+                          city:
                             type: string
-                            description: user location
-                            example: Lagon State
+                            description: city
+                            example: Lagos
+                          country:
+                            type: string
+                            description: Nigeria
+                            example: string
+                          bannerImage:
+                            type: string
+                            description: string
+                            example: string
                           contactDetails:
                             type: object
                             description: contact details
@@ -824,11 +1075,15 @@ paths:
                                 type: string
                                 description: comic images
                                 example: www.image.com/batmanorigins
+                              issueNumber:
+                                type: number
+                                description: issue number
+                                example: 100
                               tradeOfferId:
                                 type: string
                                 description: trade offer Id
                                 example: 12121gjghkkk212128y821
-  /trade-offer/{tradeOfferId}:
+  /trade-offers/{tradeOfferId}:
     delete:
       tags:
         - trade offers
@@ -864,16 +1119,16 @@ paths:
                         example: Trade Offer with id a3bafcce-3be3-456a-af4a-6e6e6d582425 successfully deleted
       security:
         - cookieAuth: []
-  /tradeOffers/query:
+  /trade-Offers/query:
     get:
       tags:
         - trade offers
-      operationId: Query trade offers by location
-      summary: Query trade offers by location
-      description: Query trade offers by location
+      operationId: Query trade offers by country
+      summary: Query trade offers by country
+      description: Query trade offers by country
       parameters:
         - in: query
-          name: location
+          name: country
           schema:
             type: string
           required: true
@@ -950,10 +1205,18 @@ paths:
                                   type: string
                                   description: user profile image
                                   example: www.image.com/profileimage
-                                location:
+                                city:
                                   type: string
-                                  description: user location
-                                  example: Lagon State
+                                  description: city
+                                  example: Lagos
+                                country:
+                                  type: string
+                                  description: Nigeria
+                                  example: string
+                                bannerImage:
+                                  type: string
+                                  description: string
+                                  example: string
                             contactDetails:
                               type: object
                               description: contact details
@@ -986,13 +1249,17 @@ paths:
                                   type: string
                                   description: comic images
                                   example: www.image.com/batmanorigins
+                                issueNumber:
+                                  type: number
+                                  description: issue number
+                                  example: 100
                                 tradeOfferId:
                                   type: string
                                   description: trade offer Id
                                   example: 12121gjghkkk212128y821
       security:
         - cookieAuth: []
-  /trade-request:
+  /trade-requests:
     post:
       tags:
         - trade requests
@@ -1061,7 +1328,7 @@ paths:
                             example: 2023-04-13T09:05:39.946Z
       security:
         - cookieAuth: []
-  /trade/{tradeRequestId}:
+  /trades/{tradeRequestId}:
     patch:
       tags:
         - trade requests
@@ -1124,29 +1391,61 @@ paths:
                     description: successful fetching user notifications
                     properties:
                       notification:
-                        type: array
-                        items:
-                          properties:
-                            id:
-                              type: string
-                              description: Notification Id
-                              example: dfe224a5-642c-41a6-8e79-254a7bf04112
-                            userId:
-                              type: string
-                              description: user id
-                              example: dfe224a5-642c-41a6-8e79-254a7bf04112
-                            message:
-                              type: string
-                              description: message from receiver to creator
-                              example: PeterObi requested to exchange a comic from / with you
-                            isRead:
-                              type: boolean
-                              description: checking if notification is read or not
-                              example: False
-                            createdAt:
-                              type: string
-                              description: created at time
-                              example: 2023-04-13T09:05:40.039Z
+                        type: object
+                        properties:
+                          notificationId:
+                            type: string
+                            description: Notification Id
+                            example: dfe224a5-642c-41a6-8e79-254a7bf04112
+                          message:
+                            type: string
+                            description: message from receiver to creator
+                            example: PeterObi requested to exchange a comic from / with you
+                          isRead:
+                            type: boolean
+                            description: checking if notification is read or not
+                            example: False
+                          createdAt:
+                            type: string
+                            description: created at time
+                            example: 2023-04-13T09:05:40.039Z
+                          user:
+                            type: object
+                            description: user
+                            properties:
+                              userId:
+                                type: string
+                                description: user id
+                                example: 1245wirito4606063jkkfjfjf
+                              firstName:
+                                type: string
+                                description: user first name
+                                example: Pearl
+                              lastName:
+                                type: string
+                                description: user last name
+                                example: Obi
+                              username:
+                                type: string
+                                description: user name
+                                example: pearlobi
+                              profileImage:
+                                type: string
+                                description: user profile image
+                                example: www.image.com/profileimage
+                              city:
+                                type: string
+                                description: city
+                                example: Lagos
+                              country:
+                                type: string
+                                description: Nigeria
+                                example: string
+                              bannerImage:
+                                type: string
+                                description: string
+                                example: string
+
       security:
         - cookieAuth: []
   /notifications/{notificationId}:
@@ -1224,12 +1523,8 @@ components:
       properties:
         # firstName:
         #   type: string
-        #   description: First Name
-        #   example: Jones
         # lastName:
         #   type: string
-        #   description: Last Name
-        #   example: Azeez
         email:
           type: string
           example: jones@gmail.com

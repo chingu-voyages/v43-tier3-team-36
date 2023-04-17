@@ -2,6 +2,7 @@ import type {
   User,
   CollectionItemPartial,
   TradeOfferPartial,
+  PushNotification,
 } from '@marvel-collector/types';
 
 import type TComicType from '@/types/comic';
@@ -89,6 +90,41 @@ export const getCurrentUserDetails = async (): Promise<User> => {
 
   const result = await res.json();
   return result.user;
+};
+
+export const getUserNotifications = async (): Promise<PushNotification[]> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/notifications`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`${json.error} (${res.status})`);
+  }
+
+  return json.data.notification;
+};
+
+export const patchUserNotifications = async (
+  notificationId: string,
+): Promise<PushNotification> => {
+  const res = await fetch(
+    `${SERVER_URL}/api/v1/notifications/${notificationId}`,
+    {
+      method: 'PATCH',
+      credentials: 'include',
+    },
+  );
+
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`${json.message} (${res.status})`);
+  }
+
+  return json.data;
 };
 
 export const addComic = async (

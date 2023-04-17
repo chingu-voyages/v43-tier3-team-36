@@ -1,4 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { Request, Response } from 'express';
+import { faker } from '@faker-js/faker';
 import {
   User,
   UserOptionalDefaults,
@@ -19,7 +21,7 @@ export const register = async (
 ) => {
   try {
     const {
-      username, password, firstName, email, lastName,
+      username, password, firstName, email, lastName, city, country,
     } = req.body;
     const findUser = await findUserByUsername({ username });
     if (findUser) {
@@ -27,7 +29,14 @@ export const register = async (
     }
 
     const hashedPassword = await hashPassword(password);
-    // const tempUser = { ...req.body, password: hashedPassword };
+
+    const image = (
+      width: number = 1290,
+      height: number = 300,
+      randomize: boolean = false,
+    ): string => faker.image.abstract(width, height, randomize);
+
+    const bannerImage: string = image(1290, 300, false);
 
     const newUser = await createUser(
       firstName,
@@ -35,6 +44,9 @@ export const register = async (
       username,
       hashedPassword,
       email,
+      city,
+      country,
+      bannerImage,
     );
 
     return res.status(201).json({
@@ -44,6 +56,9 @@ export const register = async (
         firstName,
         email,
         lastName,
+        city,
+        country,
+        bannerImage,
       },
     });
   } catch (error) {
@@ -65,7 +80,9 @@ export const updateUser = async (
     password,
     username,
     profileImage,
-    location,
+    city,
+    country,
+    bannerImage,
   } = req.body;
 
   const dataToUpdate: any = {};
@@ -78,7 +95,9 @@ export const updateUser = async (
   }
   if (username) dataToUpdate.username = username;
   if (profileImage) dataToUpdate.profileImage = profileImage;
-  if (location) dataToUpdate.location = location;
+  if (city) dataToUpdate.city = city;
+  if (country) dataToUpdate.country = country;
+  if (bannerImage) dataToUpdate.bannerImage = bannerImage;
 
   try {
     const updatedUser = await updateUserDetail(id, dataToUpdate);
@@ -121,12 +140,15 @@ export const currentUser = async (req: Request, res: Response) => {
         email: user?.email,
         username: user?.username,
         profileImage: user?.profileImage,
-        location: user?.location,
+        city: user?.city,
+        country: user?.country,
+        bannerImage: user?.bannerImage,
         collection: user?.collection.map((item: any) => ({
           id: item.id,
           comicId: item.comicId,
           title: item.title,
           imageUrl: item.imageUrl,
+          issueNumber: item.issueNumber,
         })),
         tradeOfferDetail: userTradeOffers?.map((tradeOffer: any) => ({
           tradeOfferId: tradeOffer.id,
@@ -144,6 +166,7 @@ export const currentUser = async (req: Request, res: Response) => {
             comicId: tradeOffer.collection[0]?.comicId,
             title: tradeOffer.collection[0]?.title,
             imageUrl: tradeOffer.collection[0]?.imageUrl,
+            issueNumber: tradeOffer.collection[0]?.issueNumber,
             tradeOfferId: tradeOffer.collection[0]?.tradeOfferId,
           },
         })),
@@ -173,12 +196,15 @@ export const fetchUser = async (req: Request, res: Response) => {
         email: user.email,
         username: user.username,
         profileImage: user.profileImage,
-        location: user.location,
+        city: user.city,
+        country: user.country,
+        bannerImage: user.bannerImage,
         collection: user.collection.map((item: any) => ({
           id: item.id,
           comicId: item.comicId,
           title: item.title,
           imageUrl: item.imageUrl,
+          issueNumber: item.issueNumber,
         })),
         tradeOfferDetail: userTradeOffers.map((tradeOffer: any) => ({
           tradeOfferId: tradeOffer.id,
@@ -196,6 +222,7 @@ export const fetchUser = async (req: Request, res: Response) => {
             comicId: tradeOffer.collection[0].comicId,
             title: tradeOffer.collection[0].title,
             imageUrl: tradeOffer.collection[0].imageUrl,
+            issueNumber: tradeOffer.collection[0].issueNumber,
             tradeOfferId: tradeOffer.collection[0].tradeOfferId,
           },
         })),
