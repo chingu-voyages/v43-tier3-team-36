@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { useMemo, useState } from 'react';
-import { Combobox, Transition } from '@headlessui/react';
+import { Combobox, ComboboxInputProps, Transition } from '@headlessui/react';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { twMerge } from 'tailwind-merge';
 
 export interface AutoCompleteProps<T> {
   /**
@@ -15,16 +18,22 @@ export interface AutoCompleteProps<T> {
     label: keyof T;
   };
   /**
+   * CSS Classes
+   */
+  className: string;
+  /**
    * Event callback when active selection is changed
    */
-  onSelect: (value: T) => void;
+  onSelect: (value: any) => void;
 }
 
 export const AutoComplete = <T extends object>({
   data,
   optionKeys,
   onSelect,
-}: AutoCompleteProps<T>) => {
+  className,
+  ...rest
+}: AutoCompleteProps<T> & ComboboxInputProps<'input', any>) => {
   const [selectedOption, setSelectedOption] = useState(data[0]);
   const [query, setQuery] = useState('');
 
@@ -49,8 +58,9 @@ export const AutoComplete = <T extends object>({
       }}
     >
       <Combobox.Input
-        className="w-full p-4 border rounded-md"
+        className={twMerge('w-full p-4 border rounded-md', className)}
         onChange={(event) => setQuery(event.target.value)}
+        {...rest}
       />
       <Transition
         enter="transition duration-100 ease-out"
@@ -68,14 +78,14 @@ export const AutoComplete = <T extends object>({
               value={item[optionKeys.value]}
             >
               {({ active }) => (
-                <li
+                <p
                   className={`${
                     active ? 'bg-blue-500 text-white' : 'bg-white text-black'
                   }`}
                 >
                   {/* @ts-ignore */}
                   {item[optionKeys.label]}
-                </li>
+                </p>
               )}
             </Combobox.Option>
           ))}
