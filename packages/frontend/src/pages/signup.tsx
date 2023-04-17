@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 
 import type { NextPageWithLayout } from './_app';
 import Layout from '@/layouts/Layout';
-import AuthSignup from '@/components/auth/AuthSignup';
+import { AuthSignup } from '@/components/auth/AuthSignup';
 
 const Signup: NextPageWithLayout = () => (
   <main className="flex flex-col items-center justify-center h-screen px-4">

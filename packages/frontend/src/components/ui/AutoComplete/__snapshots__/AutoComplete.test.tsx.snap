@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutoComplete /> Snapshots should match snapshot 1`] = `
+<div>
+  <div
+    class="relative w-full bg-white"
+    data-headlessui-state=""
+  >
+    <input
+      aria-autocomplete="list"
+      aria-expanded="false"
+      class="w-full p-4 border rounded-md"
+      data-headlessui-state=""
+      id="headlessui-combobox-input-:r0:"
+      role="combobox"
+      type="text"
+      value=""
+    />
+  </div>
+</div>
+`;

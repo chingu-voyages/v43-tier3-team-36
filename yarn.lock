@@ -9348,6 +9348,7 @@ __metadata:
     lerna: ^6.5.1
     lint-staged: ^13.2.0
     prettier: ^2.8.4
+    prisma: ^4.12.0
     typescript: ^5.0.2
   languageName: unknown
   linkType: soft
@@ -11236,7 +11237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma@npm:^4.11.0":
+"prisma@npm:^4.11.0, prisma@npm:^4.12.0":
   version: 4.12.0
   resolution: "prisma@npm:4.12.0"
   dependencies:
