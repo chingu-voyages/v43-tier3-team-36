@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import type { CollectionItemPartial } from '@marvel-collector/types';
 import type { TradeOfferTypeType } from '@marvel-collector/types/generated/inputTypeSchemas/TradeOfferTypeSchema';
 
-import { Button, Modal } from '@/components/ui';
+import { Modal, SwitchToggle } from '@/components/ui';
 import AddTradeForm, { type TFormSchema } from './AddTradeForm';
 import useAlertStore from '@/store/store';
 import { createTradeOffer } from '@/api';
@@ -64,12 +64,13 @@ const NewTradeOffer: React.FC<Props> = ({ comic, onClose }) => {
       <h2 className="mt-5 text-md md:text-lg lg:text-2xl font-medium text-center w-[95%] max-w-[35ch] mx-auto">
         {comic.title}
       </h2>
-      <Button
-        className="mx-auto mb-1 my-7"
-        onClick={() => setIsExchange((prevState) => !prevState)}
-      >
-        {`Switch to ${isExchange ? 'Sell' : 'Exchange'}`}
-      </Button>
+      <div className="mx-auto mb-1 my-7">
+        <SwitchToggle
+          srLabel={isExchange ? 'Sell' : 'Exchange'}
+          ctrlState={isExchange}
+          setCtrlState={() => setIsExchange((prevState) => !prevState)}
+        />
+      </div>
       <AddTradeForm
         isExchange={isExchange}
         isLoading={newTradeMutation.isLoading || newTradeMutation.isPaused}
