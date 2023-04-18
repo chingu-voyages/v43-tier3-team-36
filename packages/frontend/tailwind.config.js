@@ -6,6 +6,12 @@ module.exports = {
       animation: {
         'slide-in': 'slide-in 7s linear alternate forwards',
       },
+
+      colors: {
+        bordergray: '#BFBDBD',
+        textgray: ' #505050',
+      },
+
       fontFamily: {
         dmsans: 'DM Sans, sans-serif',
       },

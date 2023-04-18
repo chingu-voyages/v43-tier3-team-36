@@ -32,8 +32,14 @@ const CollectorDetail = ({ comicId }: { comicId: number }) => {
               />
             </div>
             <div>
-              <div>Username: {item.username}</div>
-              <div>Location: {item.location || 'Unknown'}</div>
+              <div>
+                Username:
+                {item.username}
+              </div>
+              <div>
+                Location:
+                {item.location || 'Unknown'}
+              </div>
             </div>
           </div>
           <div className="w-full">

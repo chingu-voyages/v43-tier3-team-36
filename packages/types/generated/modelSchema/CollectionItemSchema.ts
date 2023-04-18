@@ -9,6 +9,7 @@ export const CollectionItemSchema = z.object({
   comicId: z.number().int(),
   title: z.string(),
   imageUrl: z.string(),
+  issueNumber: z.number().int(),
   userId: z.string().nullable(),
   tradeOfferId: z.string().nullable(),
 })

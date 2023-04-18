@@ -11,18 +11,19 @@ export const createCollectionItem = async (
   comicId: number,
   title: string,
   imageUrl: string,
-) => {
-  return prisma.collectionItem.create({
+  issueNumber: number,
+) =>
+  prisma.collectionItem.create({
     data: {
       comicId,
       title,
       imageUrl,
+      issueNumber,
       user: {
         connect: { id: userId },
       },
     },
   });
-};
 
 export const existingComicInCollection = async (
   comicId: number,
@@ -41,7 +42,7 @@ export const viewCollections = async (userId: string) =>
     include: { collection: true },
   });
 
-export const queryCollectors = async (username: string, location: string) =>
+export const queryCollectors = async (username: string, country: string) =>
   prisma.user.findMany({
     where: {
       AND: [
@@ -49,9 +50,7 @@ export const queryCollectors = async (username: string, location: string) =>
         username
           ? { username: { contains: username, mode: 'insensitive' } }
           : {}, // Filter by username if provided
-        location
-          ? { location: { contains: location, mode: 'insensitive' } }
-          : {}, // Filter by location if provided
+        country ? { country: { contains: country, mode: 'insensitive' } } : {}, // Filter by country if provided
       ],
     },
     include: {
@@ -141,6 +140,7 @@ export const deleteTradeOfferByTradeOfferId = async (tradeOfferId: string) =>
     where: { id: tradeOfferId },
   });
 
+// user controller
 export const viewUserTradeOffers = async (id: string) =>
   prisma.tradeOffer.findMany({
     where: {
@@ -153,15 +153,19 @@ export const viewUserTradeOffers = async (id: string) =>
 
 export const viewComicBookOffers = async () =>
   prisma.tradeOffer.findMany({
+    where: {
+      status: 'PENDING',
+    },
     include: { createdBy: true, collection: true },
   });
 
-export const queryTradeOffers = async (location: string) =>
+export const queryTradeOffers = async (country: string) =>
   prisma.tradeOffer.findMany({
     where: {
+      status: 'PENDING',
       createdBy: {
-        location: {
-          equals: location,
+        country: {
+          equals: country,
           mode: 'insensitive',
         },
       },
@@ -180,4 +184,113 @@ export const createTradeRequestService = async (
       tradeOfferId,
       receiverComicId,
     },
+  });
+
+export const findTradeRequest = async (tradeRequestId: string) =>
+  prisma.tradeRequest.findUnique({
+    where: {
+      id: tradeRequestId,
+    },
+    include: {
+      TradeOffer: {
+        include: {
+          collection: true,
+        },
+      },
+      receiver: true,
+    },
+  });
+
+export const updateReceiverCollection = async (
+  receiverItemId: string,
+  creatorComic: any,
+) =>
+  prisma.collectionItem.update({
+    where: { id: receiverItemId },
+    data: {
+      // comicId: TradeOffer.collection[0].comicId,
+      comicId: creatorComic.comicId,
+      title: creatorComic.title,
+      imageUrl: creatorComic.imageUrl,
+      tradeOfferId: null,
+    },
+  });
+
+export const updateCreatorCollection = async (
+  creatorItemId: string,
+  receiverComicId: any,
+  receiverComic: any,
+) =>
+  prisma.collectionItem.update({
+    where: { id: creatorItemId },
+    data: {
+      comicId: receiverComicId,
+      title: receiverComic.title,
+      imageUrl: receiverComic.imageUrl,
+      issueNumber: receiverComic.issueNumber,
+    },
+  });
+
+export const updateTradeOfferStatus = async (
+  tradeOfferId: string,
+  status: any,
+) =>
+  prisma.tradeOffer.update({
+    where: { id: tradeOfferId },
+    data: { status },
+  });
+
+export const updateTradeRequestStatus = async (
+  tradeRequestId: string,
+  status: any,
+) =>
+  prisma.tradeRequest.update({
+    where: { id: tradeRequestId },
+    data: { status },
+  });
+
+export const updateByDeletingCreatorComic = async (
+  tradeRequest: any,
+  TradeOffer: any,
+) =>
+  prisma.collectionItem.update({
+    where: { id: tradeRequest.TradeOffer.collection[0].id },
+    data: {
+      userId: tradeRequest.receiverId,
+      tradeOfferId: TradeOffer.id,
+    },
+  });
+
+export const storePushNotification = async (tradeOffer: any, receiver: any) =>
+  prisma.pushNotification.create({
+    data: {
+      user: { connect: { id: tradeOffer.createdById } },
+      message: `${receiver.username} requested to ${
+        tradeOffer.type === 'EXCHANGE' ? 'exchange' : 'buy'
+      } a comic from / with you. `.trim(),
+    },
+  });
+
+export const findPushNotification = async (id: string) =>
+  prisma.pushNotification.findMany({
+    where: {
+      userId: id,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: { user: true },
+  });
+
+export const findNotification = async (id: string) =>
+  prisma.pushNotification.findMany({
+    where: {
+      id,
+    },
+  });
+
+export const updateNotification = async (notificationId: string) =>
+  await prisma.pushNotification.update({
+    where: { id: notificationId },
+    data: { isRead: true },
   });

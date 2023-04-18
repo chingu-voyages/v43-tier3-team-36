@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type TAlertType = 'error' | 'success';
+export type TAlertType = 'error' | 'success' | 'info';
 
 export interface IAlert {
   type?: TAlertType;

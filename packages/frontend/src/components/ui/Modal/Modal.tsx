@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/jsx-props-no-spreading */
 import {
   ForwardRefExoticComponent,
@@ -61,7 +59,6 @@ RefAttributes<HTMLDivElement>
           ref={ref}
           className="relative z-10"
           unmount={isOpen}
-          static
           onClose={() => {
             setIsOpen(false);
           }}
@@ -80,10 +77,7 @@ RefAttributes<HTMLDivElement>
           </Transition.Child>
 
           <div className="fixed inset-0 z-10 overflow-y-auto">
-            <div
-              className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0"
-              onClick={() => setIsOpen(false)}
-            >
+            <div className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"

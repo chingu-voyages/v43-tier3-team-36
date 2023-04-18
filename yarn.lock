@@ -717,10 +717,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@faker-js/faker@npm:^7.6.0":
+  version: 7.6.0
+  resolution: "@faker-js/faker@npm:7.6.0"
+  checksum: 942af6221774e8c98a0eb6bc75265e05fb81a941170377666c3439aab9495dd321d6beedc5406f07e6ad44262b3e43c20961f666d116ad150b78e7437dd1bb2b
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
   checksum: 4059f790e2d07bf3c3ff3e0fec0daa8144fe35c1f6e0111c9921bd32106adaa97a4ab096ad7dab1e28ee6a9060083c4d1a4ada42a7f5f3f7a96b8812e2b757c1
+  languageName: node
+  linkType: hard
+
+"@harelpls/use-pusher@npm:^7.2.1":
+  version: 7.2.1
+  resolution: "@harelpls/use-pusher@npm:7.2.1"
+  dependencies:
+    dequal: ^2.0.1
+    invariant: ^2.2.4
+    pusher-js: ^7.0.0
+  peerDependencies:
+    react: ^16.9.0
+  checksum: 3684a6e084b2deecb83ae2735c079c3456a349f0aa4735f7467cba16202c0f50eeaf39c58f235b63c39fff8307108dc6058d7c7a8c682600fc0f4205de8581a1
   languageName: node
   linkType: hard
 
@@ -2328,6 +2348,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/faker@npm:^6.6.9":
+  version: 6.6.9
+  resolution: "@types/faker@npm:6.6.9"
+  dependencies:
+    faker: "*"
+  checksum: 8fb069b6f2bf2cefec42a214395f49695b881d70e651a215a61c2fa7494bb173d1a598c895882ff89df3702ab51c49c23433b3d4bcfd8323cf4f608ed9fb6ce8
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.6
   resolution: "@types/graceful-fs@npm:4.1.6"
@@ -3422,6 +3451,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "backend@workspace:packages/backend"
   dependencies:
+    "@faker-js/faker": ^7.6.0
     "@marvel-collector/types": ^0.1.0
     "@prisma/client": ^4.11.0
     "@types/bcrypt": ^5.0.0
@@ -3430,6 +3460,7 @@ __metadata:
     "@types/cors": ^2.8.13
     "@types/express": ^4.17.17
     "@types/express-session": ^1.17.6
+    "@types/faker": ^6.6.9
     "@types/jsonwebtoken": ^9.0.1
     "@types/morgan": ^1.9.4
     "@types/node": ^18.15.11
@@ -3448,6 +3479,8 @@ __metadata:
     express-async-errors: ^3.1.1
     express-session: ^1.17.3
     express-validator: ^6.15.0
+    faker: ^6.6.6
+    fs: ^0.0.1-security
     jsonwebtoken: ^9.0.0
     morgan: ^1.10.0
     nodemon: ^2.0.21
@@ -4921,6 +4954,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dequal@npm:^2.0.1":
+  version: 2.0.3
+  resolution: "dequal@npm:2.0.3"
+  checksum: 8679b850e1a3d0ebbc46ee780d5df7b478c23f335887464023a631d1b9af051ad4a6595a44220f9ff8ff95a8ddccf019b5ad778a976fd7bbf77383d36f412f90
+  languageName: node
+  linkType: hard
+
 "destroy@npm:1.2.0":
   version: 1.2.0
   resolution: "destroy@npm:1.2.0"
@@ -6009,6 +6049,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"faker@npm:*, faker@npm:^6.6.6":
+  version: 6.6.6
+  resolution: "faker@npm:6.6.6"
+  checksum: bfb0d581ab4d76095f2c6bff213fe1735ce077f0f8df849c144ad26035e105bce1b7a704cc030366338c52e25b636ac097a712426a78c9b8804af78f6f2bffe7
+  languageName: node
+  linkType: hard
+
 "fast-deep-equal@npm:^3.1.1, fast-deep-equal@npm:^3.1.3":
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
@@ -6309,6 +6356,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "frontend@workspace:packages/frontend"
   dependencies:
+    "@harelpls/use-pusher": ^7.2.1
     "@headlessui/react": ^1.7.13
     "@heroicons/react": ^2.0.16
     "@hookform/resolvers": ^3.0.0
@@ -6393,6 +6441,13 @@ __metadata:
   version: 1.0.0
   resolution: "fs.realpath@npm:1.0.0"
   checksum: 99ddea01a7e75aa276c250a04eedeffe5662bce66c65c07164ad6264f9de18fb21be9433ead460e54cff20e31721c811f4fb5d70591799df5f85dce6d6746fd0
+  languageName: node
+  linkType: hard
+
+"fs@npm:^0.0.1-security":
+  version: 0.0.1-security
+  resolution: "fs@npm:0.0.1-security"
+  checksum: 53c6230e1faae9fa32c1df82c16a84b51b1243d20f3da2b64bd110bb472b73b9185169b703e008356e3cdc92d155088b617d9d39a63b5227a30b3621baad7f5d
   languageName: node
   linkType: hard
 
@@ -7363,6 +7418,15 @@ __metadata:
     has: ^1.0.3
     side-channel: ^1.0.4
   checksum: 97e84046bf9e7574d0956bd98d7162313ce7057883b6db6c5c7b5e5f05688864b0978ba07610c726d15d66544ffe4b1050107d93f8a39ebc59b15d8b429b497a
+  languageName: node
+  linkType: hard
+
+"invariant@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "invariant@npm:2.2.4"
+  dependencies:
+    loose-envify: ^1.0.0
+  checksum: cc3182d793aad82a8d1f0af697b462939cb46066ec48bbf1707c150ad5fad6406137e91a262022c269702e01621f35ef60269f6c0d7fd178487959809acdfb14
   languageName: node
   linkType: hard
 
@@ -9108,7 +9172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -9284,6 +9348,7 @@ __metadata:
     lerna: ^6.5.1
     lint-staged: ^13.2.0
     prettier: ^2.8.4
+    prisma: ^4.12.0
     typescript: ^5.0.2
   languageName: unknown
   linkType: soft
@@ -11172,7 +11237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma@npm:^4.11.0":
+"prisma@npm:^4.11.0, prisma@npm:^4.12.0":
   version: 4.12.0
   resolution: "prisma@npm:4.12.0"
   dependencies:
@@ -11357,6 +11422,17 @@ __metadata:
     "@types/node": ^14.14.31
     tweetnacl: ^1.0.3
   checksum: 80b9c209a9db7b51f5edb9c03dc3075d759960644b12ac60e4e22b8e335bedfb69c16381ef7454b37dd3858c7c6e684b96fba368d3fc9f97ef63dfa6c37fb7ee
+  languageName: node
+  linkType: hard
+
+"pusher-js@npm:^7.0.0":
+  version: 7.6.0
+  resolution: "pusher-js@npm:7.6.0"
+  dependencies:
+    "@types/express-serve-static-core": 4.17.28
+    "@types/node": ^14.14.31
+    tweetnacl: ^1.0.3
+  checksum: 6859d714ce8392f50cebc71ad8dde1a6ffc129e3cd797a443a17706d5c4fe57942573d0bdc31a6cb317934e9b49d479c0d3e4c36bee8be191b78f3dbf582743e
   languageName: node
   linkType: hard
 

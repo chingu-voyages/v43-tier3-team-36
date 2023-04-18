@@ -2,7 +2,7 @@ import type {
   User,
   CollectionItemPartial,
   TradeOfferPartial,
-  CollectionItem,
+  PushNotification,
 } from '@marvel-collector/types';
 
 import type TComicType from '@/types/comic';
@@ -19,6 +19,14 @@ export const searchComics = async (
   );
   const json = await response.json();
   return json.data.results;
+};
+
+export const getComic = async (comicId: number): Promise<TComicType> => {
+  const response = await fetch(
+    `${MARVEL_API_URL}/comics/${comicId}?apikey=${MARVEL_API_KEY}`,
+  );
+  const json = await response.json();
+  return json.data.results[0];
 };
 
 export type SignupOptions = {
@@ -71,7 +79,7 @@ export async function login(data: LoginOptions) {
 }
 
 export const getCurrentUserDetails = async (): Promise<User> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/users/current-user`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/current-user`, {
     method: 'GET',
     credentials: 'include',
   });
@@ -84,10 +92,45 @@ export const getCurrentUserDetails = async (): Promise<User> => {
   return result.user;
 };
 
+export const getUserNotifications = async (): Promise<PushNotification[]> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/notifications`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`${json.error} (${res.status})`);
+  }
+
+  return json.data.notification;
+};
+
+export const patchUserNotifications = async (
+  notificationId: string,
+): Promise<PushNotification> => {
+  const res = await fetch(
+    `${SERVER_URL}/api/v1/notifications/${notificationId}`,
+    {
+      method: 'PATCH',
+      credentials: 'include',
+    },
+  );
+
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`${json.message} (${res.status})`);
+  }
+
+  return json.data;
+};
+
 export const addComic = async (
   data: CollectionItemPartial,
 ): Promise<string> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/user/collection`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/collection`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -103,7 +146,7 @@ export const addComic = async (
 };
 
 export const removeComic = async (comicId: number) => {
-  const res = await fetch(`${SERVER_URL}/api/v1/user/collection/${comicId}`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/collection/${comicId}`, {
     method: 'DELETE',
     credentials: 'include',
   });
@@ -114,7 +157,13 @@ export const removeComic = async (comicId: number) => {
     throw new Error(res.error);
   }
 
-  return res.json();
+  const json = await res.json();
+
+  if (json.error) {
+    throw new Error(json.error);
+  }
+
+  return json.data.message;
 };
 
 export function logout() {}
@@ -140,8 +189,8 @@ export const getComicBookCollectors = async (
   return json.data.users;
 };
 
-export const getComicBookCollector = async (id: string): Promise<User> => {
-  const response = await fetch(`${SERVER_URL}/api/v1/user/${id}/collection`, {
+export const getComicBookCollector = async (userId: string): Promise<User> => {
+  const response = await fetch(`${SERVER_URL}/api/v1/collection/${userId}`, {
     method: 'GET',
     credentials: 'include',
   });
@@ -152,7 +201,7 @@ export const getComicBookCollector = async (id: string): Promise<User> => {
 export const createTradeOffer = async (
   data: TradeOfferPartial,
 ): Promise<string> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/user/trade-offer`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/trade-offer`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -169,8 +218,7 @@ export const createTradeOffer = async (
 
 export const getUsersWithComic = async (comicId: number) => {
   const res = await fetch(`${SERVER_URL}/api/v1/users/comic/${comicId}`);
-  const json: Array<Pick<User, 'username' | 'location' | 'profileImage'>> =
-    await res.json();
+  const json: Array<Pick<User, 'username' | 'location' | 'profileImage'>> = await res.json();
   return json;
 };
 
@@ -199,4 +247,30 @@ export const getTradeOffers = async (
   }
 
   return json.data.tradeOffers;
+};
+
+export type TRequestTradeOfferBody = {
+  tradeOfferId: string;
+  receiverComicId?: number;
+};
+
+export const requestTradeOffer = async (
+  data: TRequestTradeOfferBody,
+): Promise<any> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/trade-request`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`${json.error} (${res.status})`);
+  }
+
+  return json.message;
 };

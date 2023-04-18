@@ -1,4 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { Request, Response } from 'express';
+import { faker } from '@faker-js/faker';
 import {
   User,
   UserOptionalDefaults,
@@ -9,6 +11,7 @@ import {
   findUserById,
   findUserByUsername,
   findUsersWithComic,
+  updateUserDetail,
 } from '../services/user.service';
 import { hashPassword } from '../utils/hashPassword';
 import { viewUserTradeOffers } from '../services/collection.service';
@@ -18,14 +21,22 @@ export const register = async (
   res: Response,
 ) => {
   try {
-    const { username, password, firstName, email, lastName } = req.body;
+    const { username, password, firstName, email, lastName, city, country } =
+      req.body;
     const findUser = await findUserByUsername({ username });
     if (findUser) {
       return res.status(400).json({ message: 'username already taken' });
     }
 
     const hashedPassword = await hashPassword(password);
-    // const tempUser = { ...req.body, password: hashedPassword };
+
+    const image = (
+      width: number = 1290,
+      height: number = 300,
+      randomize: boolean = false,
+    ): string => faker.image.abstract(width, height, randomize);
+
+    const bannerImage: string = image(1290, 300, false);
 
     const newUser = await createUser(
       firstName,
@@ -33,6 +44,9 @@ export const register = async (
       username,
       hashedPassword,
       email,
+      city,
+      country,
+      bannerImage,
     );
 
     return res.status(201).json({
@@ -42,6 +56,56 @@ export const register = async (
         firstName,
         email,
         lastName,
+        city,
+        country,
+        bannerImage,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
+
+// Update user details/Profile
+
+export const updateUser = async (
+  req: Request<{}, {}, UserOptionalDefaults>,
+  res: Response,
+) => {
+  const { id } = req.user as User;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    username,
+    profileImage,
+    city,
+    country,
+    bannerImage,
+  } = req.body;
+
+  const dataToUpdate: any = {};
+  if (firstName) dataToUpdate.firstName = firstName;
+  if (lastName) dataToUpdate.lastName = lastName;
+  if (email) dataToUpdate.email = email;
+  if (password) {
+    const hashedPassword = await hashPassword(password);
+    dataToUpdate.password = hashedPassword;
+  }
+  if (username) dataToUpdate.username = username;
+  if (profileImage) dataToUpdate.profileImage = profileImage;
+  if (city) dataToUpdate.city = city;
+  if (country) dataToUpdate.country = country;
+  if (bannerImage) dataToUpdate.bannerImage = bannerImage;
+
+  try {
+    const updatedUser = await updateUserDetail(id, dataToUpdate);
+
+    return res.status(200).json({
+      message: 'user profile successfully updated',
+      data: {
+        updatedUser,
       },
     });
   } catch (error) {
@@ -77,14 +141,17 @@ export const currentUser = async (req: Request, res: Response) => {
         email: user?.email,
         username: user?.username,
         profileImage: user?.profileImage,
-        location: user?.location,
+        city: user?.city,
+        country: user?.country,
+        bannerImage: user?.bannerImage,
         collection: user?.collection.map((item: any) => ({
           id: item.id,
           comicId: item.comicId,
           title: item.title,
           imageUrl: item.imageUrl,
+          issueNumber: item.issueNumber,
         })),
-        tradeOfferDetail: userTradeOffers.map((tradeOffer: any) => ({
+        tradeOfferDetail: userTradeOffers?.map((tradeOffer: any) => ({
           tradeOfferId: tradeOffer.id,
           type: tradeOffer.type,
           status: tradeOffer.status,
@@ -96,11 +163,12 @@ export const currentUser = async (req: Request, res: Response) => {
             phoneNumber: tradeOffer.phoneNumber,
           },
           tradeOfferItems: {
-            collectionId: tradeOffer.collection[0].id,
-            comicId: tradeOffer.collection[0].comicId,
-            title: tradeOffer.collection[0].title,
-            imageUrl: tradeOffer.collection[0].imageUrl,
-            tradeOfferId: tradeOffer.collection[0].tradeOfferId,
+            collectionId: tradeOffer.collection[0]?.id,
+            comicId: tradeOffer.collection[0]?.comicId,
+            title: tradeOffer.collection[0]?.title,
+            imageUrl: tradeOffer.collection[0]?.imageUrl,
+            issueNumber: tradeOffer.collection[0]?.issueNumber,
+            tradeOfferId: tradeOffer.collection[0]?.tradeOfferId,
           },
         })),
       },
@@ -129,12 +197,15 @@ export const fetchUser = async (req: Request, res: Response) => {
         email: user.email,
         username: user.username,
         profileImage: user.profileImage,
-        location: user.location,
+        city: user.city,
+        country: user.country,
+        bannerImage: user.bannerImage,
         collection: user.collection.map((item: any) => ({
           id: item.id,
           comicId: item.comicId,
           title: item.title,
           imageUrl: item.imageUrl,
+          issueNumber: item.issueNumber,
         })),
         tradeOfferDetail: userTradeOffers.map((tradeOffer: any) => ({
           tradeOfferId: tradeOffer.id,
@@ -152,6 +223,7 @@ export const fetchUser = async (req: Request, res: Response) => {
             comicId: tradeOffer.collection[0].comicId,
             title: tradeOffer.collection[0].title,
             imageUrl: tradeOffer.collection[0].imageUrl,
+            issueNumber: tradeOffer.collection[0].issueNumber,
             tradeOfferId: tradeOffer.collection[0].tradeOfferId,
           },
         })),
