@@ -47,12 +47,12 @@ const ComicSearch: NextPageWithLayout = () => {
   return (
     <main>
       <div className="p-2">
-        <div className="mb-2 w-100 lg:w-72 px-5">
+        <div className="px-5 mb-2 w-100 lg:w-72">
           <InputField
             placeholder="Search for a comic book..."
             value={value}
             onChange={handleChange}
-            Icon={<MagnifyingGlassIcon className="h-5 w-5 text-grey-800" />}
+            Icon={<MagnifyingGlassIcon className="w-5 h-5 text-grey-800" />}
             fullWidth
           />
         </div>
@@ -64,6 +64,7 @@ const ComicSearch: NextPageWithLayout = () => {
                 comicId: selected.id,
                 title: selected.title,
                 imageUrl: createImageUrl(selected.images),
+                issueNumber: selected.issueNumber,
               });
               setSelected(undefined);
             }}
