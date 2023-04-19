@@ -40,7 +40,6 @@ const AddTradeForm: React.FC<Props> = ({ isExchange, isLoading, onSubmit }) => {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<TFormSchema>({
     resolver: zodResolver(formSchema),
@@ -49,13 +48,12 @@ const AddTradeForm: React.FC<Props> = ({ isExchange, isLoading, onSubmit }) => {
   const { data: comicsData } = useQuery(['search-marvel-comics', searchTerm], {
     queryFn: () => searchComics(searchTerm),
     initialData: [],
-    enabled: !!searchTerm || !watch('wantedComicId'),
+    enabled: isExchange && !!searchTerm,
   });
 
   // eslint-disable-next-line arrow-body-style
   const submitHandler = (data: TFormSchema) => {
     const transformedData = { ...data };
-    console.log(transformedData);
 
     // NOTE: Backend DOES NOT ACCEPT these values
     // so therefore must be removed before data submission
@@ -133,7 +131,8 @@ const AddTradeForm: React.FC<Props> = ({ isExchange, isLoading, onSubmit }) => {
             onSelect={(newComic, query) => {
               if (newComic) {
                 setValue('wantedComicId', newComic.id);
-              } else {
+              }
+              if (!newComic || query !== newComic.title) {
                 setSearchTerm(query as string);
               }
             }}
