@@ -46,10 +46,12 @@ export const AutoComplete = <T extends object>({
       ? data
       : data.filter((item) => {
         if (optionKeys.value) {
-          // @ts-ignore
-          return item[optionKeys.value]
-            .toLowerCase()
-            .includes(query.toLowerCase());
+          return (
+            item[optionKeys.value]
+              // @ts-ignore
+              .toLowerCase()
+              .includes(query.toLowerCase())
+          );
         }
         return (
           item[optionKeys.label]
@@ -63,7 +65,6 @@ export const AutoComplete = <T extends object>({
 
   const changedValueHandler = useCallback(
     (value: T) => {
-      console.log(value);
       onSelect(value, query);
       if (!value) {
         return;
