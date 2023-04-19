@@ -10,6 +10,7 @@ import {
   findUserByEmail,
   findUserById,
   findUserByUsername,
+  findUsersWithComic,
   updateUserDetail,
 } from '../services/user.service';
 import { hashPassword } from '../utils/hashPassword';
@@ -231,4 +232,11 @@ export const fetchUser = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(400).json(error);
   }
+};
+
+export const getUsersWithComicId = async (req: Request, res: Response) => {
+  const { comicId } = req.params;
+  const usersWithComic = await findUsersWithComic(Number(comicId));
+
+  res.status(200).send({ username: usersWithComic } || []);
 };

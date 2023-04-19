@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {
+  User,
   UserOptionalDefaults,
   UserPartial,
 } from '@marvel-collector/types/generated/';
@@ -64,6 +65,28 @@ export const findUserById = async (payload: UserPartial) => {
   return user;
 };
 
+export const findUsersWithComic = async (comicId: number) => {
+  const users = await prisma.collectionItem.findMany({
+    where: {
+      comicId,
+    },
+    include: { user: true },
+  });
+
+  const filtered = users.reduce(
+    (a: {}[], b) => [
+      ...a,
+      {
+        username: b.user?.username,
+        location: b.user?.country,
+        profileImage: b.user?.profileImage,
+      },
+    ],
+    [],
+  );
+
+  return filtered;
+};
 export const updateUserDetail = async (id: string, dataToUpdate: any) => prisma.user.update({
   where: { id },
   data: dataToUpdate,

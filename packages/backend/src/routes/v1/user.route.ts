@@ -1,14 +1,8 @@
 import { Router } from 'express';
 import {
-  UserSchema,
-  UserOptionalDefaultsSchema,
-} from '@marvel-collector/types/generated/modelSchema';
-import prisma from '../../database/PrismaClient';
-import {
   register,
   logout,
   currentUser,
-  login,
   fetchUser,
   updateUser,
 } from '../../controllers/user.controller';
