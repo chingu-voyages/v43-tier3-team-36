@@ -71,6 +71,7 @@ const ComicSearch: NextPageWithLayout = () => {
               comicId: selected.id,
               title: selected.title,
               imageUrl: createImageUrl(selected.images),
+              issueNumber: selected.issueNumber,
             });
             setSelected(undefined);
           }}
