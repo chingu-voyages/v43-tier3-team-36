@@ -7,6 +7,7 @@ import { Combobox, ComboboxInputProps, Transition } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
 
 import { DEBOUNCE_DELAY } from '@/data/constants';
+import { useDebounce } from '@/hooks';
 
 export interface AutoCompleteProps<T> {
   /**
@@ -14,7 +15,8 @@ export interface AutoCompleteProps<T> {
    */
   data: T[];
   /**
-   * Keys to render the list item elements
+   * Keys to identify the props of T to access by
+   * and to render into list item elements
    */
   optionKeys: {
     key: keyof T;
@@ -38,8 +40,9 @@ export const AutoComplete = <T extends object>({
   className,
   ...rest
 }: AutoCompleteProps<T> & ComboboxInputProps<'input', any>) => {
-  const [selectedOption, setSelectedOption] = useState(data[0]);
+  const [selectedOption, setSelectedOption] = useState(data[0] || null);
   const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, DEBOUNCE_DELAY);
 
   const filteredData = useMemo(
     () => (query === ''
@@ -65,10 +68,6 @@ export const AutoComplete = <T extends object>({
 
   const changedValueHandler = useCallback(
     (value: T) => {
-      onSelect(value, query);
-      if (!value) {
-        return;
-      }
       if (typeof value === 'object') {
         // @ts-ignore
         setSelectedOption(value[optionKeys.label]);
@@ -76,16 +75,13 @@ export const AutoComplete = <T extends object>({
         setSelectedOption(value);
       }
     },
-    [onSelect, optionKeys.label, query],
+    [optionKeys.label],
   );
 
   useEffect(() => {
-    const timeout = setTimeout(changedValueHandler, DEBOUNCE_DELAY);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [changedValueHandler]);
+    onSelect(selectedOption, debouncedQuery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption, debouncedQuery]);
 
   return (
     <Combobox
