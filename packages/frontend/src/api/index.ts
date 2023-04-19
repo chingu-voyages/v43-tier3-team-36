@@ -4,6 +4,7 @@ import type {
   TradeOfferPartial,
   PushNotification,
 } from '@marvel-collector/types';
+import type { TradeRequestStatusType } from '@marvel-collector/types/generated/inputTypeSchemas/TradeRequestStatusSchema';
 
 import type TComicType from '@/types/comic';
 
@@ -218,7 +219,9 @@ export const createTradeOffer = async (
 
 export const getUsersWithComic = async (comicId: number) => {
   const res = await fetch(`${SERVER_URL}/api/v1/users/comic/${comicId}`);
-  const json: Array<Pick<User, 'username' | 'location' | 'profileImage'>> = await res.json();
+  const json: Array<
+  Pick<User, 'username' | 'city' | 'country' | 'profileImage'>
+  > = await res.json();
   return json;
 };
 
@@ -259,6 +262,32 @@ export const requestTradeOffer = async (
 ): Promise<any> => {
   const res = await fetch(`${SERVER_URL}/api/v1/trade-request`, {
     method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`${json.error} (${res.status})`);
+  }
+
+  return json.message;
+};
+
+export type TRespondTradeOfferBody = {
+  status: Omit<TradeRequestStatusType, 'PENDING'>;
+};
+
+export const respondTradeOffer = async (
+  tradeRequestId: string,
+  data: TRequestTradeOfferBody,
+): Promise<any> => {
+  const res = await fetch(`${SERVER_URL}/api/v1/trades/${tradeRequestId}`, {
+    method: 'PATCH',
     credentials: 'include',
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
