@@ -10,9 +10,9 @@ export default function middleware(request: NextRequest) {
   const isNonAuthPage = request.nextUrl.pathname === '/login'
     || request.nextUrl.pathname === '/signup';
 
-  // if (!hasServerCookie && !isNonAuthPage) {
-  //   return NextResponse.redirect(new URL('/login', request.url));
-  // }
+  if (!hasServerCookie && !isNonAuthPage) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 
   if (hasServerCookie && isNonAuthPage) {
     return NextResponse.redirect(new URL('/profile', request.url));

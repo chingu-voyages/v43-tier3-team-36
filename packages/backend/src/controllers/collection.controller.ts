@@ -39,7 +39,9 @@ import { pusher } from '../app';
 
 export async function addCollectionItemToUser(req: Request, res: Response) {
   const { id } = req.user as User;
-  const { comicId, title, imageUrl, issueNumber } = req.body;
+  const {
+    comicId, title, imageUrl, issueNumber,
+  } = req.body;
 
   try {
     // Check if the user exists
@@ -190,8 +192,9 @@ export async function editByDeletingUserComic(req: Request, res: Response) {
 // Creating trade offers
 
 export async function createTradeOffers(req: Request, res: Response) {
-  const { type, comicId, phoneNumber, email, price, message, wantedComicId } =
-    req.body;
+  const {
+    type, comicId, phoneNumber, email, price, message, wantedComicId,
+  } = req.body;
   const { id } = req.user as User;
 
   try {
@@ -395,8 +398,8 @@ export async function createTradeRequest(req: Request, res: Response) {
     pusher.trigger(tradeOffer.createdById, 'trade-request', {
       message: `
       ${receiver.username} requested to ${
-        tradeOffer.type === 'EXCHANGE' ? 'exchange' : 'buy'
-      } a comic from / with you. `.trim(),
+  tradeOffer.type === 'EXCHANGE' ? 'exchange' : 'buy'
+} a comic from / with you. `.trim(),
     });
 
     // store pusher notification in the database
