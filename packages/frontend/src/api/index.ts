@@ -260,7 +260,7 @@ export type TRequestTradeOfferBody = {
 export const requestTradeOffer = async (
   data: TRequestTradeOfferBody,
 ): Promise<any> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/trade-request`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/trade-requests`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -282,10 +282,10 @@ export type TRespondTradeOfferBody = {
   status: Omit<TradeRequestStatusType, 'PENDING'>;
 };
 
-export const respondTradeOffer = async (
-  tradeRequestId: string,
-  data: TRequestTradeOfferBody,
-): Promise<any> => {
+export const respondTradeOffer = async ({
+  tradeRequestId,
+  ...data
+}: TRespondTradeOfferBody & { tradeRequestId: string }): Promise<any> => {
   const res = await fetch(`${SERVER_URL}/api/v1/trades/${tradeRequestId}`, {
     method: 'PATCH',
     credentials: 'include',
