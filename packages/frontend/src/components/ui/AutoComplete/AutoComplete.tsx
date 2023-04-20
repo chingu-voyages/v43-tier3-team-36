@@ -1,7 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import {
-  useCallback, useEffect, useMemo, useState,
-} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Combobox, ComboboxInputProps, Transition } from '@headlessui/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { twMerge } from 'tailwind-merge';
@@ -66,18 +64,6 @@ export const AutoComplete = <T extends object>({
     [query, data, optionKeys.value, optionKeys.label],
   );
 
-  const changedValueHandler = useCallback(
-    (value: T) => {
-      if (typeof value === 'object') {
-        // @ts-ignore
-        setSelectedOption(value[optionKeys.label]);
-      } else {
-        setSelectedOption(value);
-      }
-    },
-    [optionKeys.label],
-  );
-
   useEffect(() => {
     onSelect(selectedOption, debouncedQuery);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,8 +73,14 @@ export const AutoComplete = <T extends object>({
     <Combobox
       as="div"
       className="relative w-full bg-white"
-      value={selectedOption}
-      onChange={changedValueHandler}
+      // @ts-ignore
+      value={
+        selectedOption && typeof selectedOption === 'object'
+          ? selectedOption[optionKeys.label]
+          : selectedOption
+      }
+      // @ts-ignore
+      onChange={(val) => setSelectedOption(val)}
     >
       <Combobox.Input
         className={twMerge('w-full p-4 border rounded-md', className)}
