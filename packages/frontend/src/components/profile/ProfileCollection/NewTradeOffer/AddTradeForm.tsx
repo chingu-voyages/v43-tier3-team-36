@@ -14,7 +14,7 @@ import { TELEPHONE_REGEX } from '@/data/constants';
 const formSchema = z
   .object({
     price: z.coerce.number().gte(1).or(z.literal('')),
-    wantedComicId: z.number(),
+    wantedComicId: z.number().or(z.undefined()),
     message: z.string().min(32),
     email: z.string().email().or(z.literal('')),
     phoneNumber: z
@@ -63,10 +63,10 @@ const AddTradeForm: React.FC<Props> = ({ isExchange, isLoading, onSubmit }) => {
     }
     if (transformedData.phoneNumber === '') {
       // @ts-ignore
-      delete transformedData.email;
+      delete transformedData.phoneNumber;
     }
 
-    return onSubmit(data);
+    return onSubmit(transformedData);
   };
 
   return (
@@ -132,7 +132,7 @@ const AddTradeForm: React.FC<Props> = ({ isExchange, isLoading, onSubmit }) => {
               if (newComic) {
                 setValue('wantedComicId', newComic.id);
               }
-              if (!newComic || query !== newComic.title) {
+              if (!newComic && query !== newComic?.title) {
                 setSearchTerm(query as string);
               }
             }}
