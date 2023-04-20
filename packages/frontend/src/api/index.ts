@@ -130,7 +130,7 @@ export const patchUserNotifications = async (
 export const addComic = async (
   data: CollectionItemPartial,
 ): Promise<string> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/collection`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/collections`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -146,7 +146,7 @@ export const addComic = async (
 };
 
 export const removeComic = async (comicId: number) => {
-  const res = await fetch(`${SERVER_URL}/api/v1/collection/${comicId}`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/collections/${comicId}`, {
     method: 'DELETE',
     credentials: 'include',
   });
@@ -201,7 +201,7 @@ export const getComicBookCollector = async (userId: string): Promise<User> => {
 export const createTradeOffer = async (
   data: TradeOfferPartial,
 ): Promise<string> => {
-  const res = await fetch(`${SERVER_URL}/api/v1/trade-offer`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/trade-offers`, {
     method: 'POST',
     credentials: 'include',
     headers: {
