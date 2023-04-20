@@ -1,8 +1,8 @@
-import OffersList from './OffersList';
+import Offers from './Offers';
 
 const ProfileOffers = () => (
   <section className="p-4">
-    <OffersList />
+    <Offers />
   </section>
 );
 
