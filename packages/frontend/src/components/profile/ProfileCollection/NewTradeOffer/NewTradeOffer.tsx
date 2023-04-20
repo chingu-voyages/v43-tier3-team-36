@@ -58,14 +58,16 @@ const NewTradeOffer: React.FC<Props> = ({ comic, onClose }) => {
       open
       onUnmount={onClose}
     >
-      <div className="relative max-w-full mx-auto w-28 sm:w-36 md:w-44 lg:w-56 h-36 sm:h-44 md:h-48 lg:h-64">
+      <div className="relative max-w-full m-4 mx-auto w-28 sm:w-36 md:w-44 lg:w-56 h-36 sm:h-44 md:h-48 lg:h-64">
         <Image src={comic.imageUrl || COMIC_FALLBACK} alt="" fill priority />
       </div>
       <h2 className="mt-5 text-md md:text-lg lg:text-2xl font-medium text-center w-[95%] max-w-[35ch] mx-auto">
         {comic.title}
       </h2>
-      <div className="mx-auto mb-1 my-7">
+      <div className="flex flex-col items-center mx-auto mb-1 gap-y-2 my-7">
+        <p>{isExchange ? 'Exchange' : 'Sell'}</p>
         <SwitchToggle
+          // NOTE: srLabel prop doesn't display label correctly
           srLabel={isExchange ? 'Sell' : 'Exchange'}
           ctrlState={isExchange}
           setCtrlState={() => setIsExchange((prevState) => !prevState)}
