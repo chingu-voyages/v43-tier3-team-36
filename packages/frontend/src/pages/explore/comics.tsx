@@ -12,10 +12,12 @@ import AddComic from '@/components/comic/AddComic';
 import { createImageUrl } from '@/utils';
 import ExploreLayout from '@/layouts/ExploreLayout';
 import useAlertStore from '@/store/store';
+import { ComicDetail } from '../../components/comic/ComicDetail';
 
 const ComicSearch: NextPageWithLayout = () => {
   const [value, setValue] = useState('');
   const [selected, setSelected] = useState<TComicItem>();
+  const [comicToView, setComicToView] = useState<TComicItem>();
 
   const setAlert = useAlertStore((state) => state.setAlert);
 
@@ -46,37 +48,43 @@ const ComicSearch: NextPageWithLayout = () => {
 
   return (
     <main>
-      <div className="p-2">
-        <div className="mb-2 w-100 lg:w-72 px-5">
-          <InputField
-            placeholder="Search for a comic book..."
-            value={value}
-            onChange={handleChange}
-            Icon={<MagnifyingGlassIcon className="h-5 w-5 text-grey-800" />}
-            fullWidth
-          />
-        </div>
-        {selected && (
-          <AddComic
-            comic={selected}
-            onAdd={() => {
-              addNewComic({
-                comicId: selected.id,
-                title: selected.title,
-                imageUrl: createImageUrl(selected.images),
-              });
-              setSelected(undefined);
-            }}
-            onClose={() => setSelected(undefined)}
-            show={!!selected}
-          />
-        )}
-        <ComicList
-          comics={data}
-          isLoading={isLoading}
-          onAddComic={(comic) => setSelected(comic)}
+      <div className="my-3 w-100">
+        <InputField
+          placeholder="Search for a comic book..."
+          value={value}
+          onChange={handleChange}
+          Icon={<MagnifyingGlassIcon className="w-5 h-5 text-grey-800" />}
+          fullWidth
         />
       </div>
+      {comicToView && (
+        <ComicDetail
+          comic={comicToView}
+          onClose={() => setComicToView(undefined)}
+        />
+      )}
+      {selected && (
+        <AddComic
+          comic={selected}
+          onAdd={() => {
+            addNewComic({
+              comicId: selected.id,
+              title: selected.title,
+              imageUrl: createImageUrl(selected.images),
+              issueNumber: selected.issueNumber,
+            });
+            setSelected(undefined);
+          }}
+          onClose={() => setSelected(undefined)}
+          show={!!selected}
+        />
+      )}
+      <ComicList
+        comics={data}
+        isLoading={isLoading}
+        onViewComic={(comic) => setComicToView(comic)}
+        onAddComic={(comic) => setSelected(comic)}
+      />
     </main>
   );
 };

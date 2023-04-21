@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/no-extraneous-dependencies */
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
@@ -5,12 +7,20 @@ import passport from 'passport';
 import session from 'express-session';
 import * as dotenv from 'dotenv';
 import morgan from 'morgan';
+import Pusher from 'pusher';
+import swaggerUI from 'swagger-ui-express';
+import YAML from 'yaml';
+import fs from 'fs';
 import API from './routes';
 import usePassportLocal from './utils/passportLocal';
 
 dotenv.config();
 
+const file = fs.readFileSync('./docs/swagger.yaml', 'utf8');
+const swaggerDocument = YAML.parse(file);
+
 const app = express();
+
 app.use(
   cors({
     origin:
@@ -22,6 +32,16 @@ app.use(
   }),
 );
 
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID || '',
+  key: process.env.PUSHER_APP_KEY || '',
+  secret: process.env.PUSHER_APP_SECRET || '',
+  cluster: process.env.PUSHER_APP_CLUSTER || '',
+  useTLS: true,
+});
+
+export { pusher };
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -32,7 +52,7 @@ app.use(
     saveUninitialized: false,
   }),
 );
-
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(passport.initialize());
 app.use(passport.session());
 usePassportLocal(passport);

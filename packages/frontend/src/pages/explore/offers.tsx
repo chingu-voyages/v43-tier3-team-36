@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { NextPageWithLayout } from '../_app';
 import AuthLayout from '@/layouts/AuthLayout';
 import ExploreLayout from '@/layouts/ExploreLayout';
-import ExploreOffers from '@/components/explore/ExploreCollectors/ExploreOffers';
+import ExploreOffers from '@/components/explore/ExploreOffers';
 
 const Offers: NextPageWithLayout = () => <ExploreOffers />;
 

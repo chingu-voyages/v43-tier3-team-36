@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { Router } from 'express';
 import user from './user.route';
 import collection from './collection.route';

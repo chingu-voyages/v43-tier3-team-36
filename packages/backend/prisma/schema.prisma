@@ -21,41 +21,70 @@ datasource db {
 }
 
 model User {
-  id           String           @id @default(uuid())
-  firstName    String
-  lastName     String
-  email        String           @unique
-  password     String
-  username     String           @unique
-  profileImage String?
-  location     String?
-  collection   CollectionItem[]
-  tradeOffers  TradeOffer[]
+  id            String           @id @default(uuid())
+  firstName     String
+  lastName      String
+  email         String           @unique
+  password      String
+  username      String           @unique
+  profileImage  String?
+  city          String
+  country       String
+  bannerImage   String
+  collection    CollectionItem[]
+  tradeOffers   TradeOffer[]
+  TradeRequests TradeRequest[]
+  pushNotification PushNotification[]
 }
 
 model CollectionItem {
   id           String      @id @default(uuid())
-  comicId      Int         @unique
+  comicId      Int
   title        String
   imageUrl     String
+  issueNumber  Int
   user         User?       @relation(fields: [userId], references: [id])
   userId       String?
   TradeOffer   TradeOffer? @relation(fields: [tradeOfferId], references: [id])
   tradeOfferId String?
+
+  @@unique([comicId, userId])
 }
 
 model TradeOffer {
-  id          String           @id @default(uuid())
-  type        TradeOfferType  
-  status      TradeOfferStatus @default(PENDING)
-  createdBy   User             @relation(fields: [createdById], references: [id])
-  createdById String
-  collection  CollectionItem[]
-  price       Float?
-  phoneNumber String?
-  email       String?
-  message     String?
-  createdAt   DateTime           @default(now())
+  id            String           @id @default(uuid())
+  type          TradeOfferType
+  status        TradeOfferStatus @default(PENDING)
+  createdBy     User             @relation(fields: [createdById], references: [id])
+  createdById   String
+  collection    CollectionItem[]
+  price         Float?
+  phoneNumber   String?
+  email         String?
+  message       String?
+  wantedComicId Int?
+  TradeRequests TradeRequest[]
+  createdAt     DateTime         @default(now())
+}
+
+model TradeRequest {
+  id              String             @id @default(uuid())
+  receiver        User               @relation(fields: [receiverId], references: [id])
+  receiverId      String
+  tradeOfferId    String
+  receiverComicId Int?
+  status          TradeRequestStatus @default(PENDING)
+  createdAt       DateTime           @default(now())
+  TradeOffer      TradeOffer         @relation(fields: [tradeOfferId], references: [id])
+}
+
+model PushNotification {
+  id        String      @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  message   String
+  isRead    Boolean @default(false)
+  createdAt DateTime @default(now())
 }
 
 enum TradeOfferType {
@@ -64,6 +93,12 @@ enum TradeOfferType {
 }
 
 enum TradeOfferStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+enum TradeRequestStatus {
   PENDING
   ACCEPTED
   DECLINED

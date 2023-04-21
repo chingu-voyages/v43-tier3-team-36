@@ -12,20 +12,24 @@ export const UserSchema = z.object({
   password: z.string(),
   username: z.string(),
   profileImage: z.string().nullable(),
-  location: z.string().nullable(),
+  city: z.string(),
+  country: z.string(),
+  bannerImage: z.string(),
 });
 
 export type User = z.infer<typeof UserSchema>;
 
+/////////////////////////////////////////
 // USER PARTIAL SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const UserPartialSchema = UserSchema.partial();
 
 export type UserPartial = z.infer<typeof UserPartialSchema>;
 
+/////////////////////////////////////////
 // USER OPTIONAL DEFAULTS SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const UserOptionalDefaultsSchema = UserSchema.merge(
   z.object({

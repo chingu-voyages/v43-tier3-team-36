@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Image from 'next/image';
 
 import { Button, Chip } from '@/components/ui';
@@ -13,19 +15,22 @@ type Props = {
   large?: boolean;
   withBorder?: boolean;
   onAddComic?: () => void;
+  onViewComic?: () => void;
 };
 
 const ComicCard: React.FC<Props> = ({
   comic,
   large,
   onAddComic,
+  onViewComic,
   withBorder,
 }) => {
   const { imageUrl, title, issueNo } = comic;
 
   return (
     <div
-      className={`w-${large ? '84' : '60'} p-2 bg-white ${
+      onClick={() => onViewComic?.()}
+      className={`cursor-pointer w-${large ? '84' : '60'} p-2 bg-white ${
         withBorder ? 'border' : ''
       } border-gray-200 rounded-lg`}
     >
@@ -44,9 +49,15 @@ const ComicCard: React.FC<Props> = ({
           {/* TODO: Add comic book description */}
           {/* <p className="text-sm">{description}</p> */}
           <div className="flex justify-between items-end mt-2">
-            <Chip className="bg-blue-500 " label={`Issue: ${issueNo}`} />
+            <Chip className="bg-blue-500" label={`Issue: ${issueNo}`} />
             {onAddComic && (
-              <Button onClick={onAddComic} variant="outlined">
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAddComic();
+                }}
+                variant="outlined"
+              >
                 Add
               </Button>
             )}

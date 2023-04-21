@@ -15,20 +15,23 @@ export const TradeOfferSchema = z.object({
   phoneNumber: z.string().nullable(),
   email: z.string().nullable(),
   message: z.string().nullable(),
+  wantedComicId: z.number().int().nullable(),
   createdAt: z.coerce.date(),
 });
 
 export type TradeOffer = z.infer<typeof TradeOfferSchema>;
 
+/////////////////////////////////////////
 // TRADE OFFER PARTIAL SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const TradeOfferPartialSchema = TradeOfferSchema.partial();
 
 export type TradeOfferPartial = z.infer<typeof TradeOfferPartialSchema>;
 
+/////////////////////////////////////////
 // TRADE OFFER OPTIONAL DEFAULTS SCHEMA
-//------------------------------------------------------
+/////////////////////////////////////////
 
 export const TradeOfferOptionalDefaultsSchema = TradeOfferSchema.merge(
   z.object({

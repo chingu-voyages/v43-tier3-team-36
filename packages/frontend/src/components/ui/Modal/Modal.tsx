@@ -1,8 +1,12 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/jsx-props-no-spreading */
-import type { ForwardRefExoticComponent, RefAttributes } from 'react';
-import { forwardRef, Fragment, useState } from 'react';
+import {
+  ForwardRefExoticComponent,
+  RefAttributes,
+  useEffect,
+  forwardRef,
+  Fragment,
+  useState,
+} from 'react';
 import { Dialog, Transition, type DialogProps } from '@headlessui/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { twMerge } from 'tailwind-merge';
@@ -42,6 +46,12 @@ RefAttributes<HTMLDivElement>
   }, ref) => {
     const [isOpen, setIsOpen] = useState(true);
 
+    useEffect(() => {
+      if (!isOpen) {
+        onUnmount?.();
+      }
+    }, [isOpen, onUnmount]);
+
     return (
       <Transition.Root show={isOpen} as={Fragment}>
         {/* @ts-ignore */}
@@ -49,12 +59,8 @@ RefAttributes<HTMLDivElement>
           ref={ref}
           className="relative z-10"
           unmount={isOpen}
-          static
           onClose={() => {
             setIsOpen(false);
-            if (typeof onUnmount === 'function') {
-              onUnmount();
-            }
           }}
           {...rest}
         >
@@ -71,10 +77,7 @@ RefAttributes<HTMLDivElement>
           </Transition.Child>
 
           <div className="fixed inset-0 z-10 overflow-y-auto">
-            <div
-              className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0"
-              onClick={() => setIsOpen(false)}
-            >
+            <div className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -92,14 +95,7 @@ RefAttributes<HTMLDivElement>
                     className,
                   )}
                 >
-                  <div className="relative px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
-                    <button
-                      className="absolute top-3 right-4"
-                      type="button"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <X />
-                    </button>
+                  <div className="flex justify-between items-center px-4 pt-5 pb-4 sm:p-6 sm:pb-4 bg-slate-100 border-b-2 border-slate-200">
                     <div className="sm:flex sm:items-start">
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <Dialog.Title
@@ -117,6 +113,9 @@ RefAttributes<HTMLDivElement>
                         ) : null}
                       </div>
                     </div>
+                    <button type="button" onClick={() => setIsOpen(false)}>
+                      <X />
+                    </button>
                   </div>
                   <div className="px-4 py-0">{children}</div>
                 </Dialog.Panel>
