@@ -74,7 +74,7 @@ export const findUsersWithComic = async (comicId: number) => {
   });
 
   const filtered = users.reduce(
-    (a: {}[], b) => [
+    (a: {}[], b: any) => [
       ...a,
       {
         username: b.user?.username,
